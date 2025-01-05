@@ -8,7 +8,7 @@ const { validateUserRegister, validateUserToken, validateUserRole, validateUserP
 const { validateId} = require('../validators/common');
 const { RegisterMail } = require('../mails');
 const sendEmail = require('../helpers/sendMail');
-const nodemailer = require('nodemailer');
+//const nodemailer = require('nodemailer');
 
 const logStruct = (func, error) => {
   return {'func': func, 'file': 'userController', error}

@@ -1,5 +1,5 @@
 $("#btnLogin").click(function(e){
-  let AUTH_BACKEND_URL = 'http:localhost:7000';
+  let AUTH_BACKEND_URL = 'http://209.38.43.245';
   //let AUTH_BACKEND_URL="http://192.241.145.15:3030"
   //let AUTH_BACKEND_URL = 'http://localhost:3030';
   e.preventDefault()
@@ -19,7 +19,7 @@ $("#btnLogin").click(function(e){
     return
   }
   $.ajax({
-    url: `${AUTH_BACKEND_URL}/tmxGold/v1/user/login`,
+    url: `${AUTH_BACKEND_URL}/user/login`,
     dataType: "JSON",
     contentType: "application/json",
     method: "POST",

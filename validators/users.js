@@ -16,9 +16,9 @@ exports.validateUserRegister = body => {
     throw errorResponse(401, 'invalidEmail');
   }
 
-  if (!validatePhone(body.phone)) {
+  /** if (!validatePhone(body.phone)) {
     throw errorResponse(401, 'invalidPhone');
-  }
+  } **/
 
   arr.map((item) => {
     const check = body.hasOwnProperty(item);

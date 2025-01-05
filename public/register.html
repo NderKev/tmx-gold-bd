@@ -15,6 +15,18 @@
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/app.map.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.css">
+    <style>
+		.hide {
+  display: none;
+}
+#valid-msg {
+  color: #00c900;
+}
+#error-msg {
+  color: red;
+}
+	</style>
 </head>
 
 <body>
@@ -66,7 +78,7 @@
                             </div>
                             <!-- Menu item -->
                             <div class="navbar-item is-nav-link">
-                                <a class="is-centered-responsive" href="ico.html">Ico</a>
+                                <a class="is-centered-responsive" href="ico.html">IDO</a>
                             </div>
                             <!-- Menu item -->
                             <div class="navbar-item is-nav-link">
@@ -136,7 +148,7 @@
                             </div>
                             <!-- Menu item -->
                             <div class="navbar-item is-nav-link">
-                                <a class="is-centered-responsive" href="ico.html">Ico</a>
+                                <a class="is-centered-responsive" href="ico.html">IDO</a>
                             </div>
                             <!-- Menu item -->
                             <div class="navbar-item is-nav-link">
@@ -193,11 +205,13 @@
                             </div>
                             <!-- Field -->
                             <!-- Field -->
-                            <div class="control-material is-primary">      
-                                <input class="material-input " type="text" id="phone" required >
+                            <div class="control-material is-primary"> 
+                                <text >Phone Number:</text>     
+                                <input class="material-input " type="tel" id="phone" required >
                                 <span class="material-highlight"></span>
                                 <span class="bar"></span>
-                                <label>Phone Number</label>
+                                <span id="valid-msg" class="hide">✓ Valid</span>
+					            <span id="error-msg" class="hide"></span>
                             </div>
                             <!-- Field -->
                             <div class="control-material is-primary">      
@@ -314,15 +328,15 @@
                     <!-- Links group -->
                     <ul class="footer-links">
                         <li>
-                            <a href="#">Token</a>
+                            <a href="token.html">Token</a>
                         </li>
     
                         <li>
-                            <a href="#">ICO</a>
+                            <a href="ico.html">IDO</a>
                         </li>
     
                         <li>
-                            <a href="#">Roadmap</a>
+                            <a href="roadmap.html">Roadmap</a>
                         </li>
                     </ul>
                 </div>
@@ -376,6 +390,7 @@
     <script src="./js/jquery-3.2.1.min.js"></script>
     <script src="./js/bundle.js"></script>
     <script src="./js/signup.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
 </body>
 
 </html>

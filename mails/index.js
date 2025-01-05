@@ -23,7 +23,7 @@ const WelcomeMail = (username = '{{nickname}}', link) => ({
 
 
 const RegisterMail = (username = '{{nickname}}', link) => ({
-  id: 1,
+  id: 2,
   name: '001 | Registration Welcome',
   subject: 'Welcome to Tmxgoldcoin',
   text: ((username) =>
@@ -39,7 +39,7 @@ const RegisterMail = (username = '{{nickname}}', link) => ({
 
 
 const TransactionMail = (username, link, amount, crypto, address) => ({
-  id: 2,
+  id: 3,
   name: '002 | Transaction Sent',
   subject: `${crypto} transaction sent from your wallet`,
   text: ((username, amount, crypto, address) =>
@@ -54,7 +54,7 @@ const TransactionMail = (username, link, amount, crypto, address) => ({
 });
 
 const WalletMail = (username, link, crypto, address) => ({
-  id: 3,
+  id: 4,
   name: '003 | Wallet created',
   subject:`A New ${crypto} Wallet Address Created`,
   text: ((username, crypto, address) =>
@@ -69,7 +69,7 @@ const WalletMail = (username, link, crypto, address) => ({
 });
 
 const VerifyMail = (username = '{{nickname}}', link) => ({
-  id: 4,
+  id: 5,
   name: '004 | Verify Email',
   subject: 'Verify your Email',
   text: ((username) =>
@@ -84,7 +84,7 @@ const VerifyMail = (username = '{{nickname}}', link) => ({
 });
 
 const ResetPasswordMail = (username = '{{nickname}}', link) => ({
-  id: 5,
+  id: 6,
   name: '005 | Reset Password',
   subject: 'Reset your Password',
   text: ((username) =>

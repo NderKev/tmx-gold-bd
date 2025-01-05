@@ -1,20 +1,20 @@
 const nodemailer = require('nodemailer');
-require('dotenv').config({ path: './.env'});
+const config = require('../config')
 
 const sendEmail = async (sendToEmail, template) => {
   const { subject, text, html } = template;
 
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT,
+    host: config.SMTP_HOST,
+    port: config.SMTP_PORT,
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PW,
+      user: config.SMTP_USER,
+      pass: config.SMTP_PW,
     },
   });
 
   const message = {
-    from: `${process.env.FROM_NAME} <${process.env.SMTP_USER}>`,
+    from: `${config.FROM_NAME} <${config.SMTP_USER}>`,
     to: sendToEmail,
     subject,
     text,
