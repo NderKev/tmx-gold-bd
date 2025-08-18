@@ -19,7 +19,7 @@ const Header = () => `
                     style="border-collapse:collapse;border-spacing:0px;">
                     <tbody>
                       <tr>
-                        <td style="width:250px;"><a href="https://www.axkl.org" target="_blank"><img
+                        <td style="width:250px;"><a href="https://www.tmxgoldcoin.com" target="_blank"><img
                               alt="axkledger" height="auto"
                               src="http://102.133.149.187/images/logo.jpg"
                               style="border:none;border-radius:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;"
