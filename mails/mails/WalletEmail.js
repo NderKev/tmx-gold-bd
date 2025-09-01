@@ -6,7 +6,7 @@ const Link = require('../components/Link');
 const WalletMailContent = (link, crypto, address) => `
 ${ContentBlock(
   `${Text(
-    "Afrikabal " + crypto +  "wallet successfully created",
+    "TmxGoldCoin " + crypto +  "wallet successfully created",
 )}`
 )}
 ${ContentBlock(`

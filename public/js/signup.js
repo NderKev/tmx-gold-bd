@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  let AUTH_BACKEND_URL = 'http://209.38.43.245';
+  let AUTH_BACKEND_URL = 'http://services.tmxgoldcoin.com';
   //let AUTH_BACKEND_URL = "http://192.241.145.15:3030/"
   //let AUTH_BACKEND_URL = 'http://localhost:3030';
   function refresh(){

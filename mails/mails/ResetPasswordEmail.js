@@ -5,10 +5,10 @@ const Text = require('../components/Text');
 const ResetPasswordEmailContent = (link) => `
 ${ContentBlock(
   `${Text(
-    'Reset Your Password For Afrikabal Account ✔',
+    'Reset Your Password For TmxGold Account ✔',
   )}`,
 )}
-${ContentBlock(`${Text('Please follow the link below to reset your afrikabal account password')}`)}
+${ContentBlock(`${Text('Please follow the link below to reset your tmxgoldcoin account password')}`)}
 ${Link('Click here to reset your password!', link)}
 `;
 

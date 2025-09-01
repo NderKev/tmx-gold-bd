@@ -11,7 +11,7 @@ const WelcomeMail = (username = '{{nickname}}', link) => ({
   name: '001 | Registration Welcome',
   subject: 'Welcome to Tmxgoldcoin',
   text: ((username) =>
-    `Hi ${username}!\n\nWelcome to tmxgoldcoin and thank you for registering to our service!\n\ Access now: https://www.tmxgoldcoin.com \n\nEnjoy using on our platform!\n\nThe TMX Gold  Team
+    `Hi ${username}!\n\nWelcome to tmxgoldcoin and thank you for registering to our service!\n\ Access now: https://www.goldcoin.tmxglobal.com\n\nEnjoy using on our platform!\n\nThe TMX Gold  Team
     `)(username),
   html: ((username, link) =>
     `${MainLayout(
@@ -27,7 +27,7 @@ const RegisterMail = (username = '{{nickname}}', link) => ({
   name: '001 | Registration Welcome',
   subject: 'Welcome to Tmxgoldcoin',
   text: ((username) =>
-    `Hi ${username}!\n\nWelcome to tmxgoldcoin and thank you for registering to our service!\n\ Access now: https://www.tmxgoldcoin.com \n\nEnjoy using on our platform!\n\nThe TMX Gold  Team
+    `Hi ${username}!\n\nWelcome to tmxgoldcoin and thank you for registering to our service!\n\ Access now: https://www.goldcoin.tmxglobal.com\n\nEnjoy using on our platform!\n\nThe TMX Gold  Team
     `)(username),
   html: ((username, link) =>
     `${MainLayout(

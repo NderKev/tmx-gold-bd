@@ -49,11 +49,11 @@ const sendVerification = async (reqData) => {
     console.log(link);
     // send mail with defined transport object
     let info = await transporter.sendMail({
-      from: '"Verification 👻" <no-reply@agro-africa.io>', // sender address
+      from: '"Verification 👻" <no-reply@tmxgoldcoin.io>', // sender address
       to: email, //"nostrakelvin@gmail.com" // list of receivers
-      subject: "Please Verify Your agro-africa Account ✔", // Subject line
+      subject: "Please Verify Your tmxgoldcoin Account ✔", // Subject line
       text: "Hello" + user , // plain text body
-      html: "Hello" + user +",<br> Please Click on the link to verify your agro-africa account email.<br><a href="+link+">Click here to verify your email</a>", // html body
+      html: "Hello" + user +",<br> Please Click on the link to verify your tmxgoldcoin account email.<br><a href="+link+">Click here to verify your email</a>", // html body
     });
     console.log("Message sent: %s", info.messageId);
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>

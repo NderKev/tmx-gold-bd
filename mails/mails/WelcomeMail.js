@@ -6,7 +6,7 @@ const Text = require('../components/Text');
 const WelcomeMailContent = (link , otp) => `
 ${ContentBlock(
   `${Text(
-    'Welcome to afrikabal and thank you for registering to our service!',
+    'Welcome to tmxgoldcoin and thank you for registering to our service!',
   )}`,
 )}
 ${ContentBlock(`

@@ -28,9 +28,10 @@ const createUser = async (reqData) => {
     let token_data = {};
     token_data.user_name = validInput.email;
     token_data.password = resp[0];
+    let eml = token_data.user_name;
     const new_token = await userModel.genToken(token_data);
     await userModel.createUserToken(new_token);
-    let link = "www.tmxgoldcoin.com";
+    let link = `http://18.143.39.160/user/verify/"${eml}/${new_token.token}`;//"www.tmxgoldcoin.co";
     try {
       await sendEmail(validInput.email, RegisterMail(validInput.name, link));
     } catch (error) {

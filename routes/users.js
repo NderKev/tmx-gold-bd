@@ -18,8 +18,8 @@ router.post('/register',  async (req, res) => {
     req.session.password = req.body.password;
     req.session.user_roles = response.meta.user_roles;
   }
-  const regToken = await authController.generateToken(req.body);
-    /**    var packageReq = {
+   /** const regToken = await authController.generateToken(req.body);
+      var packageReq = {
          token : regToken.data.token.token,
          email : regToken.data.token.email,
          user : req.body.name
@@ -90,7 +90,7 @@ router.get('/verify/:email/:token', async (req, res) => {
 function getFormattedUrl(req) {
     return url.format({
         protocol: req.protocol,
-        host: 'agro-africa.io'//req.get('host')
+        host: req.get('host')
     });
 }
 
