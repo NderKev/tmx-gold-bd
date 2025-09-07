@@ -99,6 +99,12 @@ res.redirect(getFormattedUrl(req));
 
 })
 
+
+router.post('/verify', async (req, res) => {
+  const response = await userController.verifyEmailOtp(req.body.otp);
+  return res.status(response.status).send(response);
+})
+
 router.post('/login',  async (req, res) => {
   const response = await userController.loginUser(req.body);
   if (response.success && response.meta) {
