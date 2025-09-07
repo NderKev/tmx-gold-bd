@@ -6,13 +6,27 @@ const userModel = require('../models/users');
 const {successResponse, errorResponse} = require('../lib/response');
 const { validateUserRegister, validateUserToken, validateUserRole, validateUserPermission,   validateAuth, validateSeller } = require('../validators/users');
 const { validateId} = require('../validators/common');
-const { RegisterMail } = require('../mails');
+const { RegisterMail, VerifyMail } = require('../mails');
 const sendEmail = require('../helpers/sendMail');
 //const nodemailer = require('nodemailer');
 
 const logStruct = (func, error) => {
   return {'func': func, 'file': 'userController', error}
 }
+
+
+
+  function generateExpiringOTP(length = 6) {
+        let otp = '';
+        for (let i = 0; i < length; i++) {
+            otp += Math.floor(Math.random() * 10); // Generates a digit from 0-9
+        }
+        const now = new Date();
+        const expirySeconds = 30 * 60; // OTP expires in 5 minutes
+        const timeNow = Math.floor(Date.now() / 1000);
+        const expirationTime = timeNow + expirySeconds;//new Date(now.getTime() + expiryMinutes * 60 * 1000); // Add minutes in milliseconds
+        return {otp, expirationTime};
+    }
 
 const createUser = async (reqData) => {
   try {
@@ -32,8 +46,15 @@ const createUser = async (reqData) => {
     const new_token = await userModel.genToken(token_data);
     await userModel.createUserToken(new_token);
     let link = `http://18.143.39.160/user/verify/"${eml}/${new_token.token}`;//"www.tmxgoldcoin.co";
+    let {otp, expirationTime} = generateExpiringOTP();
+    let data = {};
+    data.email = validInput.email;
+    data.otp = otp;
+    data.expiry = expirationTime;
+    await userModel.createEmailOTP(data);
     try {
       await sendEmail(validInput.email, RegisterMail(validInput.name, link));
+      await sendEmail(validInput.email, VerifyMail(validInput.name, otp));
     } catch (error) {
       console.log(error);
     } 
@@ -140,6 +161,18 @@ const verifySeller = async (reqData) => {
     return successResponse(204, 'verified')
   } catch (error) {
     console.error('error -> ', logStruct('verifySeller', error))
+    return errorResponse(error.status, error.message);
+  }
+};
+
+
+
+const verifyEmailOtp = async (reqData) => {
+  try {
+    const response = await userModel.verifyEmailOTP(reqData);
+    return successResponse(204, 'verified')
+  } catch (error) {
+    console.error('error -> ', logStruct('verifyEmailOtp', error))
     return errorResponse(error.status, error.message);
   }
 };
@@ -328,6 +361,7 @@ module.exports = {
   activateUser,
   deActivateUser,
   verifySeller,
+  verifyEmailOtp,
   activateSeller,
   deActivateSeller,
   fetchAllUsers,

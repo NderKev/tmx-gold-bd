@@ -15,7 +15,7 @@ require('dotenv').config()
 exports.getDetailsById = async (id) => {
   const query = db.read.select('*')
   .from('users')
-  .where('id', '=', id);;
+  .where('id', '=', id);
   return query;
 };
 
@@ -33,6 +33,15 @@ exports.getUserDetailsByNameOrEmail = async (input) => {
   .orWhere('email', '=', input);
   return query;
 };
+
+exports.getValidEmailOTP = async (email) => {
+  const query = db.read.select('*')
+  .from('user_otp')
+  .where('email', '=', email)
+  .where('used', '=', 0);
+  return query;
+};
+
 
 exports.createUser = async (data) => {
   const createdAt = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -334,6 +343,32 @@ exports.createEmailToken = async (data) => {
     updatedAt : createdAt,
     used : data.used || 0
   });
+  console.info("query -->", query.toQuery())
+  return query;
+};
+
+exports.createEmailOTP = async (data) => {
+  const createdAt = moment().format('YYYY-MM-DD HH:mm:ss');
+  const query = db.write('user_otp').insert({
+    email : data.email,
+    otp : data.otp,
+    expiry : data.expiry,
+    used : 0,
+    created_at : createdAt,
+    updated_at : createdAt,
+    
+  });
+  console.info("query -->", query.toQuery())
+  return query;
+};
+
+exports.verifyEmailOTP = async (data) => {
+  const query = db.write('user_otp')
+    .where('otp', data)
+    .update({
+      used : 1,
+      updatedAt : moment().format('YYYY-MM-DD HH:mm:ss')
+    });
   console.info("query -->", query.toQuery())
   return query;
 };
@@ -717,4 +752,34 @@ catch(err){
   resp.message = "error";
   return resp;
 }
+}
+
+
+function verifyOTP(providedOTP, storedOTP, expirationTime) {
+        const now = Math.floor(Date.now() / 1000);
+        if (now > expirationTime) {
+            return false; // OTP expired
+        }
+        return providedOTP === storedOTP; // Check if OTP matches
+    }
+
+exports.verifyEmailOTP = async (reqData) => {
+  try {
+    let resps = {};
+    const otp_data = await userModel.getValidEmailOTP(reqData.email);
+    let dbOtp, dbExp, currOtp;
+    dbOtp = otp_data[0].otp;
+    dbExp = otp_data[0].expiry;
+    currOtp = reqData.otp;
+    let resp = verifyOTP(currOtp, dbOtp, dbExp);
+    if (resp == false){
+      resps.valid = false;
+    }
+    resps.valid = true;
+    await verifyEmailOTP(dbOtp);
+    return resps;
+  }
+  catch(err){
+    return err.message
+  }
 }
