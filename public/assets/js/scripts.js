@@ -220,21 +220,44 @@ jQuery(function($) {
    /*--------------------------------
          Password Reset
      --------------------------------*/
-  $(document).ready(function () {
-    $("#sendLinkBtn").on("click", function () {
+ $(document).ready(function () {
+  $("#sendLinkBtn").on("click", function (e) {
+    e.preventDefault();
 
-      // Show the message
+    // get the input value
+    let inputValue = $('input[name="formfield2"]').val().trim();
+
+    //local storage of email/phone number for otp page
+    localStorage.setItem("contact", inputValue); // save
+
+    if (inputValue !== "") {
+      // update success message with input value
+      $("#successMessage").text("✅ Link has been sent to you at " + inputValue);
+
+      // show the message
+      $("#successMessage").fadeIn();
+
+      // hide after 3s
+      setTimeout(() => {
+        $("#successMessage").fadeOut();
+      }, 3000);
+
+      // redirect after 3s
+      setTimeout(function () {
+        window.location.href = "ui-enter-otp.html";
+      }, 3000);
+    } else {
+      // show error if no input
+      $("#successMessage").text("❌ Please enter your email or phone number.");
       $("#successMessage").fadeIn();
 
       setTimeout(() => {
         $("#successMessage").fadeOut();
       }, 3000);
-
-      setTimeout(function () {
-    window.location.href = "ui-enter-otp.html";
-  }, 3000);
-    });
+    }
   });
+});
+
 
      /*--------------------------------
         Verify Email
@@ -273,6 +296,18 @@ jQuery(function($) {
   }, 3000);
     });
   });
+
+
+   /*--------------------------------
+        OTP Page
+     --------------------------------*/
+
+    $(document).ready(function () {
+        let contact = localStorage.getItem("contact");
+        if (contact) {
+        $(".login-header small").text("Enter the OTP code sent to " + contact);
+        }
+    });
 
 
 
@@ -3249,3 +3284,54 @@ jQuery(function($) {
     });
 
 });
+
+  /******************************
+     metamask 
+     *****************************/
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const connectButton = document.getElementById("connectWalletMain");
+    const walletAddress = document.getElementById("walletAddress");
+
+    async function connectWallet() {
+      if (typeof window.ethereum !== "undefined") {
+        try {
+          // request accounts from MetaMask
+          const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+          const account = accounts[0];
+
+          // shorten wallet for display
+          const shortAccount = account.substring(0, 6) + "..." + account.substring(account.length - 4);
+
+          // update UI
+          walletAddress.textContent = shortAccount;
+          connectButton.textContent = "Connected";
+          connectButton.style.backgroundColor = "#4caf50"; // green for connected
+
+        } catch (error) {
+          console.error("User rejected request:", error);
+        }
+      } else {
+        alert("MetaMask is not installed. Please install it: https://metamask.io/");
+      }
+    }
+
+    connectButton.addEventListener("click", connectWallet);
+  });
+
+  // Detect account change
+ethereum.on("accountsChanged", function (accounts) {
+  if (accounts.length > 0) {
+    const shortAccount = accounts[0].substring(0, 6) + "..." + accounts[0].substring(accounts[0].length - 4);
+    walletAddress.textContent = shortAccount;
+  } else {
+    walletAddress.textContent = "";
+    document.getElementById("connectWalletMain").textContent = "Connect Wallet";
+  }
+});
+
+// Detect network change
+ethereum.on("chainChanged", (chainId) => {
+  window.location.reload();
+});
+
