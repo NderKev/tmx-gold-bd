@@ -349,11 +349,11 @@ exports.createEmailToken = async (data) => {
 
 exports.createEmailOTP = async (data) => {
   const createdAt = moment().format('YYYY-MM-DD HH:mm:ss');
-  const query = db.write('user_otp').insert({
+  const query = db.write('user_otps').insert({
     email : data.email,
     otp : data.otp,
     expiry : data.expiry,
-    used : 0,
+    used : data.used || 0,
     created_at : createdAt,
     updated_at : createdAt,
     
@@ -363,7 +363,7 @@ exports.createEmailOTP = async (data) => {
 };
 
 exports.verifyEmailOTP = async (data) => {
-  const query = db.write('user_otp')
+  const query = db.write('user_otps')
     .where('otp', data)
     .update({
       used : 1,
