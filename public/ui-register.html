@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <!-- 
-        * @Package:  Bitcoin & Cryptocurrency trading Dashboard
+        * @Package:  TMX Gold Coin ICO Dashboard
         * @Version: 1.0.0
     -->
     <meta charset="utf-8" />
@@ -10,7 +10,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <title>Bitcoin & Cryptocurrency trading Dashboard</title>
+    <title>TMX Gold Coin ICO Dashboard</title>
     <meta content="" name="description" />
     <meta content="" name="author" />
 
@@ -134,6 +134,7 @@
                         <label class="form-label">User name</label>
                         <div class="controls">
                           <input
+                            id="username"
                             type="text"
                             class="form-control"
                             name="formfield2"
@@ -148,6 +149,7 @@
                         <label class="form-label">Email</label>
                         <div class="controls">
                           <input
+                            id="email"
                             type="text"
                             class="form-control"
                             name="formfield1"
@@ -177,6 +179,7 @@
                         <label class="form-label">Password</label>
                         <div class="controls">
                           <input
+                             id="password"
                             type="password"
                             class="form-control"
                             name="formfield2"
@@ -191,6 +194,7 @@
                         <label class="form-label">Repeat Password</label>
                         <div class="controls">
                           <input
+                          id="c_password"
                             type="password"
                             class="form-control"
                             name="formfield1"
@@ -200,10 +204,15 @@
                       </div>
                     </div>
 
+                     <div>
+                                <p><span style="color : red" id="placement_error"></span></p>
+                     </div>
+
                     <div class="pull-left">
                       <a
-                        href="index-dashboard.html"
+                        href=""
                         class="btn btn-primary mt-10 btn-corner right-15"
+                        id="btnRegister"
                         >Sign up</a
                       >
                       <a
@@ -248,6 +257,7 @@
     <script src="assets/plugins/pace/pace.min.js"></script>
     <script src="assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="assets/plugins/viewport/viewportchecker.js"></script>
+    <script src="assets/js/signup.js"></script>
     <script>
       window.jQuery ||
         document.write(
@@ -268,36 +278,14 @@
     <!-- intl-tel-input JS for country phone number dropdown-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
 
-    <!-- Migrate this JS and CSS to the appropriate files -->
+    <!-- Migrate this JS and CSS to the appropriate files 
     <script>
       $(document).ready(function () {
-        var input = document.querySelector("#phone");
-        window.intlTelInput(input, {
-          initialCountry: "ke",
-          // geoIpLookup: function (callback) {
-          //   $.get(
-          //     "https://ipinfo.io?token=<YOUR_TOKEN>",
-          //     function () {},
-          //     "jsonp"
-          //   ).always(function (resp) {
-          //     var countryCode = resp && resp.country ? resp.country : "us";
-          //     callback(countryCode);
-          //   });
-          // },
-          utilsScript:
-            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js", // for formatting
-        });
+        
       });
 
-      $("#msg_validate").on("submit", function (e) {
-        e.preventDefault();
-        var iti = window.intlTelInputGlobals.getInstance(
-          document.querySelector("#phone")
-        );
-        var fullNumber = iti.getNumber(); // e.g. +254721356245
-        console.log("User phone:", fullNumber);
-      });
-    </script>
+      
+    </script> -->
 
     <style>
       .iti {
