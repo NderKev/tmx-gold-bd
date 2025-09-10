@@ -66,11 +66,7 @@
       rel="stylesheet"
       type="text/css"
     />
-    <link
-      href="assets/css/animate.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
+    <link href="assets/css/animate.min.css" rel="stylesheet" type="text/css" />
     <link
       href="assets/plugins/perfect-scrollbar/perfect-scrollbar.css"
       rel="stylesheet"
@@ -91,12 +87,14 @@
 
     <!-- CORE CSS TEMPLATE - START -->
     <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
-    <link
-      href="assets/css/responsive.css"
-      rel="stylesheet"
-      type="text/css"
-    />
+    <link href="assets/css/responsive.css" rel="stylesheet" type="text/css" />
     <!-- CORE CSS TEMPLATE - END -->
+
+    <!-- intl-tel-input CSS for phone number country dropdown codes-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css"
+    />
   </head>
   <!-- END HEAD -->
 
@@ -161,6 +159,21 @@
 
                     <div class="col-lg-6 no-pl">
                       <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <div class="controls">
+                          <input
+                            id="phone"
+                            type="text"
+                            class="form-control"
+                            name="formfield2"
+                            placeholder="enter phone number"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-6 no-pr">
+                      <div class="form-group">
                         <label class="form-label">Password</label>
                         <div class="controls">
                           <input
@@ -173,7 +186,7 @@
                       </div>
                     </div>
 
-                    <div class="col-lg-6 no-pr">
+                    <div class="col-lg-6 no-pl">
                       <div class="form-group">
                         <label class="form-label">Repeat Password</label>
                         <div class="controls">
@@ -251,5 +264,51 @@
     <!-- CORE TEMPLATE JS - START -->
     <script src="assets/js/scripts.js"></script>
     <!-- END CORE TEMPLATE JS - END -->
+
+    <!-- intl-tel-input JS for country phone number dropdown-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
+
+    <!-- Migrate this JS and CSS to the appropriate files -->
+    <script>
+      $(document).ready(function () {
+        var input = document.querySelector("#phone");
+        window.intlTelInput(input, {
+          initialCountry: "ke",
+          // geoIpLookup: function (callback) {
+          //   $.get(
+          //     "https://ipinfo.io?token=<YOUR_TOKEN>",
+          //     function () {},
+          //     "jsonp"
+          //   ).always(function (resp) {
+          //     var countryCode = resp && resp.country ? resp.country : "us";
+          //     callback(countryCode);
+          //   });
+          // },
+          utilsScript:
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js", // for formatting
+        });
+      });
+
+      $("#msg_validate").on("submit", function (e) {
+        e.preventDefault();
+        var iti = window.intlTelInputGlobals.getInstance(
+          document.querySelector("#phone")
+        );
+        var fullNumber = iti.getNumber(); // e.g. +254721356245
+        console.log("User phone:", fullNumber);
+      });
+    </script>
+
+    <style>
+      .iti {
+        width: 100%;
+      }
+
+      .iti input {
+        width: 100% !important;
+        padding-left: 48px !important;
+        box-sizing: border-box;
+      }
+    </style>
   </body>
 </html>
