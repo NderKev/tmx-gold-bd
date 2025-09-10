@@ -52,18 +52,13 @@ $(document).ready(function(){
           utilsScript:
             "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js", // for formatting
         });
-    let phone_nmuber;
+ 
 
-    $("#msg_validate").on("submit", function (e) {
+  /**("#msg_validate").on("submit", function (e) {
         e.preventDefault();
-        var iti = window.intlTelInputGlobals.getInstance(
-          document.querySelector("#phone")
-        );
-        var fullNumber = iti.getNumber(); // e.g. +254721356245
-        phone_nmuber = fullNumber;
-        console.log("User phone:", fullNumber);
+     
 
-      });
+      });**/
 
 /**const input = document.querySelector("#phone");
 const errorMsg = document.querySelector("#error-msg");
@@ -116,10 +111,16 @@ input.addEventListener('keyup', reset); **/
 
   $("#btnRegister").click(function(e){
     e.preventDefault()
-
+   var iti = window.intlTelInputGlobals.getInstance(
+          document.querySelector("#phone")
+    );
+   var fullNumber = iti.getNumber(); // e.g. +254721356245
+   //one_nmuber = fullNumber;
+    console.log("User phone:", fullNumber);
+    //alert("phone number :" + fullNumber);
     let email = document.getElementById('email').value
     let name = document.getElementById('username').value
-    let phone = phone_nmuber;
+    let phone = fullNumber;
     let password = document.getElementById('password').value
     //let role = document.getElementById('role').value
     let role_id = 1;
