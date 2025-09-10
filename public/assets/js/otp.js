@@ -36,7 +36,7 @@ $("#verify-otp").click(function(e){
       }
     },
     success: function (results) {
-      if (results.success = true && results.status === '204'){
+      if (results.success = true){
          $("#otp_placement_error").html('OTP Verfication Successful');
         window.location.href = '/index.html'
       }
