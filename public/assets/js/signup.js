@@ -120,7 +120,7 @@ input.addEventListener('keyup', reset); **/
     //alert("phone number :" + fullNumber);
     let email = document.getElementById('email').value
     let name = document.getElementById('username').value
-    let phone = fullNumber;
+    //let phone = fullNumber;
     let password = document.getElementById('password').value
     //let role = document.getElementById('role').value
     let role_id = 1;
@@ -137,7 +137,7 @@ input.addEventListener('keyup', reset); **/
       data: JSON.stringify({
         'email': email,
         'name': name,
-        'phone' : phone,
+        'phone' : fullNumber,
         'password' : password,
         "role_id": role_id
       }),
