@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <!-- 
-        * @Package:  Bitcoin & Cryptocurrency trading Dashboard
+        * @Package:  TMX Gold Coin ICO Dashboard
         * @Version: 1.0.0
     -->
     <meta charset="utf-8" />
@@ -130,6 +130,7 @@
                       <label class="form-label">Code</label>
                       <div class="controls">
                         <input
+                          id="otp-ver-code"
                           type="text"
                           class="form-control"
                           name="formfield2"
@@ -153,7 +154,7 @@
                     <div class="pull-left">
                       <a
                         href="#"
-                        id="sendLinkBtn2"
+                        id="verify-otp"
                         class="btn btn-primary mt-10 btn-corner right-15"
                         >Verify</a
                       >
@@ -220,6 +221,7 @@
     <script src="assets/plugins/pace/pace.min.js"></script>
     <script src="assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="assets/plugins/viewport/viewportchecker.js"></script>
+    <script src="assets/js/otp.js"></script>
     <script>
       window.jQuery ||
         document.write(
