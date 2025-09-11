@@ -9170,3 +9170,14 @@ p {
   z-index: 2;
   display: none;
 }
+
+
+/* -------------------------
+        Selling Disabled Feature
+----------------------------*/
+
+.disabled-feature {
+  opacity: 0.5;
+  cursor: not-allowed;
+  position: relative;
+}
