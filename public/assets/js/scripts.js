@@ -3335,3 +3335,17 @@ ethereum.on("chainChanged", (chainId) => {
   window.location.reload();
 });
 
+
+  /******************************
+     selling disabled feature
+     *****************************/
+
+document.querySelectorAll('.disabled-feature button, .disabled-feature input, .disabled-feature select')
+  .forEach(el => {
+    el.addEventListener('click', function(e) {
+      e.preventDefault(); // prevent any real action
+      alert("🚧 This feature is still under construction");
+    });
+  });
+
+
