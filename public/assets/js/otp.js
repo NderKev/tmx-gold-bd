@@ -36,7 +36,7 @@ $("#verify-otp").click(function(e){
       }
     },
     success: function (results) {
-        console.log(success)
+        //console.log(success)
       if (results){
          $("#otp_placement_error").html('OTP Verfication Successful');
         window.location.href = '/index.html'
