@@ -23,7 +23,7 @@ $("#verify-otp").click(function(e){
       'otp': otp
     }),
     error: (err) => {
-      refreshLogin();
+      refresh();
       if(err.status === 401) {
         //alert(err.message);
         $("#otp_placement_error").html('Wrong OTP');
@@ -36,12 +36,12 @@ $("#verify-otp").click(function(e){
       }
     },
     success: function (results) {
-        console.log(success)
-      if (results){
+        //console.log(success)
+      if (results.messsage === "verified" || results.data.success == true){
          $("#otp_placement_error").html('OTP Verfication Successful');
         window.location.href = '/index.html'
       }
-      else if (results.status === 401 || results.error){
+      else if (results.message !== 'verified'){
         //alert("here");
         $("#otp_placement_error").html('Wrong OTP');
         refresh();

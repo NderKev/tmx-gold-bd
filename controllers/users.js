@@ -170,8 +170,11 @@ const verifySeller = async (reqData) => {
 
 const verifyEmailOtp = async (reqData) => {
   try {
+    let resp = {}
     const response = await userModel.verifyEmailOTP(reqData);
-    return successResponse(204, 'verified')
+    resp.success = true;
+    resp.response = response;
+    return successResponse(204, resp, 'verified')
   } catch (error) {
     console.error('error -> ', logStruct('verifyEmailOtp', error))
     return errorResponse(error.status, error.message);
