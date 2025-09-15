@@ -415,7 +415,7 @@
                   alt="user-image"
                   class="img-circle img-inline"
                 />
-                <span>Smith Wright <i class="fa fa-angle-down"></i></span>
+                <span id="name"><i class="fa fa-angle-down"></i></span>
               </a>
               <ul class="dropdown-menu profile animated fadeIn">
                 <li>
@@ -434,7 +434,7 @@
                   </a>
                 </li>
                 <li class="last">
-                  <a href="ui-login.html">
+                  <a id="logout">
                     <i class="fa fa-lock"></i> Logout
                   </a>
                 </li>
@@ -1325,7 +1325,7 @@
           <div class="col-lg-4">
             <section class="box has-border-left-3">
               <header class="panel_header">
-                <h2 class="title pull-left">Ethereum wallet</h2>
+                <h2 class="title pull-left">TMX wallet</h2>
                 <div class="actions panel_actions pull-right">
                   <a class="box_toggle fa fa-chevron-down"></a>
                   <a
@@ -1342,9 +1342,10 @@
                     <div class="text-center no-mt no-mb">
                       <div class="transfer-wraper">
                         <div class="crypto-icon">
-                          <i class="cc ETC-alt color-primary"></i>
+                          <!-- <i class="cc ETC-alt color-primary"></i> -->
+                           <img src="assets/images/logo-folded.png" style="width: 50px;">
                         </div>
-                        <strong class="mb-20">Ethereum</strong>
+                        <strong class="mb-20">TMX</strong>
                         <div class="form-group no-mb">
                           <label class="form-label mt-10">wallet address</label>
                           <span class="desc"></span>
@@ -1370,7 +1371,7 @@
                             ></a>
                           </div>
 
-                          <span class="desc">1 ETC</span>
+                          <span class="desc">1 TMX</span>
                           <label class="form-label"> = 930 USD</label><br />
 
                           <span class="desc">Total selling amount</span>
@@ -1382,7 +1383,7 @@
                           <div class="mt-10 balance">
                             <strong class="form-label bold">Balance : </strong>
                             <span class="desc color-primary f-s-14">
-                              2,523.8237 ETC</span
+                              2,523.8237 TMX</span
                             >
                           </div>
                           <div class="balance bg-white">
@@ -1782,6 +1783,7 @@
 
     <!-- CORE TEMPLATE JS - START -->
     <script src="assets/js/scripts.js"></script>
+    <script src="assets/js/session.js"></script>
     <!-- END CORE TEMPLATE JS - END -->
   </body>
 </html>

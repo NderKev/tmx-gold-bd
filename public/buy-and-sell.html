@@ -325,7 +325,7 @@
                     <li class="profile">
                         <a href="#" data-toggle="dropdown" class="toggle">
                             <img src="data/profile/profile.jpg" alt="user-image" class="img-circle img-inline">
-                            <span>Smith Wright <i class="fa fa-angle-down"></i></span>
+                            <span id="name"><i class="fa fa-angle-down"></i></span>
                         </a>
                         <ul class="dropdown-menu profile animated fadeIn">
                             <li>
@@ -344,8 +344,8 @@
                                 </a>
                             </li>
                             <li class="last">
-                                <a href="ui-login.html">
-                                    <i class="fa fa-lock"></i> Logout
+                                <a id="logout">
+                                    <i class="fa fa-lock" ></i> Logout
                                 </a>
                             </li>
                         </ul>
@@ -1029,8 +1029,8 @@
 
                 <div class="clearfix"></div>
 
-                <div class="col-lg-6"
-                style="opacity:0.5; pointer-events:none; cursor:not-allowed;">
+                <div class="col-lg-6  disabled-feature"
+                style="opacity:0.5; cursor:not-allowed;">
                     <section class="box has-border-left-3">
                         <header class="panel_header">
                             <h2 class="title pull-left">Sell Cryptocurrency</h2>
@@ -1391,6 +1391,7 @@
 
     <!-- CORE TEMPLATE JS - START -->
     <script src="assets/js/scripts.js"></script>
+    <script src="assets/js/session.js"></script>
     <!-- END CORE TEMPLATE JS - END -->
 
 

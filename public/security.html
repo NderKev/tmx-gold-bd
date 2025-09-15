@@ -324,7 +324,7 @@
                     <li class="profile">
                         <a href="#" data-toggle="dropdown" class="toggle">
                             <img src="data/profile/profile.jpg" alt="user-image" class="img-circle img-inline">
-                            <span>Smith Wright <i class="fa fa-angle-down"></i></span>
+                            <span id="name"><i class="fa fa-angle-down"></i></span>
                         </a>
                         <ul class="dropdown-menu profile animated fadeIn">
                             <li>
@@ -343,7 +343,7 @@
                                 </a>
                             </li>
                             <li class="last">
-                                <a href="ui-login.html">
+                                <a id="logout">
                                     <i class="fa fa-lock"></i> Logout
                                 </a>
                             </li>
@@ -859,7 +859,7 @@
                                                     </div>
                                                 </a>
                                             </li>
-                                            <li>
+                                            <!-- <li>
                                                 <a href="#level-2" data-toggle="tab">
                                                     <img src="data/icons/sec-level2.png" class="tab-img-icon" alt="icon">
                                                     <div class="tab-head">
@@ -876,7 +876,7 @@
                                                         <h4 class="no-mt"><small>advanced security options of wallet </small></h4>
                                                     </div>
                                                 </a>
-                                            </li>
+                                            </li> -->
                                             
                                         </ul>
 
@@ -889,7 +889,7 @@
                                                             <img src="data/icons/email-verification.png" class="tab-img-icon" alt="icon">
                                                             <div class="tab-head">
                                                                 <h4 class="bold mb-5">Email Verification</h4>
-                                                                <h4 class="no-mt"><small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt nihil, maxime cumque dolorum facere et error, molestias laborum at animi culpa accusamus eius corrupti totam temporibus quasi in aliquam.</small></h4>
+                                                                <h4 class="no-mt"><small>Confirm your email address to secure your account and receive important updates. This step ensures only you can access and manage your TMX profile.</small></h4>
 
                                                                 <h5 class="bold no-mb"><i class="fa fa-check-circle-o complete f-s-14"></i> Verified</h5>
                                                             </div>
@@ -900,7 +900,7 @@
                                                             <img src="data/icons/backup.png" class="tab-img-icon" alt="icon">
                                                             <div class="tab-head">
                                                                 <h4 class="bold mb-5">Backup Recovery Phase</h4>
-                                                                <h4 class="no-mt"><small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt nihil, maxime cumque dolorum facere et error, molestias laborum at animi culpa accusamus eius corrupti totam temporibus quasi in aliquam.</small></h4>
+                                                                <h4 class="no-mt"><small>Your recovery phrase is the key to restoring your wallet if you lose access. Store it safely and never share it with anyone.</small></h4>
 
                                                                 <a href="buy-and-sell.html" class="btn btn-primary btn-corner right15"><i class="fa fa-cloud-download complete color-white"></i>Backup Now</a>
                                                             </div>
@@ -911,7 +911,7 @@
                                                             <img src="data/icons/pass-hint.png" class="tab-img-icon" alt="icon">
                                                             <div class="tab-head">
                                                                 <h4 class="bold mb-5">Create Password Hint</h4>
-                                                                <h4 class="no-mt"><small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt nihil, maxime cumque .</small></h4>
+                                                                <h4 class="no-mt"><small>Set a personal hint to help you remember your password. Choose something only you’ll recognize, without giving away the actual password.</small></h4>
 
                                                                 <div class="form-group mb-10">
                                                                     <div class="input-group">
@@ -1229,6 +1229,7 @@
 
     <!-- CORE TEMPLATE JS - START -->
     <script src="assets/js/scripts.js"></script>
+    <script src="assets/js/session.js"></script>
     <!-- END CORE TEMPLATE JS - END -->
 
 </body>
