@@ -17,7 +17,7 @@
     <!-- Favicon -->
     <link
       rel="shortcut icon"
-      href="assets/images/favicon.png"
+      href="assets/images/tmxg.png"
       type="image/x-icon"
     />
     <!-- For iPhone -->
@@ -956,8 +956,11 @@
                       <!-- <i class="pull-left cc BTC-alt icon-md mt-10"></i> -->
                       <div><img src="assets/images/logo-folded.png" alt="TMX Icon" class="pull-left icon-md mt-10" style="width: 55px; padding-right: 8px;"> </div>
                       <div class="stats">
-                        <h3 class="mb-5">1.003747 TMX</h3>
-                        <span>Wallet TMX Gold Balance</span>
+                        <h3 class="mb-5">Address</h3>
+                        <span id="address"></span>
+                        <h3 class="mb-5">Balance</h3>
+                        <span id="balance"></span>
+                        <pre id="output"></pre>
                       </div>
                     </div>
                   </div>
@@ -1253,7 +1256,7 @@
                   <div class="col-xs-12">
                     <div class="transfer-wraper">
                       <div class="form-group no-mb">
-                        <label class="form-label">Bitcoin wallet address</label>
+                        <!--  <label class="form-label">Bitcoin wallet address</label>
                         <div class="input-group mb-10">
                           <span
                             class="input-group-addon has-gradient-to-right-bottom2"
@@ -1273,10 +1276,10 @@
                             data-placement="top"
                             ><i class="fa fa-copy text-dark"></i
                           ></a>
-                        </div>
+                        </div> -->
 
                         <label class="form-label"
-                          >TMX Gold Coin wallet address</label
+                          >TMX Gold Coin Wallet Address</label
                         >
                         <div class="input-group">
                           <span
@@ -1813,6 +1816,7 @@
 
     <!-- MetaMask JS -->
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+    <script src="assets/js/balance.js"></script>
 
   </body>
 </html>
