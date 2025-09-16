@@ -51,6 +51,7 @@ const createUser = async (reqData) => {
     data.email = validInput.email;
     data.otp = otp;
     data.expiry = expirationTime;
+    data.used = 0;
     await userModel.createEmailOTP(data);
     try {
       await sendEmail(validInput.email, RegisterMail(validInput.name, link));
@@ -169,8 +170,11 @@ const verifySeller = async (reqData) => {
 
 const verifyEmailOtp = async (reqData) => {
   try {
+    let resp = {}
     const response = await userModel.verifyEmailOTP(reqData);
-    return successResponse(204, 'verified')
+    resp.success = true;
+    resp.response = response;
+    return successResponse(204, resp, 'verified')
   } catch (error) {
     console.error('error -> ', logStruct('verifyEmailOtp', error))
     return errorResponse(error.status, error.message);

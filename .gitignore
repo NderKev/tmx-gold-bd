@@ -130,4 +130,5 @@ dist
 .pnp.*
 
 nginx.*
+helpers/test.js
 
