@@ -9,8 +9,7 @@ ${ContentBlock(
   )}`,
 )}
 ${ContentBlock(`${Text("You've successfully created a tmxgoldcoin account using this email. " +
-  "Enter OTP below to verify your email. \n\n")}`)}
-${Text(otp)}
+  "Enter OTP below to verify your email. \n"+ otp +"\n")}`)}
 `;
 
 module.exports = VerifyMailContent;
