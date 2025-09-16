@@ -113,10 +113,10 @@ const verifyToken = async(token) => {
 }; **/
 
   
-req.session.user = {
+/** req.session.user = {
   id: user.id,
   role: user.role
-};
+}; **/
 
 
 
