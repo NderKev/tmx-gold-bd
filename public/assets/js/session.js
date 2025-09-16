@@ -10,7 +10,7 @@ $(document).ready(function(){
     }
     else{
       var UserName = localStorage.getItem("tmx_gold_name");
-      $("#name").text(UserName)
+      $("#name").text(UserName);
         $(logout).click(function(){
         localStorage.setItem('tmx_gold_name', "");
         localStorage.setItem('user_id',"");

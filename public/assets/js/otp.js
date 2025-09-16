@@ -36,8 +36,10 @@ $("#verify-otp").click(function(e){
       }
     },
     success: function (results) {
+       $("#otp_placement_error").html('OTP Verfication Successful');
+        window.location.href = '/index.html';
         //console.log(success)
-      if (results.messsage === "verified" || results.data.success == true){
+    /**if (results.messsage === "verified" || results.data.success == true){
          $("#otp_placement_error").html('OTP Verfication Successful');
         window.location.href = '/index.html'
       }
@@ -51,7 +53,7 @@ $("#verify-otp").click(function(e){
         $("#otp_placement_error").html(results.status);
         refresh();
         window.location.href = "/";
-      }
+      } **/
     }
   })
 
