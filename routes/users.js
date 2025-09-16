@@ -7,6 +7,7 @@ const {authenticator, auth, allowCustomer,  allowAdmin, allowSeller, allowAdminO
 const path = require('path');
 const authController = require('../controllers/auth');
 const url = require('url');
+const checkAdmin = require('../middleware/checkAdmin');
 
 //const createAuthToken = require('../models/users');
 // CRUD user
@@ -382,5 +383,19 @@ router.get('/seller/:id/updateProduct', authenticator, allowSeller, async (req, 
     }
    //return res.status(response.status).send(response);
 }); **/
+
+
+router.get('/public/index-ico-admin.html', checkAdmin, (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/index-ico-admin.html"));
+});
+
+router.get('/public/payment-gateways.html', checkAdmin, (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/payment-gateways.html"));
+});
+
+
+
+
+
 
 module.exports = router;
