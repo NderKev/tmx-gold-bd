@@ -3351,15 +3351,3 @@ document.querySelectorAll('.disabled-feature button, .disabled-feature input, .d
 /******************************
     selection on transfer type in buy and sell
      *****************************/
-
-$(function(){
-    $(".dropdown-menu li a").click(function(e){
-      e.preventDefault(); // stop link navigation
-      let selected = $(this).text();
-      $("#paymentMethodBtn").html(
-        selected + ' <span class="caret" style="position:absolute; right:10px; top:14px;"></span>'
-      );
-    });
-  });
-
-

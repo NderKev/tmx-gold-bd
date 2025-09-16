@@ -905,21 +905,38 @@
                                             <label class="form-label">Choose payment method</label>
                                             <span class="desc">minimum value "0.001 TMX"</span>
 
-                                            <div class="input-group mb-10">
+                                            <!-- <div class="input-group mb-10">
                                                 <span class="input-group-addon"><i class="fa fa-institution"></i></span>
-                                                
+
                                                 <div class="input-group-btn" style="width:100%">
-                                                    <button type="button" id="paymentMethodBtn" class="btn btn-red dropdown-toggle" style="width:100%;text-align:left" data-toggle="dropdown" aria-expanded="true">
-                                                        Bank Transfer <span class="caret" style="position: absolute;right: 10px;top: 14px;"></span>
+                                                    
+                                                    <button type="button" id="paymentMethodBtn" class="btn btn-red dropdown-toggle" 
+                                                            style="width:100%;text-align:left" data-toggle="dropdown" aria-expanded="true">
+                                                    Bank Transfer 
+                                                    <span class="caret" style="position: absolute;right: 10px;top: 14px;"></span>
                                                     </button>
 
+                                                    
                                                     <ul class="dropdown-menu dropdown-red no-spacing" style="width:100%">
-                                                        <li><a href="#">Bank Transfer</a></li>
-                                                        <li><a href="#">Mpesa</a></li>
-                                                        <li><a href="#">Wire Transfer</a></li>
+                                                    <li><a href="#" class="payment-option" data-value="Bank Transfer">Bank Transfer</a></li>
+                                                    <li><a href="#" class="payment-option" data-value="Mpesa">Mpesa</a></li>
+                                                    <li><a href="#" class="payment-option" data-value="Wire Transfer">Wire Transfer</a></li>
                                                     </ul>
                                                 </div>
-                                            </div>
+                                                </div> -->
+
+                                            <!-- Hidden input for form submission -->
+                                            <input type="hidden" id="paymentMethodInput" name="payment_method" value="Bank Transfer">
+
+                                                <div class="input-group mb-10">
+                                                    <span class="input-group-addon"><i class="fa fa-institution"></i></span>
+
+                                                    <select name="payment_method" class="form-control btn-red" style="width:100%; text-align:left;">
+                                                        <option value="Bank Transfer" selected>Bank Transfer</option>
+                                                        <option value="Mpesa">Mpesa</option>
+                                                        <option value="Wire Transfer">Wire Transfer</option>
+                                                    </select>
+                                                    </div>
 
                                             <label class="form-label">wallet address</label>
                                             <span class="desc"></span>
@@ -1391,8 +1408,7 @@
     <!-- CORE TEMPLATE JS - START -->
     <script src="assets/js/scripts.js"></script>
     <!-- END CORE TEMPLATE JS - END -->
-
-
+    
 </body>
 
 </html>
