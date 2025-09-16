@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>ERC20 Balance Checker (Avalanche)</title>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+</head>
+<body>
+  <h3>ERC20 Balance Checker (Avalanche C-Chain)</h3>
+  
+  <button id="connectBtn">Connect MetaMask</button>
+  <button id="balanceBtn" disabled>Get Balance</button>
+
+  <pre id="output"></pre>
+
+  <script>
+    // Avalanche C-Chain RPC
+    const AVALANCHE_RPC = "https://api.avax.network/ext/bc/C/rpc";
+
+    // Example ERC20 token (USDC.e on Avalanche)
+    const TOKEN_ADDRESS = "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E";
+
+    const ERC20_ABI = [
+      "function balanceOf(address owner) view returns (uint256)",
+      "function decimals() view returns (uint8)",
+      "function symbol() view returns (string)"
+    ];
+
+    let provider, signer, token, account;
+
+    const connectBtn = document.getElementById("connectBtn");
+    const balanceBtn = document.getElementById("balanceBtn");
+    const output = document.getElementById("output");
+
+    function log(msg) {
+      output.innerText += msg + "\n";
+    }
+
+    async function connect() {
+      if (!window.ethereum) return alert("Install MetaMask!");
+
+      // Ask MetaMask to connect
+      provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      signer = provider.getSigner();
+      account = await signer.getAddress();
+
+      log("Connected: " + account);
+
+      // Load token contract
+      token = new ethers.Contract(TOKEN_ADDRESS, ERC20_ABI, provider);
+
+      balanceBtn.disabled = false;
+    }
+
+    async function getBalance() {
+      try {
+        const rawBalance = await token.balanceOf(account);
+        const decimals = await token.decimals();
+        const symbol = await token.symbol();
+        const balance = ethers.utils.formatUnits(rawBalance, decimals);
+        log(`Balance: ${balance} ${symbol}`);
+      } catch (err) {
+        console.error(err);
+        log("Error: " + err.message);
+      }
+    }
+
+    connectBtn.onclick = connect;
+    balanceBtn.onclick = getBalance;
+  </script>
+</body>
+</html>
+
+
+const { ethers } = require("ethers");
+
+// Avalanche C-Chain RPC (public endpoint)
+const AVALANCHE_RPC = "https://api.avax.network/ext/bc/C/rpc";
+
+// Example token contract (replace with your ERC20)
+const TOKEN_ADDRESS = "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E"; // USDC.e on Avalanche
+
+// Standard ERC20 ABI (minimal)
+const ERC20_ABI = [
+  "function balanceOf(address owner) view returns (uint256)",
+  "function decimals() view returns (uint8)",
+  "function symbol() view returns (string)"
+];
+
+async function main() {
+  // Connect to Avalanche
+  const provider = new ethers.providers.JsonRpcProvider(AVALANCHE_RPC);
+
+  // Wallet address whose balance you want to check
+  const walletAddress = "0xYourWalletAddressHere";
+
+  // Load token contract
+  const token = new ethers.Contract(TOKEN_ADDRESS, ERC20_ABI, provider);
+
+  // Fetch raw balance
+  const rawBalance = await token.balanceOf(walletAddress);
+  const decimals = await token.decimals();
+  const symbol = await token.symbol();
+
+  // Convert to human-readable
+  const balance = ethers.utils.formatUnits(rawBalance, decimals);
+
+  console.log(`Balance of ${walletAddress}: ${balance} ${symbol}`);
+}
+
+main().catch(console.error);
+
+
+
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Send ERC20 Token (Avalanche)</title>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+</head>
+<body>
+  <h3>Send ERC20 Token from Reserve (MetaMask)</h3>
+
+  <button id="connectBtn">Connect MetaMask</button>
+  <br><br>
+  <label>Recipient:
+    <input id="toAddress" type="text" placeholder="0xRecipientAddress" size="50">
+  </label>
+  <br><br>
+  <label>Amount:
+    <input id="amount" type="text" placeholder="10.5">
+  </label>
+  <br><br>
+  <button id="sendBtn" disabled>Send Tokens</button>
+
+  <pre id="output"></pre>
+
+  <script>
+    // Avalanche C-Chain RPC (MetaMask will handle chain)
+    const TOKEN_ADDRESS = "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E"; // Example: USDC.e
+    const ERC20_ABI = [
+      "function transfer(address to, uint256 amount) returns (bool)",
+      "function decimals() view returns (uint8)",
+      "function symbol() view returns (string)"
+    ];
+
+    let provider, signer, token, decimals, symbol;
+
+    const connectBtn = document.getElementById("connectBtn");
+    const sendBtn = document.getElementById("sendBtn");
+    const output = document.getElementById("output");
+
+    function log(msg) {
+      output.innerText += msg + "\n";
+    }
+
+    async function connect() {
+      if (!window.ethereum) return alert("Install MetaMask!");
+
+      provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      signer = provider.getSigner();
+
+      const account = await signer.getAddress();
+      log("Connected: " + account);
+
+      token = new ethers.Contract(TOKEN_ADDRESS, ERC20_ABI, signer);
+      decimals = await token.decimals();
+      symbol = await token.symbol();
+      log("Token loaded: " + symbol + " (" + decimals + " decimals)");
+
+      sendBtn.disabled = false;
+    }
+
+    async function sendTokens() {
+      try {
+        const to = document.getElementById("toAddress").value.trim();
+        const amount = document.getElementById("amount").value.trim();
+
+        if (!ethers.utils.isAddress(to)) return alert("Invalid recipient address");
+        if (!amount || isNaN(amount)) return alert("Enter valid amount");
+
+        const parsedAmount = ethers.utils.parseUnits(amount, decimals);
+        log(`Sending ${amount} ${symbol} to ${to}...`);
+
+        const tx = await token.transfer(to, parsedAmount);
+        log("Tx submitted: " + tx.hash);
+
+        const receipt = await tx.wait();
+        if (receipt.status === 1) {
+          log(`✅ Transfer confirmed in block ${receipt.blockNumber}`);
+        } else {
+          log("❌ Transfer failed");
+        }
+      } catch (err) {
+        console.error(err);
+        log("Error: " + err.message);
+      }
+    }
+
+    connectBtn.onclick = connect;
+    sendBtn.onclick = sendTokens;
+  </script>
+</body>
+</html>
