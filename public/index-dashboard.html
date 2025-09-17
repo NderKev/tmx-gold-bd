@@ -17,7 +17,7 @@
     <!-- Favicon -->
     <link
       rel="shortcut icon"
-      href="assets/images/tmxg.png"
+      href="assets/images/favicon.ico"
       type="image/x-icon"
     />
     <!-- For iPhone -->
@@ -107,6 +107,25 @@
       rel="stylesheet"
       type="text/css"
     />
+    <style>
+  .eth-address {
+    display: inline-block;
+    font-family: monospace;
+    font-size: 14px;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none; /* prevent partial selection */
+    padding: 4px 6px;
+    border-radius: 6px;
+    background: #f5f5f5;
+  }
+
+  .eth-address:hover {
+    background: #e6e6e6;
+  }
+</style>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.11.1/dist/ethers.umd.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script> -->
     <!-- CORE CSS TEMPLATE - END -->
   </head>
   <!-- END HEAD -->
@@ -956,11 +975,13 @@
                       <!-- <i class="pull-left cc BTC-alt icon-md mt-10"></i> -->
                       <div><img src="assets/images/logo-folded.png" alt="TMX Icon" class="pull-left icon-md mt-10" style="width: 55px; padding-right: 8px;"> </div>
                       <div class="stats">
+                        <h3 class="mb-5">Network</h3>
+                         <span id="network"></span>
                         <h3 class="mb-5">Address</h3>
-                        <span id="address"></span>
+                        <span id="address" class="eth-address"></span>
                         <h3 class="mb-5">Balance</h3>
                         <span id="balance"></span>
-                        <pre id="output"></pre>
+                        <span id="output"></span>
                       </div>
                     </div>
                   </div>
@@ -1815,8 +1836,8 @@
     <!-- END CORE TEMPLATE JS - END -->
 
     <!-- MetaMask JS -->
-    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
     <script src="assets/js/balance.js"></script>
+    
 
   </body>
 </html>

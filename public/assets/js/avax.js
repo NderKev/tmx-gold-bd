@@ -1,5 +1,8 @@
+//import { ethers } from "ethers";
+
+$(document).ready(function(){
+
 const AVALANCHE_RPC = "https://api.avax.network/ext/bc/C/rpc";
-const AVALANCHE_CHAIN_ID = "0xa86a";
 
     // Example ERC20 token (USDC.e on Avalanche)
  const TOKEN_ADDRESS = "0xE88a92EcbAeeC20241D43A3e2512A4E705A847b8";
@@ -425,67 +428,19 @@ const AVALANCHE_CHAIN_ID = "0xa86a";
     const address = document.getElementById("address");
     const balance = document.getElementById("balance");
     const output = document.getElementById("output");
-    const network = document.getElementById("network");
     const connectBtn = document.getElementById("connectWalletMain");
    let provider, signer, token, decimals, symbol;
-
-      async function switchToAvalanche() {
-      try {
-        await window.ethereum.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: AVALANCHE_CHAIN_ID }]
-        });
-      } catch (switchError) {
-        // If chain not added to MetaMask
-        if (switchError.code === 4902) {
-          try {
-            await window.ethereum.request({
-              method: "wallet_addEthereumChain",
-              params: [
-                {
-                  chainId: AVALANCHE_CHAIN_ID,
-                  chainName: "Avalanche C-Chain",
-                  nativeCurrency: {
-                    name: "Avalanche",
-                    symbol: "AVAX",
-                    decimals: 18
-                  },
-                  rpcUrls: ["https://api.avax.network/ext/bc/C/rpc"],
-                  blockExplorerUrls: ["https://snowtrace.io/"]
-                }
-              ]
-            });
-          } catch (addError) {
-            console.error("Add chain error:", addError);
-          }
-        } else {
-          console.error("Switch error:", switchError);
-        }
-      }
-    }
-
-    async function checkNetwork() {
-      const { chainId } = await provider.getNetwork();
-      const hexId = "0x" + chainId.toString(16);
-      if (hexId !== AVALANCHE_CHAIN_ID) {
-        alert(`Wrong network! Please switch MetaMask to Avalanche C-Chain (chainId: 43114).`);
-        await switchToAvalanche();
-        //return false;
-        return false;
-      }
-      network.innerText = `Avalanche (chainId ${chainId})`;
-      return true;
-    }
+   
 
     async function loadBalance() {
       try {
-        const account = signer.address;
-        address.innerText =  account;
+        const account = await signer.getAddress();
+        address.innerText = "Wallet: " + account;
 
         const rawBalance = await token.balanceOf(account);
-        const formatted = ethers.formatUnits(rawBalance, decimals);
+        const formatted = ethers.utils.formatUnits(rawBalance, decimals);
 
-        balance.innerText = `${formatted} ${symbol}`;
+        balance.innerText = `Balance: ${formatted} ${symbol}`;
       } catch (err) {
         console.error("Error loading balance:", err);
         output.innerText = "Balance: error";
@@ -495,12 +450,10 @@ const AVALANCHE_CHAIN_ID = "0xa86a";
     async function connect() {
       if (!window.ethereum) return alert("Install MetaMask!");
        
-      //provider = new ethers.providers.Web3Provider(window.ethereum);
-      provider = new ethers.BrowserProvider(window.ethereum)
+      provider = new ethers.providers.Web3Provider(window.ethereum);
       await provider.send("eth_requestAccounts", []);
-      signer = await provider.getSigner();
-      console.log("Signer address:", signer.address);
-      if (!(await checkNetwork())) return;
+      signer = provider.getSigner();
+
       token = new ethers.Contract(TOKEN_ADDRESS, ERC20_ABI_TMXGT, provider);
       decimals = await token.decimals();
       symbol = await token.symbol();
@@ -509,37 +462,21 @@ const AVALANCHE_CHAIN_ID = "0xa86a";
 
       // Refresh when account changes
       window.ethereum.on("accountsChanged", async () => {
-        signer = await provider.getSigner();
+        signer = provider.getSigner();
         await loadBalance();
       });
 
       // Refresh when network changes
       window.ethereum.on("chainChanged", async () => {
         provider = new ethers.providers.Web3Provider(window.ethereum);
-        signer = await provider.getSigner();
+        signer = provider.getSigner();
         token = new ethers.Contract(TOKEN_ADDRESS, ERC20_ABI_TMXGT, provider);
         await loadBalance();
       });
     }
 
-     connectBtn.onclick = connect;
-
-  const fullAddress = "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"; // example
-  const addressEl = document.getElementById("address");
-
-  // Display shortened address
-  function shortenAddress(addr) {
-    return addr.slice(0, 6) + "…" + addr.slice(-4);
-  }
-
-  //addressEl.textContent = shortenAddress(fullAddress);
-
-  // Copy full address on click
-  addressEl.addEventListener("click", async () => {
-    try {
-      await navigator.clipboard.writeText(fullAddress);
-      alert("Copied to clipboard: " + fullAddress);
-    } catch (err) {
-      console.error("Failed to copy: ", err);
-    }
-  });
+    $("#connectWalletMain").click(function(e){
+    e.preventDefault()
+    connect();
+    });
+})
