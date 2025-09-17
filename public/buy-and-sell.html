@@ -44,7 +44,7 @@
     <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/responsive.css" rel="stylesheet" type="text/css" />
     <!-- CORE CSS TEMPLATE - END -->
-
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.11.1/dist/ethers.umd.min.js"></script>
 </head>
 <!-- END HEAD -->
 
@@ -881,14 +881,14 @@
                                     <div class="transfer-wraper">
                                         <div class="form-group no-mb">
                                             <label class="form-label">Buy TMX</label>
-                                            <span class="desc">minimum value "0.001 TMX"</span>
+                                            <span class="desc">minimum value "2000 TMXGT"</span>
 
                                             <div class="input-group mb-10">
                                                 <span class="input-group-addon">$</span>
                                                 
                                                 <div class="input-group-btn"  style="width:100%">
                                                     <button type="button" class="btn btn-red dropdown-toggle" style="width:100%;text-align:left" data-toggle="dropdown" aria-expanded="true">
-                                                        <i class="cc BTC mr-5"></i>TMX <span class="caret" style="position: absolute;right: 10px;top: 14px;"></span>
+                                                        <i class="cc BTC mr-5"></i>TMXGT <span class="caret" style="position: absolute;right: 10px;top: 14px;"></span>
                                                     </button>
 
                                                     <!-- <ul class="dropdown-menu dropdown-red no-spacing" style="width:100%">
@@ -903,7 +903,7 @@
                                             </div>
 
                                             <label class="form-label">Choose payment method</label>
-                                            <span class="desc">minimum value "0.001 TMX"</span>
+                                            <span class="desc">minimum value "2000 TMXGT"</span>
 
                                             <!-- <div class="input-group mb-10">
                                                 <span class="input-group-addon"><i class="fa fa-institution"></i></span>
@@ -926,109 +926,114 @@
                                                 </div> -->
 
                                             <!-- Hidden input for form submission -->
-                                            <!-- Dropdown -->
-<!-- Payment Method Dropdown -->
-<div class="input-group mb-10">
-  <span class="input-group-addon"><i class="fa fa-institution"></i></span>
-  <select id="paymentMethod" name="payment_method" class="form-control btn-red">
-    <option value="BTC">BTC</option>
-    <option value="ETH">ETH</option>
-    <option value="USDC">USDC</option>
-    <option value="USDT">USDT</option>
-    <option value="AVAX">AVAX</option>
-    <option value="AVAX USDC">AVAX USDC</option>
-    <option value="AVAX USDT">AVAX USDT</option>
-    <option value="Paystack">Paystack</option>
-    <option value="Mpesa">Mpesa</option>
-    <option value="Bank">Bank</option>
-    <option value="Wire Transfer">Wire Transfer</option>
-  </select>
-</div>
 
-<!-- Payment Fields -->
-<div id="paymentFields">
 
-  <!-- BTC -->
-  <div class="method-fields" data-method="BTC" style="display:none;">
-    <label>BTC Wallet Address</label>
-    <input type="text" class="form-control" name="btc_address" placeholder="Enter BTC address">
-  </div>
 
-  <!-- ETH -->
-  <div class="method-fields" data-method="ETH" style="display:none;">
-    <label>ETH Wallet Address</label>
-    <input type="text" class="form-control" name="eth_address" placeholder="Enter ETH address">
-  </div>
 
-  <!-- USDC -->
-  <div class="method-fields" data-method="USDC" style="display:none;">
-    <label>USDC Wallet Address</label>
-    <input type="text" class="form-control" name="usdc_address" placeholder="Enter USDC address">
-  </div>
+                                            <!-- <label class="form-label">wallet address</label
+                                            <input type="hidden" id="paymentMethodInput" name="payment_method" value="Bank Transfer">
 
-  <!-- USDT -->
-  <div class="method-fields" data-method="USDT" style="display:none;">
-    <label>USDT Wallet Address</label>
-    <input type="text" class="form-control" name="usdt_address" placeholder="Enter USDT address">
-  </div>
+                                                <div class="input-group mb-10">
+                                                    <span class="input-group-addon"><i class="fa fa-institution"></i></span>
 
-  <!-- AVAX -->
-  <div class="method-fields" data-method="AVAX" style="display:none;">
-    <label>AVAX Wallet Address</label>
-    <input type="text" class="form-control" name="avax_address" placeholder="Enter AVAX address">
-  </div>
+                                                    <select name="payment_method" id="payment_method" class="form-control btn-red" style="width:100%; text-align:left;">
+                                                        <option value="Bank Transfer" selected>Bank Transfer</option>
+                                                        <option value="Mpesa">Mpesa</option>
+                                                        <option value="Wire Transfer">Wire Transfer</option>
+                                                        <option value="BTC">Bitcoin</option>
+                                                        <option value="ETH">Ethereum</option>
+                                                        <option value="AVAX">Avalanche</option>
+                                                        <option value="BNB">Binance</option>
+                                                        <option value="USDT">Tether</option>
+                                                        <option value="USDC">Coinbase</option>
+                                                        <option value="USDTe">Avax Tether</option>
+                                                        <option value="USDCe">Avax Coinbase</option>                         
+                                                    </select>
+                                                    </div>
+                                               <!-- Payment Fields -->
+                                              <div id="paymentFields">
 
-  <!-- AVAX USDC -->
-  <div class="method-fields" data-method="AVAX USDC" style="display:none;">
-    <label>AVAX USDC Wallet Address</label>
-    <input type="text" class="form-control" name="avax_usdc_address" placeholder="Enter AVAX USDC address">
-  </div>
+                                                <!-- BTC -->
+                                                <div class="method-fields" data-method="BTC" style="display:none;">
+                                                  <label>BTC Wallet Address</label>
+                                                  <input type="text" class="form-control" name="btc_address" placeholder="Enter BTC address">
+                                                </div>
 
-  <!-- AVAX USDT -->
-  <div class="method-fields" data-method="AVAX USDT" style="display:none;">
-    <label>AVAX USDT Wallet Address</label>
-    <input type="text" class="form-control" name="avax_usdt_address" placeholder="Enter AVAX USDT address">
-  </div>
+                                                <!-- ETH -->
+                                                <div class="method-fields" data-method="ETH" style="display:none;">
+                                                  <label>ETH Wallet Address</label>
+                                                  <input type="text" class="form-control" name="eth_address" placeholder="Enter ETH address">
+                                                </div>
 
-  <!-- Paystack -->
-  <div class="method-fields" data-method="Paystack" style="display:none;">
-  <label>Paystack Email</label>
-  <input type="email" class="form-control" id="paystackEmail" placeholder="Enter Paystack email">
-  
-  <label>Amount (in Dollars)</label>
-  <input type="number" class="form-control" id="paystackAmount" placeholder="Enter amount">
+                                                <!-- USDC -->
+                                                <div class="method-fields" data-method="USDC" style="display:none;">
+                                                  <label>USDC Wallet Address</label>
+                                                  <input type="text" class="form-control" name="usdc_address" placeholder="Enter USDC address">
+                                                </div>
 
-  <button type="button" id="paystackButton" class="btn btn-success" style="margin-top:10px;">
-    Pay with Paystack
-  </button>
-</div>
+                                                <!-- USDT -->
+                                                <div class="method-fields" data-method="USDT" style="display:none;">
+                                                  <label>USDT Wallet Address</label>
+                                                  <input type="text" class="form-control" name="usdt_address" placeholder="Enter USDT address">
+                                                </div>
 
-  <!-- Mpesa -->
-  <div class="method-fields" data-method="Mpesa" style="display:none;">
-    <label>Mpesa Phone Number</label>
-    <input type="text" class="form-control" name="mpesa_number" placeholder="Enter Mpesa number">
-  </div>
+                                                <!-- AVAX -->
+                                                <div class="method-fields" data-method="AVAX" style="display:none;">
+                                                  <label>AVAX Wallet Address</label>
+                                                  <input type="text" class="form-control" name="avax_address" placeholder="Enter AVAX address">
+                                                </div>
 
-  <!-- Bank -->
-  <div class="method-fields" data-method="Bank" style="display:none;">
-    <label>Bank Name</label>
-    <input type="text" class="form-control" name="bank_name" placeholder="Enter Bank name">
-    <label>Account Number</label>
-    <input type="text" class="form-control" name="bank_account" placeholder="Enter Account number">
-  </div>
+                                                <!-- AVAX USDC -->
+                                                <div class="method-fields" data-method="AVAX USDC" style="display:none;">
+                                                  <label>AVAX USDC Wallet Address</label>
+                                                  <input type="text" class="form-control" name="avax_usdc_address" placeholder="Enter AVAX USDC address">
+                                                </div>
 
-  <!-- Wire Transfer -->
-  <div class="method-fields" data-method="Wire Transfer" style="display:none;">
-    <label>Beneficiary Name</label>
-    <input type="text" class="form-control" name="wire_name" placeholder="Enter Beneficiary name">
-    <label>IBAN / Account Number</label>
-    <input type="text" class="form-control" name="wire_account" placeholder="Enter IBAN / Account number">
-    <label>SWIFT/BIC</label>
-    <input type="text" class="form-control" name="wire_swift" placeholder="Enter SWIFT/BIC">
-  </div>
-</div>
+                                                <!-- AVAX USDT -->
+                                                <div class="method-fields" data-method="AVAX USDT" style="display:none;">
+                                                  <label>AVAX USDT Wallet Address</label>
+                                                  <input type="text" class="form-control" name="avax_usdt_address" placeholder="Enter AVAX USDT address">
+                                                </div>
 
-                                            <!-- <label class="form-label">wallet address</label>
+                                                <!-- Paystack -->
+                                                <div class="method-fields" data-method="Paystack" style="display:none;">
+                                                <label>Paystack Email</label>
+                                                <input type="email" class="form-control" id="paystackEmail" placeholder="Enter Paystack email">
+
+                                                <label>Amount (in Dollars)</label>
+                                                <input type="number" class="form-control" id="paystackAmount" placeholder="Enter amount">
+
+                                                <button type="button" id="paystackButton" class="btn btn-success" style="margin-top:10px;">
+                                                  Pay with Paystack
+                                                </button>
+                                              </div>
+
+                                                <!-- Mpesa -->
+                                                <div class="method-fields" data-method="Mpesa" style="display:none;">
+                                                  <label>Mpesa Phone Number</label>
+                                                  <input type="text" class="form-control" name="mpesa_number" placeholder="Enter Mpesa number">
+                                                </div>
+
+                                                <!-- Bank -->
+                                                <div class="method-fields" data-method="Bank" style="display:none;">
+                                                  <label>Bank Name</label>
+                                                  <input type="text" class="form-control" name="bank_name" placeholder="Enter Bank name">
+                                                  <label>Account Number</label>
+                                                  <input type="text" class="form-control" name="bank_account" placeholder="Enter Account number">
+                                                </div>
+
+                                                <!-- Wire Transfer -->
+                                                <div class="method-fields" data-method="Wire Transfer" style="display:none;">
+                                                  <label>Beneficiary Name</label>
+                                                  <input type="text" class="form-control" name="wire_name" placeholder="Enter Beneficiary name">
+                                                  <label>IBAN / Account Number</label>
+                                                  <input type="text" class="form-control" name="wire_account" placeholder="Enter IBAN / Account number">
+                                                  <label>SWIFT/BIC</label>
+                                                  <input type="text" class="form-control" name="wire_swift" placeholder="Enter SWIFT/BIC">
+                                                </div>
+                                              </div>
+                                               
+                                            <label class="form-label">wal
                                             <span class="desc"></span>
 
                                             <div class="input-group mb-10">
@@ -1036,7 +1041,7 @@
                                                     <span class="arrow"></span>
                                                     <img src="data/icons/wallet-o.png" alt="icon">    
                                                 </span>
-                                                <input type="text" class="form-control" placeholder="OxsD12F32xvW3deG5...">
+                                                <input type="text" id="wallet_address" class="form-control" placeholder="OxsD12F32xvW3deG5...">
                                             </div>
 
                                             <label class="form-label">Exchange operation</label>
@@ -1044,22 +1049,23 @@
 
                                             <div class="col-lg-5 no-pl">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" placeholder="Exchange amount" aria-describedby="basic-addon2">
+                                                    <input type="number" id="usd" min="10" value="10" class="form-control" placeholder="Exchange amount" aria-describedby="basic-addon2">
                                                     <span class="input-group-addon" id="basic-addon1">USD</span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-2">
                                                 <div class="exchange-img-wrapper">
-                                                    <img src="data/icons/exchange-arrows.png" class="mt-5 center-block" style="width:25px" alt=""></div>
+                                                    <img src="data/icons/exchange-arrows.png" class="mt-5 center-block" style="width:25px" alt="" id="exchange"></div>
                                                 </div>
                                             <div class="col-lg-5 no-pr">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" placeholder="Equivalent amount" aria-describedby="basic-addon2">
+                                                    <input type="text" id="amount" class="form-control" placeholder="Equivalent amount" aria-describedby="basic-addon2">
                                                     <span class="input-group-addon" id="basic-addon2">BTC</span>
                                                 </div>
-                                            </div> -->
-<!-- 
-                                            <button type="button" class="btn btn-primary btn-lg mt-20 has-gradient-to-right-bottom2" style="width:100%">Buy Cryptocurrency</button> -->
+
+                                            </div>
+
+                                            <button type="button" id="btnBuyTokens" class="btn btn-primary btn-lg mt-20 has-gradient-to-right-bottom2" style="width:100%">Buy Cryptocurrency
                                         </div>
                                         
                                     </div>
@@ -1496,8 +1502,9 @@
 
 
     <!-- CORE TEMPLATE JS - START -->
-    <script src="assets/js/scripts.js"></script>
+    <!-- <script src="assets/js/scripts.js"></script> -->
     <script src="assets/js/session.js"></script>
+    <script src="assets/js/avax.js"></script>
     <!-- END CORE TEMPLATE JS - END -->
 
     <!-- Paystack inline script -->
