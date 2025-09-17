@@ -1,482 +1,254 @@
-//import { ethers } from "ethers";
+const ERC20_ABI = [
+      "function transfer(address to, uint amount) returns (bool)"
+    ];
 
-$(document).ready(function(){
+    const TOKEN_ADDRESSES = {
+      USDT: {
+        ethereum: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+        avalanche: "0xc7198437980c041c805A1EDcbA50c1Ce5db95118", // USDT.e
+        bsc: "0x55d398326f99059fF775485246999027B3197955"
+      },
+      USDC: {
+        ethereum: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        avalanche: "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664", // USDC.e
+        bsc: "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d"
+      }
+    };
+    const ETH_ADDRESS = "0x39bbe9679406bbeca2ea6ac680cfcc24dec900a8";
+    const BTC_ADDRESS = "13hm8o5cG63H7fM5CuioY5iwnukHZPX6VD";
+    const CHAINS = {
+      ethereum: {
+        chainId: "0x1",
+        chainName: "Ethereum Mainnet",
+        nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+        rpcUrls: ["https://rpc.ankr.com/eth"],
+        blockExplorerUrls: ["https://etherscan.io/"]
+      },
+      avalanche: {
+        chainId: "0xa86a",
+        chainName: "Avalanche C-Chain",
+        nativeCurrency: { name: "Avalanche", symbol: "AVAX", decimals: 18 },
+        rpcUrls: ["https://api.avax.network/ext/bc/C/rpc"],
+        blockExplorerUrls: ["https://snowtrace.io/"]
+      },
+      bsc: {
+        chainId: "0x38",
+        chainName: "BNB Smart Chain",
+        nativeCurrency: { name: "BNB", symbol: "BNB", decimals: 18 },
+        rpcUrls: ["https://bsc-dataseed.binance.org/"],
+        blockExplorerUrls: ["https://bscscan.com/"]
+      }
+    };
 
-const AVALANCHE_RPC = "https://api.avax.network/ext/bc/C/rpc";
+    // switch or add network
+    async function switchChain(chain) {
+      try {
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: CHAINS[chain].chainId }]
+        });
+      } catch (err) {
+        if (err.code === 4902) {
+          await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [CHAINS[chain]]
+          });
+        } else {
+          throw err;
+        }
+      }
+    }
 
-    // Example ERC20 token (USDC.e on Avalanche)
- const TOKEN_ADDRESS = "0xE88a92EcbAeeC20241D43A3e2512A4E705A847b8";
-    const ERC20_ABI = [
-  "function balanceOf(address account) view returns (uint256)",
-  "function transfer(address to, uint256 amount) returns (bool)",
-  "function decimals() view returns (uint8)",
-  "function symbol() view returns (string)"
-];
+    async function getPrices() {
+      const ids = [
+        "bitcoin",  
+        "ethereum",     // ETH
+        "avalanche-2",  // AVAX
+        "binancecoin",  // BNB
+        "tether",       // USDT
+        "usd-coin"      // USDC
+      ];
 
-    const ERC20_ABI_TMXGT = [
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "name",
-    "outputs": [
-      {
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "spender",
-        "type": "address"
-      },
-      {
-        "name": "value",
-        "type": "uint256"
-      }
-    ],
-    "name": "approve",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "totalSupply",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "sender",
-        "type": "address"
-      },
-      {
-        "name": "recipient",
-        "type": "address"
-      },
-      {
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "transferFrom",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "decimals",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "spender",
-        "type": "address"
-      },
-      {
-        "name": "addedValue",
-        "type": "uint256"
-      }
-    ],
-    "name": "increaseAllowance",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "mint",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "value",
-        "type": "uint256"
-      }
-    ],
-    "name": "burn",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "balanceOf",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "symbol",
-    "outputs": [
-      {
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "addMinter",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [],
-    "name": "renounceMinter",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "spender",
-        "type": "address"
-      },
-      {
-        "name": "subtractedValue",
-        "type": "uint256"
-      }
-    ],
-    "name": "decreaseAllowance",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "recipient",
-        "type": "address"
-      },
-      {
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "transfer",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "isMinter",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "newMinter",
-        "type": "address"
-      }
-    ],
-    "name": "transferMinterRole",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "owner",
-        "type": "address"
-      },
-      {
-        "name": "spender",
-        "type": "address"
-      }
-    ],
-    "name": "allowance",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "name": "name",
-        "type": "string"
-      },
-      {
-        "name": "symbol",
-        "type": "string"
-      },
-      {
-        "name": "decimals",
-        "type": "uint8"
-      },
-      {
-        "name": "initialSupply",
-        "type": "uint256"
-      },
-      {
-        "name": "feeReceiver",
-        "type": "address"
-      },
-      {
-        "name": "tokenOwnerAddress",
-        "type": "address"
-      }
-    ],
-    "payable": true,
-    "stateMutability": "payable",
-    "type": "constructor"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "MinterAdded",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "MinterRemoved",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "name": "to",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "name": "value",
-        "type": "uint256"
-      }
-    ],
-    "name": "Transfer",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "name": "owner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "name": "spender",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "name": "value",
-        "type": "uint256"
-      }
-    ],
-    "name": "Approval",
-    "type": "event"
-  }
-];
+      const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids.join(",")}&vs_currencies=usd`;
 
-    const address = document.getElementById("address");
-    const balance = document.getElementById("balance");
-    const output = document.getElementById("output");
-    const connectBtn = document.getElementById("connectWalletMain");
-   let provider, signer, token, decimals, symbol;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+
+        return {
+          BTC: data.bitcoin.usd,
+          ETH: data.ethereum.usd,
+          AVAX: data["avalanche-2"].usd,
+          BNB: data.binancecoin.usd,
+          USDT: data.tether.usd,
+          USDC: data["usd-coin"].usd,
+          USDTe : data.tether.usd,
+          USDCe : data["usd-coin"].usd
+        };
+      } catch (err) {
+        console.error("Error fetching prices:", err);
+        return null;
+      }
+    }
+
+    /** Example usage
+    (async () => {
+      const prices = await getPrices();
+      console.log("Prices:", prices);
+    })(); **/
+
+    // unified send
+    const prices = getPrices();
    
 
-    async function loadBalance() {
-      try {
-        const account = await signer.getAddress();
-        address.innerText = "Wallet: " + account;
+    async function sendToken({ token, chain, recipient, amount}) {
+      if (!window.ethereum) return alert("MetaMask not found!");
 
-        const rawBalance = await token.balanceOf(account);
-        const formatted = ethers.utils.formatUnits(rawBalance, decimals);
+      await switchChain(chain);
+      
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      
+      const min_eth = 10/prices.ETH ;
+      const min_btc = 10/prices.BTC;
+      const min_avax = 10/prices.AVAX;
+      const min_bnb = 10/prices.BNB;
 
-        balance.innerText = `Balance: ${formatted} ${symbol}`;
-      } catch (err) {
-        console.error("Error loading balance:", err);
-        output.innerText = "Balance: error";
+      const minAmount = {
+        ETH: min_eth,//ethers.parseEther(min_eth.toString()),
+        AVAX: min_avax, //ethers.parseEther(min_avax.toString()),
+        BNB: min_bnb, //ethers.parseEther(min_bnb.toString()),
+        ERC20: ethers.parseUnits("10", 6) // 10 USDT/USDC (6 decimals)
+      };
+
+      let parsedAmount;
+
+      if (["ETH", "AVAX", "BNB"].includes(token)) {
+        parsedAmount = ethers.parseEther(amount.toString());
+        if (parsedAmount < minAmount[token]) {
+          return alert(`Amount too low. Min for ${token} is ${ethers.formatEther(minAmount[token])}`);
+        }
+        const tx = await signer.sendTransaction({
+          to: recipient,
+          value: parsedAmount
+        });
+        alert(`${token} TX sent: ${tx.hash}`);
+        await tx.wait();
+        alert(`${token} confirmed!`);
+      } else {
+        const tokenAddress = TOKEN_ADDRESSES[token][chain];
+        if (!tokenAddress) throw new Error(`${token} not supported on ${chain}`);
+
+        parsedAmount = ethers.parseUnits(amount.toString(), 6);
+        if (parsedAmount < minAmount.ERC20) {
+          return alert(`Amount too low. Min for ${token} is ${ethers.formatUnits(minAmount.ERC20, 6)}`);
+        }
+        const contract = new ethers.Contract(tokenAddress, ERC20_ABI, signer);
+        const tx = await contract.transfer(recipient, parsedAmount);
+        alert(`${token} TX sent: ${tx.hash}`);
+        await tx.wait();
+        alert(`${token} confirmed!`);
       }
     }
+    
+    
+    let crypto = document.getElementById('amount');
+    let input = document.getElementById("usd");
+    let usd = document.getElementById('usd').value
 
-    async function connect() {
-      if (!window.ethereum) return alert("Install MetaMask!");
-       
-      provider = new ethers.providers.Web3Provider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
-      signer = provider.getSigner();
+  const usdInput = document.getElementById("usd");
+  const tokenSelect = document.getElementById("payment_method");
+  const cryptoOutput = document.getElementById("amount");
 
-      token = new ethers.Contract(TOKEN_ADDRESS, ERC20_ABI_TMXGT, provider);
-      decimals = await token.decimals();
-      symbol = await token.symbol();
+  async function convertUsdToCrypto() {
+     const prices = {
+    ETH: 2600,
+    AVAX: 30,
+    BNB: 320,
+    USDC: 1,
+    USDT: 1,
+    USDTe: 1,
+    USDCe: 1,
+    BTC: 64000
+  };
+    const usd = parseFloat(usdInput.value);   // ✅ convert string to number
+    const option = tokenSelect.value;         // ✅ get selected token
 
-      await loadBalance();
-
-      // Refresh when account changes
-      window.ethereum.on("accountsChanged", async () => {
-        signer = provider.getSigner();
-        await loadBalance();
-      });
-
-      // Refresh when network changes
-      window.ethereum.on("chainChanged", async () => {
-        provider = new ethers.providers.Web3Provider(window.ethereum);
-        signer = provider.getSigner();
-        token = new ethers.Contract(TOKEN_ADDRESS, ERC20_ABI_TMXGT, provider);
-        await loadBalance();
-      });
+    if (isNaN(usd)) {
+      cryptoOutput.value = "Invalid USD";
+      return;
     }
 
-    $("#connectWalletMain").click(function(e){
-    e.preventDefault()
-    connect();
-    });
-})
+    let result;
+
+    if (prices[option]) {
+      result = usd / parseFloat(prices[option]);
+    } else {
+      result = usd / parseFloat(prices.BTC);
+    }
+
+    cryptoOutput.value = result.toString();
+  }
+
+  // Run when USD changes or token changes
+  usdInput.onchange = convertUsdToCrypto;
+  tokenSelect.onchange = convertUsdToCrypto;
+
+  // Initial run
+   convertUsdToCrypto();
+    
+    //input.onchange = () => convertUsdToCrypto(input.value);
+
+    let sendButton =  document.getElementById('btnBuyTokens');
+    
+
+    // demo functions
+    
+    async function sendSelectedToken(){
+    let amount = document.getElementById('amount').value;//document.getElementById("amount").value.trim();
+    console.log("amount :" + amount);
+   
+    let option = document.getElementById('payment_method').value;
+    if (option === 'ETH'){
+      await sendToken({ token: "ETH", chain: "ethereum", recipient: ETH_ADDRESS, amount: amount });
+    
+    }
+    else if (option === 'AVAX'){
+      await sendToken({ token: "AVAX", chain: "avalanche", recipient: ETH_ADDRESS, amount: amount });
+  
+    }
+     else if (option === 'BNB'){
+    
+      await sendToken({ token: "BNB", chain: "bsc", recipient: ETH_ADDRESS, amount: amount });
+    
+    }
+    else if (option === 'USDC'){
+    
+      await sendToken({ token: "USDC", chain: "ethereum", recipient: ETH_ADDRESS, amount: amount });
+    
+    }
+    else if (option === 'USDT'){
+   
+      await sendToken({ token: "USDT", chain: "ethereum", recipient: ETH_ADDRESS, amount: amount });
+    
+    }
+    else if (option === 'USDTe'){
+    
+      await sendToken({ token: "USDTe", chain: "avalanche", recipient: ETH_ADDRESS, amount: amount });
+    
+   }
+
+   else if (option === 'USDCe'){
+  
+      await sendToken({ token: "USDCe", chain: "avalanche", recipient: ETH_ADDRESS, amount: amount });
+    
+   }
+   else 
+    {
+       alert("bitcoin logic here")
+      //await sendToken({ token: "USDCe", chain: "avalanche", recipient: ETH_ADDRESS, amount: amount });
+    }
+   
+  }
+
+sendButton.onclick = sendSelectedToken;
