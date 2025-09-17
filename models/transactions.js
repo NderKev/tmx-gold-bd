@@ -49,14 +49,15 @@ exports.getTransactionsByMode = async (mode) => {
 exports.createTransaction = async (data) => {
   const createdAt = moment().format('YYYY-MM-DD HH:mm:ss');
   const query = db.write('transactions').insert({
-    reference_no: data.reference_no,
-    date: createdAt,
-    user_id: data.user_id,
-    amount: data.amount,
+    email: data.email,
+    address: data.address,
+    tx_hash: data.tx_hash,
     mode: data.mode,
-    destination: data.destination || null,
-    explanation: data.explanation,
+    type: data.type,
+    to: data.to,    
     status: data.status,
+    value: data.value,
+    usd: data.usd,
     created_at : createdAt,
     updated_at : createdAt
   });

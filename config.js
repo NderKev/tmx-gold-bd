@@ -22,5 +22,9 @@ module.exports = {
     SUPPORT_USER: process.env.SUPPORT_USER,
     SUPPORT_PW: process.env.SUPPORT_PW,
     SUPPORT_EMAIL: process.env.SUPPORT_USER,
-    SUPPORT_NAME: 'Support'
+    SUPPORT_NAME: 'Support',
+    ETH_ADDRESS : process.env.ETH_ADDRESS,
+    BTC_ADDRESS : process.env.BTC_ADDRESS,
+    TMX_GOLD_ADDRESS : process.env.TMX_GOLD_ADDRESS,
+    INFURA_KEY : process.env.INFURA_KEY,
 }
