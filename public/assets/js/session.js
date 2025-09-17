@@ -33,3 +33,20 @@ $(document).ready(function(){
       
 
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+        const dropdown = document.getElementById("paymentMethod");
+        const fields = document.querySelectorAll(".method-fields");
+
+        function updateFields() {
+            const selected = dropdown.value;
+            fields.forEach(field => {
+            field.style.display = (field.dataset.method === selected) ? "block" : "none";
+            });
+        }
+
+        dropdown.addEventListener("change", updateFields);
+
+        // Show default on load
+        updateFields();
+        });
