@@ -935,6 +935,14 @@
                                                         <option value="Bank Transfer" selected>Bank Transfer</option>
                                                         <option value="Mpesa">Mpesa</option>
                                                         <option value="Wire Transfer">Wire Transfer</option>
+                                                        <option value="BTC">Bitcoin</option>
+                                                        <option value="ETH">Ethereum</option>
+                                                        <option value="AVAX">Avalanche</option>
+                                                        <option value="BNB">Binance</option>
+                                                        <option value="USDT">Tether</option>
+                                                        <option value="USDC">Coinbase</option>
+                                                        <option value="USDTe">Avax Tether</option>
+                                                        <option value="USDCe">Avax Coinbase</option>                         
                                                     </select>
                                                     </div>
 
@@ -946,7 +954,7 @@
                                                     <span class="arrow"></span>
                                                     <img src="data/icons/wallet-o.png" alt="icon">    
                                                 </span>
-                                                <input type="text" id="wallet_address"class="form-control" placeholder="OxsD12F32xvW3deG5...">
+                                                <input type="text" id="wallet_address" class="form-control" placeholder="OxsD12F32xvW3deG5...">
                                             </div>
 
                                             <label class="form-label">Exchange operation</label>
@@ -954,13 +962,13 @@
 
                                             <div class="col-lg-5 no-pl">
                                                 <div class="input-group">
-                                                    <input type="text" id="usd" class="form-control" placeholder="Exchange amount" aria-describedby="basic-addon2">
+                                                    <input type="number" id="usd" min="10" value="10" class="form-control" placeholder="Exchange amount" aria-describedby="basic-addon2">
                                                     <span class="input-group-addon" id="basic-addon1">USD</span>
                                                 </div>
                                             </div>
                                             <div class="col-lg-2">
                                                 <div class="exchange-img-wrapper">
-                                                    <img src="data/icons/exchange-arrows.png" class="mt-5 center-block" style="width:25px" alt=""></div>
+                                                    <img src="data/icons/exchange-arrows.png" class="mt-5 center-block" style="width:25px" alt="" id="exchange"></div>
                                                 </div>
                                             <div class="col-lg-5 no-pr">
                                                 <div class="input-group">
@@ -1406,7 +1414,7 @@
 
 
     <!-- CORE TEMPLATE JS - START -->
-    <script src="assets/js/scripts.js"></script>
+    <!-- <script src="assets/js/scripts.js"></script> -->
     <script src="assets/js/session.js"></script>
     <script src="assets/js/avax.js"></script>
     <!-- END CORE TEMPLATE JS - END -->

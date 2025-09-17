@@ -61,6 +61,7 @@ const ERC20_ABI = [
 
     async function getPrices() {
       const ids = [
+        "bitcoin",  
         "ethereum",     // ETH
         "avalanche-2",  // AVAX
         "binancecoin",  // BNB
@@ -75,6 +76,7 @@ const ERC20_ABI = [
         const data = await res.json();
 
         return {
+          BTC: data.bitcoin.usd,
           ETH: data.ethereum.usd,
           AVAX: data["avalanche-2"].usd,
           BNB: data.binancecoin.usd,
@@ -96,23 +98,26 @@ const ERC20_ABI = [
     })(); **/
 
     // unified send
+    const prices = getPrices();
+   
+
     async function sendToken({ token, chain, recipient, amount}) {
       if (!window.ethereum) return alert("MetaMask not found!");
 
       await switchChain(chain);
-
+      
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
-      const prices = getPrices();
+      
       const min_eth = 10/prices.ETH ;
       const min_btc = 10/prices.BTC;
       const min_avax = 10/prices.AVAX;
       const min_bnb = 10/prices.BNB;
 
       const minAmount = {
-        ETH: ethers.parseEther(min_eth),
-        AVAX: ethers.parseEther(min_avax),
-        BNB: ethers.parseEther(min_bnb),
+        ETH: min_eth,//ethers.parseEther(min_eth.toString()),
+        AVAX: min_avax, //ethers.parseEther(min_avax.toString()),
+        BNB: min_bnb, //ethers.parseEther(min_bnb.toString()),
         ERC20: ethers.parseUnits("10", 6) // 10 USDT/USDC (6 decimals)
       };
 
@@ -146,57 +151,104 @@ const ERC20_ABI = [
       }
     }
     
-
+    
     let crypto = document.getElementById('amount');
+    let input = document.getElementById("usd");
     let usd = document.getElementById('usd').value
 
-     async function convertUsdToCrypto({amount, crypto}) {
-      
-     }
+  const usdInput = document.getElementById("usd");
+  const tokenSelect = document.getElementById("payment_method");
+  const cryptoOutput = document.getElementById("amount");
 
+  async function convertUsdToCrypto() {
+     const prices = {
+    ETH: 2600,
+    AVAX: 30,
+    BNB: 320,
+    USDC: 1,
+    USDT: 1,
+    USDTe: 1,
+    USDCe: 1,
+    BTC: 64000
+  };
+    const usd = parseFloat(usdInput.value);   // ✅ convert string to number
+    const option = tokenSelect.value;         // ✅ get selected token
 
-    let amount = document.getElementById('amount').value;
-    let option = document.getElementById('payment_method').value;
-    // demo functions
-    if (option === 'ETH'){
-    async function sendEth() {
-      await sendToken({ token: "ETH", chain: "ethereum", recipient: ETH_ADDRESS, amount: amount });
+    if (isNaN(usd)) {
+      cryptoOutput.value = "Invalid USD";
+      return;
     }
+
+    let result;
+
+    if (prices[option]) {
+      result = usd / parseFloat(prices[option]);
+    } else {
+      result = usd / parseFloat(prices.BTC);
+    }
+
+    cryptoOutput.value = result.toString();
+  }
+
+  // Run when USD changes or token changes
+  usdInput.onchange = convertUsdToCrypto;
+  tokenSelect.onchange = convertUsdToCrypto;
+
+  // Initial run
+   convertUsdToCrypto();
+    
+    //input.onchange = () => convertUsdToCrypto(input.value);
+
+    let sendButton =  document.getElementById('btnBuyTokens');
+    
+
+    // demo functions
+    
+    async function sendSelectedToken(){
+    let amount = document.getElementById('amount').value;//document.getElementById("amount").value.trim();
+    console.log("amount :" + amount);
+   
+    let option = document.getElementById('payment_method').value;
+    if (option === 'ETH'){
+      await sendToken({ token: "ETH", chain: "ethereum", recipient: ETH_ADDRESS, amount: amount });
+    
     }
     else if (option === 'AVAX'){
-    async function sendAvax() {
       await sendToken({ token: "AVAX", chain: "avalanche", recipient: ETH_ADDRESS, amount: amount });
-    }
+  
     }
      else if (option === 'BNB'){
-    async function sendBnb() {
+    
       await sendToken({ token: "BNB", chain: "bsc", recipient: ETH_ADDRESS, amount: amount });
-    }
+    
     }
     else if (option === 'USDC'){
-    async function sendUsdc() {
+    
       await sendToken({ token: "USDC", chain: "ethereum", recipient: ETH_ADDRESS, amount: amount });
-    }
+    
     }
     else if (option === 'USDT'){
-    async function sendUsdc() {
+   
       await sendToken({ token: "USDT", chain: "ethereum", recipient: ETH_ADDRESS, amount: amount });
+    
     }
-    }
-    else if (option === 'AVAX USDT'){
-    async function sendUsdtE() {
+    else if (option === 'USDTe'){
+    
       await sendToken({ token: "USDTe", chain: "avalanche", recipient: ETH_ADDRESS, amount: amount });
-    }
+    
    }
 
-   else if (option === 'AVAX USDC'){
-    async function sendUsdcE() {
+   else if (option === 'USDCe'){
+  
       await sendToken({ token: "USDCe", chain: "avalanche", recipient: ETH_ADDRESS, amount: amount });
-    }
+    
    }
    else 
     {
-    async function sendBTC() {
+       alert("bitcoin logic here")
       //await sendToken({ token: "USDCe", chain: "avalanche", recipient: ETH_ADDRESS, amount: amount });
     }
-   }
+   
+  }
+
+sendButton.onclick = sendSelectedToken;
