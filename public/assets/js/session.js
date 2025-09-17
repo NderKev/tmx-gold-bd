@@ -57,17 +57,19 @@ document.addEventListener("DOMContentLoaded", function () {
 -------------------------------*/
 document.getElementById("paystackButton").addEventListener("click", function () {
   let email = document.getElementById("paystackEmail").value;
-  let amount = document.getElementById("paystackAmount").value * 100; // Paystack uses kobo (100 = ₦1)
+  let amount = document.getElementById("paystackAmount").value;
 
   var handler = PaystackPop.setup({
-    key: 'pk_test_94994e32425f874c0cb5fca19f30fa031571925f', // Your PUBLIC KEY
+    key: 'tmx-public-key',
     email: email,
     amount: amount,
-    currency: "KES", // Paystack default is NGN
-    ref: ''+Math.floor((Math.random() * 1000000000) + 1), // Unique transaction ref
+    currency: "KES",
+    ref: ''+Math.floor((Math.random() * 1000000000) + 1),
     callback: function(response){
-        // SUCCESS: Verify on backend
-        fetch("/verify-paystack-payment", {
+        // ----------------------------
+        //   This is the API I need
+        //------------------------------ 
+        fetch("/verify", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
