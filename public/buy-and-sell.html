@@ -934,18 +934,32 @@
                                                     <select name="payment_method" id="payment_method" class="form-control btn-red" style="width:100%; text-align:left;">
                                                         <option value="Bank Transfer" selected>Bank Transfer</option>
                                                         <option value="Mpesa">Mpesa</option>
+                                                        <option value="PayStack">PayStack</option>
                                                         <option value="Wire Transfer">Wire Transfer</option>
                                                         <option value="BTC">Bitcoin</option>
                                                         <option value="ETH">Ethereum</option>
                                                         <option value="AVAX">Avalanche</option>
                                                         <option value="BNB">Binance</option>
                                                         <option value="USDT">Tether</option>
-                                                        <option value="USDC">Coinbase</option>
+                                                        <option value="USDC">USD Coin</option>
                                                         <option value="USDTe">Avax Tether</option>
                                                         <option value="USDCe">Avax Coinbase</option>                         
                                                     </select>
                                                     </div>
+                                             <div id="paymentFields">
+                                                  <!-- Paystack -->
+                                                    <div class="method-fields" data-method="Paystack" style="display:none;">
+                                                    <label>Paystack Email</label>
+                                                    <input type="email" class="form-control" id="paystackEmail" placeholder="Enter Paystack email">
+                                                    
+                                                    <label>Amount (in Dollars)</label>
+                                                    <input type="number" class="form-control" id="paystackAmount" placeholder="Enter amount">
 
+                                                    <button type="button" id="paystackButton" class="btn btn-success" style="margin-top:10px;">
+                                                        Pay with Paystack
+                                                    </button>
+                                            </div>
+                                             </div>
                                             <label class="form-label">wallet address</label>
                                             <span class="desc"></span>
 
@@ -1418,6 +1432,7 @@
     <script src="assets/js/session.js"></script>
     <script src="assets/js/avax.js"></script>
     <!-- END CORE TEMPLATE JS - END -->
+     <script src="https://js.paystack.co/v1/inline.js"></script>
     
 </body>
 
