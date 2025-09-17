@@ -132,3 +132,5 @@ dist
 nginx.*
 helpers/test.js
 
+*.txt
+
