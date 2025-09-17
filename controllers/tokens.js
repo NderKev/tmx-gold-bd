@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 //dotenv.config({ path: '../../.env'});
 dotenv.config({ path: './.env'});
 const listen = require('./listen')
-
+const {successResponse, errorResponse} = require('../lib/response');
 const RPC_URL = "https://api.avax.network/ext/bc/C/rpc"; // Avalanche mainnet
 const PRIVATE_KEY = process.env.PRIVATE_KEY;   // reserve wallet PK
 const TOKEN_ADDRESS = config.TMX_GOLD_ADDRESS; // ERC20 contract on Avalanche

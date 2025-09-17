@@ -44,7 +44,7 @@
     <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/responsive.css" rel="stylesheet" type="text/css" />
     <!-- CORE CSS TEMPLATE - END -->
-
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.11.1/dist/ethers.umd.min.js"></script>
 </head>
 <!-- END HEAD -->
 
@@ -881,14 +881,14 @@
                                     <div class="transfer-wraper">
                                         <div class="form-group no-mb">
                                             <label class="form-label">Buy TMX</label>
-                                            <span class="desc">minimum value "0.001 TMX"</span>
+                                            <span class="desc">minimum value "2000 TMXGT"</span>
 
                                             <div class="input-group mb-10">
                                                 <span class="input-group-addon">$</span>
                                                 
                                                 <div class="input-group-btn"  style="width:100%">
                                                     <button type="button" class="btn btn-red dropdown-toggle" style="width:100%;text-align:left" data-toggle="dropdown" aria-expanded="true">
-                                                        <i class="cc BTC mr-5"></i>TMX <span class="caret" style="position: absolute;right: 10px;top: 14px;"></span>
+                                                        <i class="cc BTC mr-5"></i>TMXGT <span class="caret" style="position: absolute;right: 10px;top: 14px;"></span>
                                                     </button>
 
                                                     <!-- <ul class="dropdown-menu dropdown-red no-spacing" style="width:100%">
@@ -903,7 +903,7 @@
                                             </div>
 
                                             <label class="form-label">Choose payment method</label>
-                                            <span class="desc">minimum value "0.001 TMX"</span>
+                                            <span class="desc">minimum value "2000 TMXGT"</span>
 
                                             <!-- <div class="input-group mb-10">
                                                 <span class="input-group-addon"><i class="fa fa-institution"></i></span>
@@ -931,7 +931,7 @@
                                                 <div class="input-group mb-10">
                                                     <span class="input-group-addon"><i class="fa fa-institution"></i></span>
 
-                                                    <select name="payment_method" class="form-control btn-red" style="width:100%; text-align:left;">
+                                                    <select name="payment_method" id="payment_method" class="form-control btn-red" style="width:100%; text-align:left;">
                                                         <option value="Bank Transfer" selected>Bank Transfer</option>
                                                         <option value="Mpesa">Mpesa</option>
                                                         <option value="Wire Transfer">Wire Transfer</option>
@@ -946,7 +946,7 @@
                                                     <span class="arrow"></span>
                                                     <img src="data/icons/wallet-o.png" alt="icon">    
                                                 </span>
-                                                <input type="text" class="form-control" placeholder="OxsD12F32xvW3deG5...">
+                                                <input type="text" id="wallet_address"class="form-control" placeholder="OxsD12F32xvW3deG5...">
                                             </div>
 
                                             <label class="form-label">Exchange operation</label>
@@ -954,7 +954,7 @@
 
                                             <div class="col-lg-5 no-pl">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" placeholder="Exchange amount" aria-describedby="basic-addon2">
+                                                    <input type="text" id="usd" class="form-control" placeholder="Exchange amount" aria-describedby="basic-addon2">
                                                     <span class="input-group-addon" id="basic-addon1">USD</span>
                                                 </div>
                                             </div>
@@ -964,12 +964,12 @@
                                                 </div>
                                             <div class="col-lg-5 no-pr">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" placeholder="Equivalent amount" aria-describedby="basic-addon2">
+                                                    <input type="text" id="amount" class="form-control" placeholder="Equivalent amount" aria-describedby="basic-addon2">
                                                     <span class="input-group-addon" id="basic-addon2">BTC</span>
                                                 </div>
                                             </div>
 
-                                            <button type="button" class="btn btn-primary btn-lg mt-20 has-gradient-to-right-bottom2" style="width:100%">Buy Cryptocurrency</button>
+                                            <button type="button" id="btnBuyTokens" class="btn btn-primary btn-lg mt-20 has-gradient-to-right-bottom2" style="width:100%">Buy Cryptocurrency</button>
                                         </div>
                                         
                                     </div>
@@ -1408,6 +1408,7 @@
     <!-- CORE TEMPLATE JS - START -->
     <script src="assets/js/scripts.js"></script>
     <script src="assets/js/session.js"></script>
+    <script src="assets/js/avax.js"></script>
     <!-- END CORE TEMPLATE JS - END -->
     
 </body>
