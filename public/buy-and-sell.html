@@ -992,9 +992,16 @@
 
   <!-- Paystack -->
   <div class="method-fields" data-method="Paystack" style="display:none;">
-    <label>Paystack Email</label>
-    <input type="email" class="form-control" name="paystack_email" placeholder="Enter Paystack email">
-  </div>
+  <label>Paystack Email</label>
+  <input type="email" class="form-control" id="paystackEmail" placeholder="Enter Paystack email">
+  
+  <label>Amount (in NGN)</label>
+  <input type="number" class="form-control" id="paystackAmount" placeholder="Enter amount">
+
+  <button type="button" id="paystackButton" class="btn btn-success" style="margin-top:10px;">
+    Pay with Paystack
+  </button>
+</div>
 
   <!-- Mpesa -->
   <div class="method-fields" data-method="Mpesa" style="display:none;">
@@ -1051,8 +1058,8 @@
                                                     <span class="input-group-addon" id="basic-addon2">BTC</span>
                                                 </div>
                                             </div> -->
-
-                                            <button type="button" class="btn btn-primary btn-lg mt-20 has-gradient-to-right-bottom2" style="width:100%">Buy Cryptocurrency</button>
+<!-- 
+                                            <button type="button" class="btn btn-primary btn-lg mt-20 has-gradient-to-right-bottom2" style="width:100%">Buy Cryptocurrency</button> -->
                                         </div>
                                         
                                     </div>
@@ -1492,6 +1499,9 @@
     <script src="assets/js/scripts.js"></script>
     <script src="assets/js/session.js"></script>
     <!-- END CORE TEMPLATE JS - END -->
+
+    <!-- Paystack inline script -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
 </body>
 
 </html>
