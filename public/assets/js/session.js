@@ -63,7 +63,7 @@ document.getElementById("paystackButton").addEventListener("click", function () 
     key: 'pk_test_94994e32425f874c0cb5fca19f30fa031571925f', // Your PUBLIC KEY
     email: email,
     amount: amount,
-    currency: "NGN", // Paystack default is NGN
+    currency: "KES", // Paystack default is NGN
     ref: ''+Math.floor((Math.random() * 1000000000) + 1), // Unique transaction ref
     callback: function(response){
         // SUCCESS: Verify on backend
