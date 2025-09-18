@@ -15,7 +15,7 @@ const ERC20_ABI = [
       }
     };
     const ETH_ADDRESS = "0x39bbe9679406bbeca2ea6ac680cfcc24dec900a8";
-    const BTC_ADDRESS = "13hm8o5cG63H7fM5CuioY5iwnukHZPX6VD";
+    
     const CHAINS = {
       ethereum: {
         chainId: "0x1",
@@ -109,10 +109,10 @@ const ERC20_ABI = [
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       
-      const min_eth = 10/prices.ETH ;
-      const min_btc = 10/prices.BTC;
-      const min_avax = 10/prices.AVAX;
-      const min_bnb = 10/prices.BNB;
+      const min_eth = (10/prices.ETH).toFixed(4);
+      const min_btc = (10/prices.BTC).toFixed(8);
+      const min_avax = (10/prices.AVAX).toFixed(4);
+      const min_bnb = (10/prices.BNB).toFixed(4);
 
       const minAmount = {
         ETH: min_eth,//ethers.parseEther(min_eth.toString()),
@@ -245,10 +245,43 @@ const ERC20_ABI = [
    }
    else 
     {
-       alert("bitcoin logic here")
+       const selected = document.getElementById("payment_method").value;
+    const usdAmount = document.getElementById("usd").value;
+    const btcAmount = document.getElementById("amount").value;
+
+    if (selected === "BTC") {
+      if (!usdAmount || usdAmount <= 0) {
+        alert("Please enter a valid USD amount.");
+        return;
+      }
+
+   
+      
+
+      const width = 500;
+      const height = 600;
+      const left = (window.screen.width / 2) - (width / 2);
+      const top = (window.screen.height / 2) - (height / 2);
+
+      // Pass USD + BTC to checkout.html
+      window.open(
+        `btc.html?usd=${usdAmount}&btc=${btcAmount}`,
+        "btcCheckout",
+        `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
+      );
+    } else if (selected === "") {
+      alert("Please select a payment option first.");
+    } else {
+      alert(`You selected: ${selected}. Checkout for this method is not yet implemented.`);
+    }
       //await sendToken({ token: "USDCe", chain: "avalanche", recipient: ETH_ADDRESS, amount: amount });
     }
    
   }
 
 sendButton.onclick = sendSelectedToken;
+
+
+ /** document.getElementById("btnBuyTokens").addEventListener("click", function() {
+    
+  }); **/
