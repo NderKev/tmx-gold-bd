@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bitcoin Checkout</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .checkout-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    select {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+    }
+    /* Popup Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      text-align: center;
+      width: 320px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      animation: fadeIn 0.3s ease;
+    }
+    .modal-content h3 {
+      margin-top: 0;
+    }
+    .close-btn {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      margin-top: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .close-btn:hover {
+      background: #c0392b;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="checkout-box">
+    <h2>Choose Payment Option</h2>
+    <select id="paymentSelect">
+      <option value="">-- Select Option --</option>
+      <option value="btc">Pay with Bitcoin</option>
+      <option value="eth">Pay with Ethereum</option>
+      <option value="usdt">Pay with USDT</option>
+    </select>
+  </div>
+
+  <!-- Popup Modal -->
+  <div id="paymentModal" class="modal">
+    <div class="modal-content">
+      <h3 id="paymentTitle">Payment</h3>
+      <p id="paymentDetails">Details will appear here.</p>
+      <button class="close-btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const select = document.getElementById("paymentSelect");
+    const modal = document.getElementById("paymentModal");
+    const title = document.getElementById("paymentTitle");
+    const details = document.getElementById("paymentDetails");
+
+    select.addEventListener("change", () => {
+      const choice = select.value;
+      if (choice) {
+        if (choice === "btc") {
+          title.textContent = "Bitcoin Payment";
+          details.innerHTML = `
+            Send <b>0.002 BTC</b> to:<br>
+            <code>bc1qxyz1234abcd5678...</code><br><br>
+            <img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=bitcoin:bc1qxyz1234abcd5678?amount=0.002" alt="BTC QR">
+          `;
+        } else if (choice === "eth") {
+          title.textContent = "Ethereum Payment";
+          details.innerHTML = `
+            Send <b>0.05 ETH</b> to:<br>
+            <code>0xabc1234ef5678....</code>
+          `;
+        } else if (choice === "usdt") {
+          title.textContent = "USDT Payment";
+          details.innerHTML = `
+            Send <b>50 USDT</b> to:<br>
+            <code>TXYZ987654321....</code>
+          `;
+        }
+        modal.style.display = "flex";
+      }
+    });
+
+    function closeModal() {
+      modal.style.display = "none";
+      select.value = ""; // reset dropdown
+    }
+
+    // Close when clicking outside
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        closeModal();
+      }
+    }
+  </script>
+</body>
+</html>

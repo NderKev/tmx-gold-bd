@@ -940,13 +940,14 @@
                                                     <select name="payment_method" id="payment_method" class="form-control btn-red" style="width:100%; text-align:left;">
                                                         <option value="Bank Transfer" selected>Bank Transfer</option>
                                                         <option value="Mpesa">Mpesa</option>
+                                                        <option value="PayStack">PayStack</option>
                                                         <option value="Wire Transfer">Wire Transfer</option>
                                                         <option value="BTC">Bitcoin</option>
                                                         <option value="ETH">Ethereum</option>
                                                         <option value="AVAX">Avalanche</option>
                                                         <option value="BNB">Binance</option>
                                                         <option value="USDT">Tether</option>
-                                                        <option value="USDC">Coinbase</option>
+                                                        <option value="USDC">USD Coin</option>
                                                         <option value="USDTe">Avax Tether</option>
                                                         <option value="USDCe">Avax Coinbase</option>                         
                                                     </select>
@@ -1033,8 +1034,8 @@
                                                   <input type="text" class="form-control" name="wire_swift" placeholder="Enter SWIFT/BIC">
                                                 </div>
                                               </div>
-                                               
-                                            <label class="form-label">wal
+                                             </div>
+                                            <!--<label class="form-label">wallet address</label>
                                             <span class="desc"></span>
 
                                             <div class="input-group mb-10">
@@ -1043,7 +1044,7 @@
                                                     <img src="data/icons/wallet-o.png" alt="icon">    
                                                 </span>
                                                 <input type="text" id="wallet_address" class="form-control" placeholder="OxsD12F32xvW3deG5...">
-                                            </div>
+                                            </div> -->
 
                                             <label class="form-label">Exchange operation</label>
                                             <span class="desc">you can cancel this exchange easily</span>
@@ -1510,6 +1511,10 @@
 
     <!-- Paystack inline script -->
     <script src="https://js.paystack.co/v1/inline.js"></script>
+
+
+    
+
 </body>
 
 </html>
