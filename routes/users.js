@@ -112,19 +112,20 @@ router.post('/login',  async (req, res) => {
     req.session.email = response.meta.email;
     req.session.password = req.body.password;
     req.session.user_roles = response.meta.user_roles;
+    req.session.user_id = response.data[0].id;
   }
   
   if (req.session.user_roles.indexOf('admin') >= 0) {
         //res.status(response.status).send(response)
         //res.sendFile(path.join(__dirname, '../pages' , 'add_category.html'));
-        res.redirect(`/admin/profile/${req.session.password}`);
+        res.redirect(`/admin/profile/${req.session.user_id}`);
 
   }
   else if (req.session.user_roles.indexOf('seller') >= 0) {
-       res.redirect(`/seller/profile/${req.session.password}`);
+       res.redirect(`/seller/profile/${req.session.user_id}`);
     }
   else if (req.session.user_roles.indexOf('customer') >= 0) {
-      res.redirect(`/customer/profile/${req.session.password}`);
+      res.redirect(`/customer/profile/${req.session.user_id}`);
     }
   else {
       //res.status(401).send(response);
