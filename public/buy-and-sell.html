@@ -948,7 +948,7 @@
                                                         <option value="USDCe">Avax Coinbase</option>  
                                                         <option value="Bank Transfer" >Bank Transfer</option>
                                                         <option value="Mpesa">Mpesa</option>
-                                                        <option value="PayStack">PayStack</option>
+                                                        <option value="Paystack">PayStack</option>
                                                         <option value="Wire Transfer">Wire Transfer</option>                       
                                                     </select>
                                                     </div>
@@ -998,17 +998,17 @@
                                                 </div>
 
                                                 <!-- Paystack -->
-                                                <div class="method-fields" data-method="Paystack" style="display:none;">
-                                                <label>Paystack Email</label>
-                                                <input type="email" class="form-control" id="paystackEmail" placeholder="Enter Paystack email">
+                                                <div class="method-fields" id="paystackFields" style="display:none; margin-top:15px;">
+                                                    <label for="paystackEmail">Paystack Email</label>
+                                                    <input type="email" class="form-control" id="paystackEmail" placeholder="Enter Paystack email">
 
-                                                <label>Amount (in Dollars)</label>
-                                                <input type="number" class="form-control" id="paystackAmount" placeholder="Enter amount">
+                                                    <label for="paystackAmount" style="margin-top:10px;">Amount (in KES)</label>
+                                                    <input type="number" class="form-control" id="paystackAmount" placeholder="Enter amount">
 
-                                                <button type="button" id="paystackButton" class="btn btn-success" style="margin-top:10px;">
-                                                  Pay with Paystack
-                                                </button>
-                                              </div>
+                                                    <!-- <button type="button" id="paystackButton" class="btn btn-success" style="margin-top:10px;">
+                                                        Pay with Paystack
+                                                    </button> -->
+                                                </div>
 
                                                 <!-- Mpesa -->
                                                 <div class="method-fields" data-method="Mpesa" style="display:none;">
