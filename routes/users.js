@@ -113,8 +113,7 @@ router.post('/login',  async (req, res) => {
     req.session.password = req.body.password;
     req.session.user_roles = response.meta.user_roles;
   }
-
-  return res.status(response.status).send(response)
+  
   if (req.session.user_roles.indexOf('admin') >= 0) {
         //res.status(response.status).send(response)
         //res.sendFile(path.join(__dirname, '../pages' , 'add_category.html'));
@@ -131,6 +130,7 @@ router.post('/login',  async (req, res) => {
       //res.status(401).send(response);
       res.redirect('/');
     }
+ return res.status(response.status).send(response)
     //res.redirect('/profile/:id/')
 
 });
@@ -180,44 +180,74 @@ router.post('/updateSeller', authenticator, allowSeller, async (req, res) => {
 router.get('/home', async (req, res) => {
   //req.body.id = Number(req.params.id);
   //const response = await userController.fetchSeller(req.body)
-  res.sendFile(path.join(__dirname, '../pages' , 'index.html'));
+  res.sendFile(path.join(__dirname, '../public' , 'index.html'));
 });
 
-router.get('/user/:id/addWarehouse', authenticator, allowAdminOrSeller, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'add_warehouse.html'));
-});
-
-router.get('/user/:id/updateWarehouse', authenticator, allowAdminOrSeller, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'update_warehouse.html'));
-});
 
 router.get('/admin/profile/:id/', authenticator, allowAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   //req.body.customer = req.params.
   //const response = await userController.fetchUser(req.body)
-  res.sendFile(path.join(__dirname, '../pages' , 'admin_users.html'));
+  res.sendFile(path.join(__dirname, '../public' , 'index-ico-admin.html'));
 });
 
-router.get('/admin/:id/addCategory', authenticator, allowAdmin, async (req, res) => {
+router.get('/admin/profile/:id/gateways', authenticator, allowAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'add_category.html'));
+  res.sendFile(path.join(__dirname, '../public' , 'payment-gateways.html'));
 });
 
-router.get('/admin/:id/warehouses', authenticator, allowAdmin, async (req, res) => {
+router.get('/admin/profile/:id/dashboard', authenticator, allowAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'warehouses.html'));
+  //req.body.customer = req.params.
+  //const response = await userController.fetchUser(req.body)
+  res.sendFile(path.join(__dirname, '../public' , 'index-dashboard.html'));
 });
 
-router.get('/admin/:id/orders', authenticator, allowAdmin, async (req, res) => {
+router.get('/admin/profile/:id/trade', authenticator, allowAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'admin_orders.html'));
+  res.sendFile(path.join(__dirname, '../public' , 'index-trading-view.html'));
 });
 
-router.get('/admin/:id/shipments', authenticator, allowAdmin, async (req, res) => {
+
+router.get('/admin/profile/:id/buy', authenticator, allowAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'admin_shipments.html'));
+  res.sendFile(path.join(__dirname, '../public' , 'buy-and-sell.html'));
+});
+
+router.get('/admin/profile/:id/affiliate', authenticator, allowAdmin, async (req, res) => {
+  req.body.id = Number(req.params.id);
+  res.sendFile(path.join(__dirname, '../public' , '/affailite-program.html'));
+});
+
+router.get('/admin/profile/:id/wallet', authenticator, allowAdmin, async (req, res) => {
+  req.body.id = Number(req.params.id);
+  res.sendFile(path.join(__dirname, '../public' , 'my-wallet.html'));
+});
+
+
+router.get('/admin/profile/:id/security', authenticator, allowAdmin, async (req, res) => {
+  req.body.id = Number(req.params.id);
+  res.sendFile(path.join(__dirname, '../public' , 'security.html'));
+});
+
+router.get('/admin/profile/:id/account', authenticator, allowAdmin, async (req, res) => {
+  req.body.id = Number(req.params.id);
+  res.sendFile(path.join(__dirname, '../public' , 'account-confirmation.html'));
+});
+
+router.get('/admin/profile/:id/settings', authenticator, allowAdmin, async (req, res) => {
+  req.body.id = Number(req.params.id);
+  res.sendFile(path.join(__dirname, '../public' , 'settings.html'));
+});
+
+router.get('/admin/profile/:id/faq', authenticator, allowAdmin, async (req, res) => {
+  req.body.id = Number(req.params.id);
+  res.sendFile(path.join(__dirname, '../public' , 'ui-faq.html'));
+});
+
+router.get('/admmin/profile/:id/support', authenticator, allowAdmin, async (req, res) => {
+  req.body.id = Number(req.params.id);
+  res.sendFile(path.join(__dirname, '../public' , 'ui-support.html'));
 });
 
 router.get('/customers', authenticator, allowAdmin,  async (req, res, next) => {
@@ -260,102 +290,61 @@ router.get('/customer/profile/:id/', authenticator, allowCustomer, async (req, r
   req.body.id = Number(req.params.id);
   //req.body.customer = req.params.
   //const response = await userController.fetchUser(req.body)
-  res.sendFile(path.join(__dirname, '../pages' , 'profile.html'));
+  res.sendFile(path.join(__dirname, '../public' , 'index-dashboard.html'));
 });
 
-router.get('/customer/profile/:id/update', authenticator, allowCustomer, async (req, res) => {
+router.get('/customer/profile/:id/trade', authenticator, allowCustomer, async (req, res) => {
   req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'complete_profile.html'));
+  res.sendFile(path.join(__dirname, '../public' , 'index-trading-view.html'));
 });
 
-router.get('/customer/:id/addToCart', authenticator, allowCustomer, async (req, res) => {
+router.get('/customer/profile/:id/user', authenticator, allowCustomer, async (req, res) => {
   req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'kidney_beans.html'));
+  res.sendFile(path.join(__dirname, '../public' , 'index-ico-user.html'));
 });
 
-router.get('/customer/:id/products', authenticator, allowCustomer, async (req, res) => {
+router.get('/customer/profile/:id/buy', authenticator, allowCustomer, async (req, res) => {
   req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'user_products.html'));
+  res.sendFile(path.join(__dirname, '../public' , 'buy-and-sell.html'));
 });
 
-router.get('/customer/:id/cart', authenticator, allowCustomer, async (req, res) => {
+router.get('/customer/profile/:id/affiliate', authenticator, allowCustomer, async (req, res) => {
   req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'user_cart.html'));
+  res.sendFile(path.join(__dirname, '../public' , '/affailite-program.html'));
 });
 
-router.get('/customer/:id/shipments', authenticator, allowCustomer, async (req, res) => {
+router.get('/customer/profile/:id/wallet', authenticator, allowCustomer, async (req, res) => {
   req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'shipments.html'));
+  res.sendFile(path.join(__dirname, '../public' , 'my-wallet.html'));
 });
 
 
-router.get('/customer/:id/payments', authenticator, allowCustomer, async (req, res) => {
+router.get('/customer/profile/:id/security', authenticator, allowCustomer, async (req, res) => {
   req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'user_payments.html'));
+  res.sendFile(path.join(__dirname, '../public' , 'security.html'));
 });
 
-router.get('/customer/:id/transactions', authenticator, allowCustomer, async (req, res) => {
+router.get('/customer/profile/:id/account', authenticator, allowCustomer, async (req, res) => {
   req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'user_transactions.html'));
+  res.sendFile(path.join(__dirname, '../public' , 'account-confirmation.html'));
 });
 
-router.get('/customer/:id/tracking', authenticator, allowCustomer, async (req, res) => {
+router.get('/customer/profile/:id/settings', authenticator, allowCustomer, async (req, res) => {
   req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'user_tracking.html'));
+  res.sendFile(path.join(__dirname, '../public' , 'settings.html'));
 });
 
-router.get('/customer/:id/orders', authenticator, allowCustomer, async (req, res) => {
+router.get('/customer/profile/:id/faq', authenticator, allowCustomer, async (req, res) => {
   req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'orders.html'));
+  res.sendFile(path.join(__dirname, '../public' , 'ui-faq.html'));
 });
 
-
-
-router.get('/seller/:id/updateSeller', authenticator, allowSeller, async (req, res) => {
+router.get('/customer/profile/:id/support', authenticator, allowCustomer, async (req, res) => {
   req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'update_seller_profile.html'));
+  res.sendFile(path.join(__dirname, '../public' , 'ui-support.html'));
 });
 
-router.get('/seller/profile/:id/', authenticator, allowSeller, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  //const response = await userController.fetchSeller(req.body)
-  res.sendFile(path.join(__dirname, '../pages' , 'seller_profile.html'));
-});
 
-router.get('/seller/:id/createProduct', authenticator, allowSeller, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'add_product.html'));
-});
-
-router.get('/seller/:id/products', authenticator, allowSeller, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'seller_products.html'));
-});
-
-router.get('/seller/:id/sales', authenticator, allowSeller, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'seller_sold.html'));
-});
-
-router.get('/seller/:id/dispatch', authenticator, allowSeller, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'dispatch_shipment.html'));
-});
-
-router.get('/seller/:id/warehouses', authenticator, allowSeller, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'seller_warehouses.html'));
-});
-
-router.get('/seller/:id/transactions', authenticator,  allowSeller, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'transactions.html'));
-});
-
-router.get('/seller/:id/updateProduct', authenticator, allowSeller, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../pages' , 'update_product.html'));
-});
 
 /** router.get('/profile/:id/', authenticator, auth, async (req, res) => {
   req.body.id = Number(req.params.id);
