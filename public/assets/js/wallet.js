@@ -428,7 +428,7 @@ const AVALANCHE_CHAIN_ID = "0xa86a";
     const network = document.getElementById("network");
     const balanceWei = document.getElementById("wallet_balance");
     const balanceUsd = document.getElementById("wallet_usd");
-    const wallet  = document.getElementById("wallet_address");
+    //const wallet  = document.getElementById("wallet_address");
     const connectBtn = document.getElementById("connectWalletMain");
 
    let provider, signer, token, decimals, symbol;
@@ -485,15 +485,15 @@ const AVALANCHE_CHAIN_ID = "0xa86a";
       try {
         const account = signer.address;
         address.innerText =  account;
-        wallet.innerText = account;
+        //wallet.innerText = account;
 
         const rawBalance = await token.balanceOf(account);
         const formatted = ethers.formatUnits(rawBalance, decimals);
         const usd_balance = parseFloat(formatted * 0.005);
 
         balance.innerText = `${formatted} ${symbol}`;
-        //balanceWei.innerText = `${formatted} TMXGT`;
-        //balanceUsd.innerText = `${usd_balance} USD`;
+        balanceWei.innerText = `${formatted} TMXGT`;
+        balanceUsd.innerText = `${usd_balance} USD`;
       } catch (err) {
         console.error("Error loading balance:", err);
         output.innerText = "Balance: error";
@@ -584,7 +584,7 @@ const AVALANCHE_CHAIN_ID = "0xa86a";
   });
 
 
-  document.getElementById("copy_address_1").addEventListener("click", function() {
+ /** document.getElementById("copy_address_1").addEventListener("click", function() {
     const address = document.getElementById("wallet_address").textContent;
     navigator.clipboard.writeText(address).then(() => {
       const toast = document.getElementById("copyToast1");
@@ -597,6 +597,6 @@ const AVALANCHE_CHAIN_ID = "0xa86a";
       }, 2000);
     });
     
-  });
+  }); **/
 
   
