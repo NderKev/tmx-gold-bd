@@ -81,7 +81,7 @@ $("#btnLogin").click(function(e){
         //var usertype =
         //window.location.href = "complete_profile.html" //"https://agro-africa.io/tmxGold/v1/user/profile/:id/complete_profile.html";
         //window.location.href = 'http://localhost:8787/tmxGold/v1/user/'+localStorage.getItem('role')+'/profile/'+localStorage.getItem('user_id') + '/';
-        window.location.href = `/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}/`;
+        window.location.href = `/api/user/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}/`;
         //window.location.href = '/profile/id?'+localStorage.getItem('user_id') + '/';
       }
       else if (results.status === 401 || results.message === 'wrongPassword'){
