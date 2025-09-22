@@ -131,7 +131,7 @@ router.post('/login',  async (req, res) => {
       //res.status(401).send(response);
       res.redirect('/');
     }
-  return res.status(response.status).send(response)
+  //return res.status(response.status).send(response)
     //res.redirect('/profile/:id/')
 
 });
