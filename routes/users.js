@@ -110,28 +110,33 @@ router.post('/verify', async (req, res) => {
 router.post('/login',  async (req, res) => {
   const response = await userController.loginUser(req.body);
   if (response.success && response.meta) {
+    req.session.user = response.data[0].name;
     req.session.email = response.meta.email;
     req.session.password = response.data[0].password;
     req.session.user_roles = response.meta.user_roles;
     req.session.user_id = response.data[0].id;
-    req.session.user = response.data[0].name;
+    
   }
   
   const id = req.session.user_id;
-  //const user = req.session.user;
+  const user = req.session.user;
   if (req.session.user_roles.indexOf('admin') >= 0) {
         //res.status(resp onse.status).send(response)
         //res.sendFile(path.join(__dirname, '../pages' , 'add_category.html'));
-        //req.session.user = user;
-        //req.session.user.role = "admin";
+        req.session.user = user;
+        req.session.user.role = "admin";
         res.json({ redirect: `/admin/profile/${id}`, meta : response.meta, data : response.data });
 
   }
   else if (req.session.user_roles.indexOf('seller') >= 0) {
+        req.session.user = user;
+        req.session.user.role = "seller";
         res.json({ redirect: `/seller/profile/${id}`, meta : response.meta, data : response.data });
        //res.redirect(`/seller/profile/${req.session.user_id}`);
     }
   else if (req.session.user_roles.indexOf('customer') >= 0) {
+       req.session.user = user;
+       req.session.user.role = "customer";
        res.json({ redirect: `/customer/profile/${id}` , meta : response.meta, data : response.data});
       //res.redirect(`/customer/profile/${req.session.user_id}`);
     }
