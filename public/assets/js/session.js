@@ -55,39 +55,64 @@ document.addEventListener("DOMContentLoaded", function () {
             Paystack
 
 -------------------------------*/
-document.getElementById("paystackButton").addEventListener("click", function () {
+// Show Paystack fields when Paystack is selected
+document.getElementById("payment_method").addEventListener("change", function () {
+  const selected = this.value;
+  const paystackFields = document.getElementById("paystackFields");
+
+  if (selected === "Paystack") {
+    paystackFields.style.display = "block";
+  } else {
+    paystackFields.style.display = "none";
+  }
+});
+
+
+// Paystack button handler
+document.getElementById("btnBuyTokens").addEventListener("click", function () {
+  const paymentMethod = document.getElementById("paymentMethod").value;
+  if (paymentMethod !== "Paystack") {
+    return;
+  }
+
   let email = document.getElementById("paystackEmail").value;
-  let amount = document.getElementById("paystackAmount").value;
+  let amount = document.getElementById("paystackAmount").value * 100; 
+
+  if (!email || !amount) {
+    alert("Please enter both email and amount.");
+    return;
+  }
 
   var handler = PaystackPop.setup({
-    key: 'tmx-public-key',
+    key: 'tmx-public-key', // replace with the TMX public key
     email: email,
     amount: amount,
     currency: "KES",
-    ref: ''+Math.floor((Math.random() * 1000000000) + 1),
-    callback: function(response){
-        // ----------------------------
-        //   This is the API I need
-        //------------------------------ 
-        fetch("/verify", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ reference: response.reference })
-        })
+    ref: '' + Math.floor((Math.random() * 1000000000) + 1),
+    callback: function (response) {
+      fetch("/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reference: response.reference })
+      })
         .then(res => res.json())
         .then(data => {
-          if(data.status === "success") {
+          if (data.status === "success") {
             alert("Payment successful! Crypto will be sent to your wallet.");
           } else {
             alert("Payment verification failed.");
           }
+        })
+        .catch(err => {
+          console.error("Verification error:", err);
+          alert("Error verifying payment.");
         });
     },
-    onClose: function(){
-        alert('Transaction was not completed, window closed.');
+    onClose: function () {
+      alert("Transaction was not completed, window closed.");
     }
   });
+
   handler.openIframe();
 });
+
