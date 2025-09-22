@@ -94,6 +94,21 @@
       rel="stylesheet"
       type="text/css"
     />
+    <style>
+      #copyToast {
+    visibility:hidden;
+    background:#222;
+    color:#fff;
+    padding:6px 12px;
+    border-radius:6px;
+    margin-left:10px;
+    font-size:14px;
+    position:relative;
+    top:-2px;
+    transition:opacity 0.3s ease;
+    opacity:0;
+  } </style>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.11.1/dist/ethers.umd.min.js"></script>
     <!-- CORE CSS TEMPLATE - END -->
   </head>
   <!-- END HEAD -->
@@ -940,9 +955,21 @@
                       <!-- <i class="pull-left cc BTC-alt icon-md mt-10"></i> -->
                       <div><img src="assets/images/logo-folded.png" alt="TMX Icon" class="pull-left icon-md mt-10" style="width: 55px; padding-right: 8px;"> </div>
                       <div class="stats">
-                        <h3 class="mb-5">1.003747 TMX</h3>
-                        <span>Wallet TMX Gold Balance</span>
+                        <h3 class="mb-5">Network</h3>
+                         <span id="network"></span>
+                        <h3 class="mb-5">TMX Gold Token Balance</h3>
+                        <span id="balance"></span>
                       </div>
+                    </div>
+                    <div class='pull-right'>
+                      <ul class="info-menu right-links list-inline list-unstyled"> 
+                            <span id="connectWalletMain" 
+                                  style="display:inline-block; background-color:#673ab7; color:white; padding:2px 15px; border-radius:12px; font-size:11px; margin-top:4px;margin:4px 20px 0 0; cursor:pointer;">
+                                Connect Wallet
+                            </span>
+                            
+                            <small id="walletAddress"></small>
+                      </ul>
                     </div>
                   </div>
                   <!-- 
@@ -1356,42 +1383,42 @@
                             >
                               <i class="cc ETC icon-white"></i>
                             </span>
-                            <p class="form-control-static with-border">
-                              OxsD12F32xvW3deG5...
+                            <p class="form-control-static with-border" id="address">  
                             </p>
-                            <a
-                              href="#"
+                            <div
                               class="input-group-addon"
+                              id="copy_address"
                               data-color-class="primary"
                               data-animate=" animated fadeIn"
                               data-toggle="tooltip"
                               data-original-title="copy"
                               data-placement="top"
                               ><i class="fa fa-copy text-dark"></i
-                            ></a>
+                            ></div>
+                            <span id="copyToast">Copied!</span>
                           </div>
 
                           <span class="desc">1 TMX</span>
-                          <label class="form-label"> = 930 USD</label><br />
+                          <label class="form-label"> = 0.005 USD</label><br />
 
                           <span class="desc">Total selling amount</span>
-                          <label class="form-label">79,634 $</label><br />
+                          <label class="form-label">0.005 $</label><br />
 
                           <span class="desc">Total buying buy</span>
-                          <label class="form-label">162,364 $</label><br />
+                          <label class="form-label">0.005 $</label><br />
 
                           <div class="mt-10 balance">
                             <strong class="form-label bold">Balance : </strong>
-                            <span class="desc color-primary f-s-14">
-                              2,523.8237 TMX</span
+                            <span class="desc color-primary f-s-14" id="wallet_balance">
+                             </span
                             >
                           </div>
                           <div class="balance bg-white">
                             <strong class="form-label bold"
                               >Balance in USD:
                             </strong>
-                            <span class="desc color-primary f-s-14">
-                              275,237 USD</span
+                            <span class="desc color-primary f-s-14" id="wallet_usd">
+                              </span
                             >
                           </div>
 
@@ -1452,7 +1479,7 @@
             </section>
           </div>
 
-          <div class="col-lg-4">
+          <!-- <div class="col-lg-4">
             <section class="box has-border-left-3">
               <header class="panel_header">
                 <h2 class="title pull-left">Add new wallet</h2>
@@ -1553,7 +1580,7 @@
                 </div>
               </div>
             </section>
-          </div>
+          </div> -->
 
           <div class="clearfix"></div>
 
@@ -1784,6 +1811,7 @@
     <!-- CORE TEMPLATE JS - START -->
     <script src="assets/js/scripts.js"></script>
     <script src="assets/js/session.js"></script>
+    <script src="assets/js/balance.js"></script>
     <!-- END CORE TEMPLATE JS - END -->
   </body>
 </html>

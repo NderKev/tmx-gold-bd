@@ -159,6 +159,8 @@ const ERC20_ABI = [
   const usdInput = document.getElementById("usd");
   const tokenSelect = document.getElementById("payment_method");
   const cryptoOutput = document.getElementById("amount");
+  const cryptoTo = document.getElementById("to_crypto");
+
 
   async function convertUsdToCrypto() {
      const prices = {
@@ -188,6 +190,7 @@ const ERC20_ABI = [
     }
 
     cryptoOutput.value = result.toString();
+    cryptoTo.innerText = option.toString();
   }
 
   // Run when USD changes or token changes
