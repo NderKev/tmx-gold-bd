@@ -18,7 +18,11 @@ if(!DEBUG){
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://tmxgoldcoin.co',
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  credentials: true    // if you send cookies or auth headers
+}));
 
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
