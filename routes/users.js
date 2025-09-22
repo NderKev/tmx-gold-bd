@@ -115,9 +115,9 @@ router.post('/login',  async (req, res) => {
     req.session.password = response.data[0].password;
     req.session.user_roles = response.meta.user_roles;
     req.session.user_id = response.data[0].id;
-    
+    req.session.user.role = "admin";
   }
-  
+  return res.status(response.status).send(response);
   const id = req.session.user_id;
   const user = req.session.user;
   if (req.session.user_roles.indexOf('admin') >= 0) {
@@ -144,8 +144,8 @@ router.post('/login',  async (req, res) => {
       //res.status(401).send(response);
       res.json({ redirect: `/` });
       //res.redirect('/');
-    }
-  //return res.status(response.status).send(response);
+    } 
+  //
     //res.redirect('/profile/:id/')
 
 });
