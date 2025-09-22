@@ -110,7 +110,7 @@ router.post('/login',  async (req, res) => {
   const response = await userController.loginUser(req.body);
   if (response.success && response.meta) {
     req.session.email = response.meta.email;
-    req.session.password = req.body.password;
+    req.session.password = response.data[0].password;
     req.session.user_roles = response.meta.user_roles;
     req.session.user_id = response.data[0].id;
   }
