@@ -926,7 +926,13 @@
                                                 </div> -->
 
                                             <!-- Hidden input for form submission -->
-                                            <input type="hidden" id="paymentMethodInput" name="payment_method" value="Bank Transfer">
+
+
+
+
+
+                                             <label class="form-label">wallet address</label>
+                                         <input type="hidden" id="paymentMethodInput" name="payment_method" value="Bank Transfer">
 
                                                 <div class="input-group mb-10">
                                                     <span class="input-group-addon"><i class="fa fa-institution"></i></span>
@@ -946,19 +952,88 @@
                                                         <option value="Wire Transfer">Wire Transfer</option>                       
                                                     </select>
                                                     </div>
-                                             <div id="paymentFields">
-                                                  <!-- Paystack -->
-                                                    <div class="method-fields" data-method="Paystack" style="display:none;">
-                                                    <label>Paystack Email</label>
-                                                    <input type="email" class="form-control" id="paystackEmail" placeholder="Enter Paystack email">
-                                                    
-                                                    <label>Amount (in Dollars)</label>
-                                                    <input type="number" class="form-control" id="paystackAmount" placeholder="Enter amount">
+                                               <!-- Payment Fields -->
+                                              <div id="paymentFields">
 
-                                                    <button type="button" id="paystackButton" class="btn btn-success" style="margin-top:10px;">
-                                                        Pay with Paystack
-                                                    </button>
-                                            </div>
+                                                <!-- BTC -->
+                                                <div class="method-fields" data-method="BTC" style="display:none;">
+                                                  <label>BTC Wallet Address</label>
+                                                  <input type="text" class="form-control" name="btc_address" placeholder="Enter BTC address">
+                                                </div>
+
+                                                <!-- ETH -->
+                                                <div class="method-fields" data-method="ETH" style="display:none;">
+                                                  <label>ETH Wallet Address</label>
+                                                  <input type="text" class="form-control" name="eth_address" placeholder="Enter ETH address">
+                                                </div>
+
+                                                <!-- USDC -->
+                                                <div class="method-fields" data-method="USDC" style="display:none;">
+                                                  <label>USDC Wallet Address</label>
+                                                  <input type="text" class="form-control" name="usdc_address" placeholder="Enter USDC address">
+                                                </div>
+
+                                                <!-- USDT -->
+                                                <div class="method-fields" data-method="USDT" style="display:none;">
+                                                  <label>USDT Wallet Address</label>
+                                                  <input type="text" class="form-control" name="usdt_address" placeholder="Enter USDT address">
+                                                </div>
+
+                                                <!-- AVAX -->
+                                                <div class="method-fields" data-method="AVAX" style="display:none;">
+                                                  <label>AVAX Wallet Address</label>
+                                                  <input type="text" class="form-control" name="avax_address" placeholder="Enter AVAX address">
+                                                </div>
+
+                                                <!-- AVAX USDC -->
+                                                <div class="method-fields" data-method="AVAX USDC" style="display:none;">
+                                                  <label>AVAX USDC Wallet Address</label>
+                                                  <input type="text" class="form-control" name="avax_usdc_address" placeholder="Enter AVAX USDC address">
+                                                </div>
+
+                                                <!-- AVAX USDT -->
+                                                <div class="method-fields" data-method="AVAX USDT" style="display:none;">
+                                                  <label>AVAX USDT Wallet Address</label>
+                                                  <input type="text" class="form-control" name="avax_usdt_address" placeholder="Enter AVAX USDT address">
+                                                </div>
+
+                                                <!-- Paystack -->
+                                                <div class="method-fields" data-method="Paystack" style="display:none;">
+                                                <label>Paystack Email</label>
+                                                <input type="email" class="form-control" id="paystackEmail" placeholder="Enter Paystack email">
+
+                                                <label>Amount (in Dollars)</label>
+                                                <input type="number" class="form-control" id="paystackAmount" placeholder="Enter amount">
+
+                                                <button type="button" id="paystackButton" class="btn btn-success" style="margin-top:10px;">
+                                                  Pay with Paystack
+                                                </button>
+                                              </div>
+
+                                                <!-- Mpesa -->
+                                                <div class="method-fields" data-method="Mpesa" style="display:none;">
+                                                  <label>Mpesa Phone Number</label>
+                                                  <input type="text" class="form-control" name="mpesa_number" placeholder="Enter Mpesa number">
+                                                </div>
+
+                                                <!-- Bank -->
+                                                <div class="method-fields" data-method="Bank" style="display:none;">
+                                                  <label>Bank Name</label>
+                                                  <input type="text" class="form-control" name="bank_name" placeholder="Enter Bank name">
+                                                  <label>Account Number</label>
+                                                  <input type="text" class="form-control" name="bank_account" placeholder="Enter Account number">
+                                                </div>
+
+                                                <!-- Wire Transfer -->
+                                                <div class="method-fields" data-method="Wire Transfer" style="display:none;">
+                                                  <label>Beneficiary Name</label>
+                                                  <input type="text" class="form-control" name="wire_name" placeholder="Enter Beneficiary name">
+                                                  <label>IBAN / Account Number</label>
+                                                  <input type="text" class="form-control" name="wire_account" placeholder="Enter IBAN / Account number">
+                                                  <label>SWIFT/BIC</label>
+                                                  <input type="text" class="form-control" name="wire_swift" placeholder="Enter SWIFT/BIC">
+                                                </div>
+                                              </div>
                                              </div>
                                             <!--<label class="form-label">wallet address</label>
                                             <span class="desc"></span>
@@ -989,9 +1064,9 @@
                                                     <input type="text" id="amount" class="form-control" placeholder="Equivalent amount" aria-describedby="basic-addon2">
                                                     <span class="input-group-addon" id="to_crypto">BTC</span>
                                                 </div>
-                                            </div>
 
-                                            <button type="button" id="btnBuyTokens" class="btn btn-primary btn-lg mt-20 has-gradient-to-right-bottom2" style="width:100%">Buy TMX Gold Token</button>
+                                            </div>
+                                            <button type="button" id="btnBuyTokens" class="btn btn-primary btn-lg mt-20 has-gradient-to-right-bottom2" style="width:100%">Buy Cryptocurrency
                                         </div>
                                         
                                     </div>
@@ -1432,8 +1507,13 @@
     <script src="assets/js/session.js"></script>
     <script src="assets/js/avax.js"></script>
     <!-- END CORE TEMPLATE JS - END -->
-     <script src="https://js.paystack.co/v1/inline.js"></script>
+
+    <!-- Paystack inline script -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+
+
     
+
 </body>
 
 </html>

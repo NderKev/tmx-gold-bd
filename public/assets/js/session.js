@@ -33,3 +33,61 @@ $(document).ready(function(){
       
 
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+        const dropdown = document.getElementById("paymentMethod");
+        const fields = document.querySelectorAll(".method-fields");
+
+        function updateFields() {
+            const selected = dropdown.value;
+            fields.forEach(field => {
+            field.style.display = (field.dataset.method === selected) ? "block" : "none";
+            });
+        }
+
+        dropdown.addEventListener("change", updateFields);
+
+        // Show default on load
+        updateFields();
+        });
+
+/* ------------------------------
+            Paystack
+
+-------------------------------*/
+document.getElementById("paystackButton").addEventListener("click", function () {
+  let email = document.getElementById("paystackEmail").value;
+  let amount = document.getElementById("paystackAmount").value;
+
+  var handler = PaystackPop.setup({
+    key: 'tmx-public-key',
+    email: email,
+    amount: amount,
+    currency: "KES",
+    ref: ''+Math.floor((Math.random() * 1000000000) + 1),
+    callback: function(response){
+        // ----------------------------
+        //   This is the API I need
+        //------------------------------ 
+        fetch("/verify", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ reference: response.reference })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if(data.status === "success") {
+            alert("Payment successful! Crypto will be sent to your wallet.");
+          } else {
+            alert("Payment verification failed.");
+          }
+        });
+    },
+    onClose: function(){
+        alert('Transaction was not completed, window closed.');
+    }
+  });
+  handler.openIframe();
+});
