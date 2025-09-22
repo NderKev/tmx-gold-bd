@@ -84,7 +84,7 @@ document.getElementById("btnBuyTokens").addEventListener("click", function () {
   }
 
   var handler = PaystackPop.setup({
-    key: 'tmx-public-key', // replace with the TMX public key
+    key: 'pk_live_7bda8bdfc8d90392fde6a15590c7e470127dd2d2', // replace with the TMX public key
     email: email,
     amount: amount,
     currency: "KES",
