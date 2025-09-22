@@ -119,15 +119,15 @@ router.post('/login',  async (req, res) => {
   if (req.session.user_roles.indexOf('admin') >= 0) {
         //res.status(response.status).send(response)
         //res.sendFile(path.join(__dirname, '../pages' , 'add_category.html'));
-        res.json({ redirect: `/admin/profile/${id}` });
+        res.json({ redirect: `/admin/profile/${id}`, meta : response.meta, data : response.data });
 
   }
   else if (req.session.user_roles.indexOf('seller') >= 0) {
-        res.json({ redirect: `/seller/profile/${id}` });
+        res.json({ redirect: `/seller/profile/${id}`, meta : response.meta, data : response.data });
        //res.redirect(`/seller/profile/${req.session.user_id}`);
     }
   else if (req.session.user_roles.indexOf('customer') >= 0) {
-       res.json({ redirect: `/customer/profile/${id}` });
+       res.json({ redirect: `/customer/profile/${id}` , meta : response.meta, data : response.data});
       //res.redirect(`/customer/profile/${req.session.user_id}`);
     }
   else {
