@@ -230,9 +230,10 @@ const loginUser = async (reqData) => {
     }
     await userModel.updateVerToken(response[0].email);
     const role_response = await userModel.getUserPermission(response[0].id);
+    const user_id = response[0].id;
     const user_roles = role_response.map(el => el.role);
     const p = successResponse(200, response, {user_roles, email: response[0].email});
-    return successResponse(200, response, {user_roles, email: response[0].email})
+    return successResponse(200, response, {user_roles, email: response[0].email, id : user_id});
   } catch (error) {
     console.error('error -> ', logStruct('fetchUser', error))
     return errorResponse(error.status, error.message);

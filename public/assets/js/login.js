@@ -41,7 +41,7 @@ $("#btnLogin").click(function(e){
       }
     },
     success: function (results) {
-      if (results.success = true && results.data.length > 0  || results.status === 201 && results.data.length > 0 || results.status === 200 && results.data.length > 0){
+      if (results.success = true   || results.status === 201  || results.status === 200){
         localStorage.setItem('tmx_gold_name' , email);
         localStorage.setItem('user_id', results.data[0].id);
 
@@ -81,7 +81,7 @@ $("#btnLogin").click(function(e){
         //var usertype =
         //window.location.href = "complete_profile.html" //"https://agro-africa.io/tmxGold/v1/user/profile/:id/complete_profile.html";
         //window.location.href = 'http://localhost:8787/tmxGold/v1/user/'+localStorage.getItem('role')+'/profile/'+localStorage.getItem('user_id') + '/';
-        window.location.href = `${AUTH_BACKEND_URL}/api/user/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`;
+        window.location.href = `${AUTH_BACKEND_URL}/v1/user/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`;
         //window.location.href = '/profile/id?'+localStorage.getItem('user_id') + '/';
       }
       else if (results.status === 401 || results.message === 'wrongPassword'){

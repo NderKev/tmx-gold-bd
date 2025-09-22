@@ -135,7 +135,7 @@ router.post('/login',  async (req, res) => {
       res.json({ redirect: `/` });
       //res.redirect('/');
     }
-  return res.status(response.status).send(response);
+  //return res.status(response.status).send(response);
     //res.redirect('/profile/:id/')
 
 });
