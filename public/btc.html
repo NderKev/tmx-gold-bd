@@ -1,0 +1,266 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bitcoin Checkout</title>
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; background:#0f1724; color:#fff; }
+  .card { margin:50px auto; padding:20px; max-width:420px; background:#1a2238; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.4); }
+  h1 { margin-bottom:10px; }
+  .qr { border-radius:10px; margin:15px 0; }
+  code { background:#0b1220; padding:6px 10px; border-radius:6px; display:inline-block; word-break:break-all; }
+  .price { font-size:18px; margin-top:8px; }
+  #status { margin-top:20px; font-weight:bold; }
+  .pending { color:orange; }
+  .confirmed { color:limegreen; }
+  #copyToast {
+    visibility:hidden;
+    background:#222;
+    color:#fff;
+    padding:6px 12px;
+    border-radius:6px;
+    margin-left:10px;
+    font-size:14px;
+    position:relative;
+    top:-2px;
+    transition:opacity 0.3s ease;
+    opacity:0;
+  }
+  .qr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Pay with Bitcoin</h1>
+    <div class="qr" id="qrContainer"></div>
+    <p><b>Send exactly:</b> <span id="amountBtc">—</span> BTC</p>
+    <p class="price">≈ <span id="amountFiat">$0.00</span></p>
+    <p><b>To address:</b></p>
+    <p>
+      <strong>BTC Address:</strong> 
+      <a id="btcAddressLink" href="#" target="_blank">
+        <span id="btcAddress"></span>
+      </a>
+      <button id="copyBtn" style="margin-left:10px;padding:4px 8px;cursor:pointer;">Copy</button>
+      <span id="copyToast">Copied!</span>
+    </p>
+    <div id="status" class="pending">⏳ Waiting for payment...</div>
+  </div>
+
+<!-- ✅ Local QR generator -->
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  function populateFromQuery() {
+  const usd = parseFloat(getQueryParam("usd")) || 0;
+  let btc = getQueryParam("btc") || "0.0";
+  const btcAddress = "13hm8o5cG63H7fM5CuioY5iwnukHZPX6VD";
+
+  // 🔹 Ensure BTC has max 8 decimals but not padded with unnecessary zeros
+  btc = parseFloat(btc).toFixed(8).replace(/\.?0+$/, "");
+
+  // Build proper Bitcoin URI (BIP21)
+  const qrContent = `bitcoin:${btcAddress}?amount=${btc}`;
+
+  // Populate DOM
+  document.getElementById("amountBtc").textContent = btc;
+  document.getElementById("amountFiat").textContent = `$${usd.toFixed(2)}`;
+  document.getElementById("btcAddress").textContent = btcAddress;
+  document.getElementById("btcAddressLink").href = qrContent;
+
+  // ✅ Clear container first to avoid stacking multiple QR codes
+  const qrContainer = document.getElementById("qrContainer");
+  qrContainer.innerHTML = "";
+
+  // ✅ Generate QR
+  new QRCode(qrContainer, {
+    text: qrContent,
+    width: 200,
+    height: 200,
+    colorDark: "#000000",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+
+  return { usd, btc, btcAddress };
+}
+
+  async function checkPayment(expectedBtc, btcAddress) {
+    try {
+      const res = await fetch(`https://blockstream.info/api/address/${btcAddress}`);
+      const data = await res.json();
+
+      const received = data.chain_stats.funded_txo_sum / 1e8;
+      if (received >= parseFloat(expectedBtc)) {
+        document.getElementById("status").textContent = "✅ Payment Confirmed!";
+        document.getElementById("status").className = "confirmed";
+        clearInterval(polling);
+      } else if (received > 0) {
+        document.getElementById("status").textContent = "⚡ Payment detected, waiting for confirmations...";
+        document.getElementById("status").className = "pending";
+      }
+    } catch (err) {
+      console.error("Error checking payment:", err);
+    }
+  }
+
+  // Copy button with toast
+  document.getElementById("copyBtn").addEventListener("click", function() {
+    const address = document.getElementById("btcAddress").textContent;
+    navigator.clipboard.writeText(address).then(() => {
+      const toast = document.getElementById("copyToast");
+      toast.style.visibility = "visible";
+      toast.style.opacity = "1";
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => toast.style.visibility = "hidden", 300);
+      }, 2000);
+    });
+  });
+
+  // Init
+  const { btc, btcAddress } = populateFromQuery();
+  const polling = setInterval(() => checkPayment(btc, btcAddress), 30000);
+  checkPayment(btc, btcAddress);
+</script>
+</body>
+</html>
+
+
+<!-- <!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bitcoin Checkout</title>
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; background:#0f1724; color:#fff; }
+  .card { margin:50px auto; padding:20px; max-width:420px; background:#1a2238; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.4); }
+  h1 { margin-bottom:10px; }
+  .qr img { border-radius:10px; margin:15px 0; }
+  code { background:#0b1220; padding:6px 10px; border-radius:6px; display:inline-block; word-break:break-all; }
+  .price { font-size:18px; margin-top:8px; }
+  #status { margin-top:20px; font-weight:bold; }
+  .pending { color:orange; }
+  .confirmed { color:limegreen; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Pay with Bitcoin</h1>
+    <div class="qr">
+      <img id="qrImg" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Bitcoin QR" width="200" height="200">
+    </div>
+    <p><b>Send exactly:</b> <span id="amountBtc">—</span> BTC</p>
+    <p class="price">≈ <span id="amountFiat">$0.00</span></p>
+    <p><b>To address:</b></p>
+    <p>
+      <strong>BTC Address:</strong> 
+      <a id="btcAddressLink" href="#" target="_blank">
+        <span id="btcAddress"></span>
+      </a>
+      <button id="copyBtn" style="margin-left:10px;padding:4px 8px;cursor:pointer;">Copy</button>
+<span id="copyToast" style="
+  visibility:hidden;
+  background:#222;
+  color:#fff;
+  padding:6px 12px;
+  border-radius:6px;
+  margin-left:10px;
+  font-size:14px;
+  position:relative;
+  top:-2px;
+  transition:opacity 0.3s ease;
+  opacity:0;
+">Copied!</span>
+    </p>
+    <div id="status" class="pending">⏳ Waiting for payment...</div>
+  </div>
+
+<script>
+  // --- Helper: Get query params ---
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  // --- Populates checkout UI from query parameters ---
+  function populateFromQuery() {
+    const usd = parseFloat(getQueryParam("usd")) || 0;
+    const btc = getQueryParam("btc") || "0.00000000";
+    const btcAddress = "13hm8o5cG63H7fM5CuioY5iwnukHZPX6VD";
+
+    // ✅ Properly encode the QR content
+    const qrContent = `bitcoin:${btcAddress}?amount=${btc}`;
+    const qrUrl = `https://chart.googleapis.com/chart?chs=220x220&cht=qr&chl=${encodeURIComponent(qrContent)}`;
+
+    // Populate DOM elements
+    document.getElementById("amountBtc").textContent = btc;
+    document.getElementById("amountFiat").textContent = `$${usd.toFixed(2)}`;
+    document.getElementById("btcAddress").textContent = btcAddress;
+    document.getElementById("qrImg").src = qrUrl;
+
+    // ✅ Make BTC address clickable
+    const addressLink = document.getElementById("btcAddressLink");
+    addressLink.href = qrContent;
+
+    return { usd, btc, btcAddress };
+  }
+
+  // --- Payment Tracker ---
+  async function checkPayment(expectedBtc, btcAddress) {
+    try {
+      const res = await fetch(`https://blockstream.info/api/address/${btcAddress}`);
+      const data = await res.json();
+
+      const received = data.chain_stats.funded_txo_sum / 1e8;
+
+      if (received >= parseFloat(expectedBtc)) {
+        document.getElementById("status").textContent = "✅ Payment Confirmed!";
+        document.getElementById("status").className = "confirmed";
+        clearInterval(polling);
+      } else if (received > 0) {
+        document.getElementById("status").textContent = "⚡ Payment detected, waiting for confirmations...";
+        document.getElementById("status").className = "pending";
+      }
+    } catch (err) {
+      console.error("Error checking payment:", err);
+    }
+  }
+
+  
+document.getElementById("copyBtn").addEventListener("click", function() {
+  const address = document.getElementById("btcAddress").textContent;
+  navigator.clipboard.writeText(address).then(() => {
+    const toast = document.getElementById("copyToast");
+    toast.style.visibility = "visible";
+    toast.style.opacity = "1";
+
+    // Hide after 2s
+    setTimeout(() => {
+      toast.style.opacity = "0";
+      setTimeout(() => toast.style.visibility = "hidden", 300);
+    }, 2000);
+  }).catch(err => {
+    console.error("Failed to copy: ", err);
+  });
+});
+
+  // --- Initialize page ---
+  const { btc, btcAddress } = populateFromQuery();
+  const polling = setInterval(() => checkPayment(btc, btcAddress), 30000);
+  checkPayment(btc, btcAddress);
+</script>
+</body>
+</html> -->

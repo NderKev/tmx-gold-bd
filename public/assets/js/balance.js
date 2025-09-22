@@ -426,7 +426,11 @@ const AVALANCHE_CHAIN_ID = "0xa86a";
     const balance = document.getElementById("balance");
     const output = document.getElementById("output");
     const network = document.getElementById("network");
+    const balanceWei = document.getElementById("wallet_balance");
+    const balanceUsd = document.getElementById("wallet_usd");
+    const wallet  = document.getElementById("wallet_address");
     const connectBtn = document.getElementById("connectWalletMain");
+
    let provider, signer, token, decimals, symbol;
 
       async function switchToAvalanche() {
@@ -481,11 +485,15 @@ const AVALANCHE_CHAIN_ID = "0xa86a";
       try {
         const account = signer.address;
         address.innerText =  account;
+        wallet.innerText = account;
 
         const rawBalance = await token.balanceOf(account);
         const formatted = ethers.formatUnits(rawBalance, decimals);
+        const usd_balance = parseFloat(formatted * 0.005);
 
         balance.innerText = `${formatted} ${symbol}`;
+        //balanceWei.innerText = `${formatted} TMXGT`;
+        //balanceUsd.innerText = `${usd_balance} USD`;
       } catch (err) {
         console.error("Error loading balance:", err);
         output.innerText = "Balance: error";
@@ -526,6 +534,7 @@ const AVALANCHE_CHAIN_ID = "0xa86a";
 
   const fullAddress = "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"; // example
   const addressEl = document.getElementById("address");
+  //const addressCp = document.getElementById("copy_address");
 
   // Display shortened address
   function shortenAddress(addr) {
@@ -535,11 +544,59 @@ const AVALANCHE_CHAIN_ID = "0xa86a";
   //addressEl.textContent = shortenAddress(fullAddress);
 
   // Copy full address on click
-  addressEl.addEventListener("click", async () => {
+  /** addressEl.addEventListener("click", async () => {
     try {
       await navigator.clipboard.writeText(fullAddress);
       alert("Copied to clipboard: " + fullAddress);
     } catch (err) {
       console.error("Failed to copy: ", err);
     }
+  }); **/
+  document.getElementById("address").addEventListener("click", function() {
+    const address = document.getElementById("address").textContent;
+    navigator.clipboard.writeText(address).then(() => {
+      const toast = document.getElementById("copyToast");
+      toast.style.visibility = "visible";
+      toast.style.opacity = "1";
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => toast.style.visibility = "hidden", 300);
+      }, 2000);
+    });
   });
+
+
+  document.getElementById("copy_address").addEventListener("click", function() {
+    const address = document.getElementById("address").textContent;
+    navigator.clipboard.writeText(address).then(() => {
+      const toast = document.getElementById("copyToast");
+      //const toast1 = document.getElementById("copyToast1");
+      toast.style.visibility = "visible";
+      toast.style.opacity = "1";
+      //toast1.style.visibility = "visible";
+      //toast.style.opacity = "1";
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => toast.style.visibility = "hidden", 300);
+      }, 2000);
+    });
+    
+  });
+
+
+  document.getElementById("copy_address_1").addEventListener("click", function() {
+    const address = document.getElementById("wallet_address").textContent;
+    navigator.clipboard.writeText(address).then(() => {
+      const toast = document.getElementById("copyToast1");
+      toast.style.visibility = "visible";
+      toast.style.opacity = "1";
+
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => toast.style.visibility = "hidden", 300);
+      }, 2000);
+    });
+    
+  });
+
+  

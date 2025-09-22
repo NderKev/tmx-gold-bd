@@ -52,6 +52,8 @@ const indexRoutes = require('./routes/index')
 app.use('/tmxGold/v1/index', indexRoutes);
 const userRoutes = require('./routes/users')
 app.use('/tmxGold/v1/user', userRoutes);
+//const btcRoutes = require('./routes/btc');
+//app.use('/tmxGold/v1/btc', btcRoutes);
 /** const productRoutes = require('./routes/products')
 app.use('/tmxGold/v1/product', productRoutes);
 const orderRoutes = require('./routes/orders')
@@ -65,9 +67,9 @@ app.use('/tmxGold/v1/upload', uploadRoute); **/
 /** -----------------------
   route for paymets 
  -----------------------**/
-const paymentRoutes = require('./routes/payments');
+/** const paymentRoutes = require('./routes/payments');
 app.use('/tmxGold/v1/payments', paymentRoutes);
-
+**/
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

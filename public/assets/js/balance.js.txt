@@ -206,3 +206,82 @@ main().catch(console.error);
   </script>
 </body>
 </html>
+
+
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Avalanche ERC20 Balance Checker</title>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
+</head>
+<body>
+  <h2>Avalanche ERC20 Token Balance</h2>
+
+  <button id="connectBtn">Connect MetaMask</button>
+  <p id="wallet">Wallet: Not connected</p>
+  <p id="balance">Balance: -</p>
+
+  <script>
+    // Example: USDC.e on Avalanche C-Chain
+    const TOKEN_ADDRESS = "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E";
+    const ERC20_ABI = [
+      "function balanceOf(address) view returns (uint256)",
+      "function decimals() view returns (uint8)",
+      "function symbol() view returns (string)"
+    ];
+
+    const connectBtn = document.getElementById("connectBtn");
+    const walletEl = document.getElementById("wallet");
+    const balanceEl = document.getElementById("balance");
+
+    let provider, signer, token, decimals, symbol;
+
+    async function loadBalance() {
+      try {
+        const account = await signer.getAddress();
+        walletEl.innerText = "Wallet: " + account;
+
+        const rawBalance = await token.balanceOf(account);
+        const formatted = ethers.utils.formatUnits(rawBalance, decimals);
+
+        balanceEl.innerText = `Balance: ${formatted} ${symbol}`;
+      } catch (err) {
+        console.error("Error loading balance:", err);
+        balanceEl.innerText = "Balance: error";
+      }
+    }
+
+    async function connect() {
+      if (!window.ethereum) return alert("Install MetaMask!");
+
+      provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      signer = provider.getSigner();
+
+      token = new ethers.Contract(TOKEN_ADDRESS, ERC20_ABI, provider);
+      decimals = await token.decimals();
+      symbol = await token.symbol();
+
+      await loadBalance();
+
+      // Refresh when account changes
+      window.ethereum.on("accountsChanged", async () => {
+        signer = provider.getSigner();
+        await loadBalance();
+      });
+
+      // Refresh when network changes
+      window.ethereum.on("chainChanged", async () => {
+        provider = new ethers.providers.Web3Provider(window.ethereum);
+        signer = provider.getSigner();
+        token = new ethers.Contract(TOKEN_ADDRESS, ERC20_ABI, provider);
+        await loadBalance();
+      });
+    }
+
+    connectBtn.onclick = connect;
+  </script>
+</body>
+</html>
