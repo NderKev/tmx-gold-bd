@@ -43,7 +43,7 @@ $("#btnLogin").click(function(e){
     success: function (results) {
       if (results.success = true   || results.status === 201  || results.status === 200){
         localStorage.setItem('tmx_gold_name' , email);
-        localStorage.setItem('user_id', results.data[0].id);
+        localStorage.setItem('user_id', results.meta.id);
 
         /** var sess = getSession();
         if(sess){
@@ -64,7 +64,7 @@ $("#btnLogin").click(function(e){
           localStorage.setItem('tmx_gold_name',email)
 
           //user_name = email;
-          localStorage.setItem('user_id',results.data[0].id)
+          localStorage.setItem('user_id',results.meta.id)
 
           //localStorage.setItem('token',results.data[0].token)
 
