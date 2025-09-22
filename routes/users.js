@@ -184,7 +184,7 @@ router.get('/home', async (req, res) => {
 });
 
 
-router.get('/admin/profile/:id/', authenticator, allowAdmin, async (req, res) => {
+router.get('/admin/profile/:id', authenticator, allowAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   //req.body.customer = req.params.
   //const response = await userController.fetchUser(req.body)
@@ -286,7 +286,7 @@ router.put('/deActivateSeller/:id', authenticator, allowAdmin, async (req, res) 
   return res.status(response.status).send(response)
 })
 
-router.get('/customer/profile/:id/', authenticator, allowCustomer, async (req, res) => {
+router.get('/customer/profile/:id', authenticator, allowCustomer, async (req, res) => {
   req.body.id = Number(req.params.id);
   //req.body.customer = req.params.
   //const response = await userController.fetchUser(req.body)
