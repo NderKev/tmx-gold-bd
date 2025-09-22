@@ -110,7 +110,7 @@ router.post('/verify', async (req, res) => {
 router.post('/login',  async (req, res) => {
   const response = await userController.loginUser(req.body);
   if (response.success && response.meta) {
-    req.session.user = response.data[0].name;
+    req.session.user = response.data[0];
     req.session.email = response.meta.email;
     req.session.password = response.data[0].password;
     req.session.user_roles = response.meta.user_roles;
