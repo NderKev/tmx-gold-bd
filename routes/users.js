@@ -3,7 +3,7 @@
 const express  = require('express');
 const router  = express.Router();
 const userController = require('../controllers/users');
-const {authenticator, auth, checkUser,  checkAdmin, allowSeller, checkAdminOrSeller} = require('../lib/common');
+const {authenticator} = require('../lib/common');
 const path = require('path');
 const authController = require('../controllers/auth');
 const url = require('url');
