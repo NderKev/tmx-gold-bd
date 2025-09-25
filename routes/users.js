@@ -119,7 +119,7 @@ router.post('/login',  async (req, res) => {
     req.session.user.role = "admin";
   }
   return res.status(response.status).send(response);
-  const id = req.session.user_id;
+  /** const id = req.session.user_id;
   const user = req.session.user;
   if (req.session.user_roles.indexOf('admin') >= 0) {
         //res.status(resp onse.status).send(response)
@@ -147,7 +147,7 @@ router.post('/login',  async (req, res) => {
       //res.redirect('/');
     } 
   //
-    //res.redirect('/profile/:id/')
+    //res.redirect('/profile/:id/') **/
 
 });
 
