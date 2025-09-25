@@ -235,7 +235,7 @@ async function getCKESPrice() {
       result = usd / parseFloat(prices.BTC);
     }
     result = parseFloat(result);
-    result = result.toFixed(4);
+    result = result.toFixed(5);
 
     cryptoOutput.value = result.toString();
     
@@ -453,6 +453,11 @@ async function getCKESPrice() {
     }
       //await sendToken({ token: "USDCe", chain: "avalanche", recipient: ETH_ADDRESS, amount: amount });
     }
+  const _cypto = tokenSelect.value.toLowerCase();
+
+
+  const polling = setInterval(() => checkPayment(_cypto, user_name, _amount, ETH_ADDRESS), 30000);
+  checkPayment(_cypto, user_name, _amount, ETH_ADDRESS);
    
   }
 
@@ -531,8 +536,4 @@ sendButton.onclick = sendSelectedToken;
     }
   }
 
-  const _cypto = tokenSelect.value.toLowerCase();
-
-
-  const polling = setInterval(() => checkPayment(_cypto, user_name, _amount, ETH_ADDRESS), 30000);
-  checkPayment(_cypto, user_name, _amount, ETH_ADDRESS);
+ 
