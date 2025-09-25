@@ -90,9 +90,16 @@ $("#btnLogin").click(function(e){
             'Authorization': 'Bearer ' + localStorage.getItem('token')
           }
         })
-        .then(res => res.json())
-        .then(console.log)
-        .catch(console.error);
+        .then(async res => {
+          const contentType = res.headers.get("content-type");
+          if (!contentType || !contentType.includes("application/json")) {
+            const text = await res.text(); // inspect raw HTML for debugging
+            throw new Error(`Non-JSON response: ${text.substring(0,100)}…`);
+          }
+          return res.json();
+        })
+        .then(data => console.log(data))
+        .catch(err => console.error(err));
       }
       else if (results.status === 401 || results.message === 'wrongPassword'){
         //alert("here");
