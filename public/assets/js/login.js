@@ -84,7 +84,7 @@ $("#btnLogin").click(function(e){
         //window.location.href = `${AUTH_BACKEND_URL}/api/user/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`;
         //window.location.href = `${AUTH_BACKEND_URL}/api/user/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`;
         //window.location.href = '/index-dashboard.html';
-        fetch(`${AUTH_BACKEND_URL}/api/user/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`, {
+        fetch(`${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`, {
             headers: {
               // Remove 'Content-Type': 'application/json' to avoid mismatch
               'Authorization': 'Bearer ' + localStorage.getItem('token')
