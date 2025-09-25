@@ -29,6 +29,7 @@
     "ws": "^8.18.3"
   },
   "devDependencies": {
+    "cookie-parser": "^1.4.7",
     "node-fetch": "^2.7.0"
   }
 }

@@ -10,6 +10,7 @@ const url = require('url');
 const checkAdmin = require('../middleware/checkAdmin');
 const checkUser = require('../middleware/checkUser');
 const auth = require('../middleware/auth');
+const jwt = require('jsonwebtoken');
 
 //const createAuthToken = require('../models/users');
 // CRUD user
@@ -21,6 +22,16 @@ router.post('/register',  async (req, res) => {
     req.session.password = req.body.password;
     req.session.user_roles = response.meta.user_roles;
   }
+  const payload = { id: response.data[0].id, role: response.data[0].role};
+  const token   = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '48h' });
+
+  // ✅ Set the JWT as a secure HTTP-only cookie
+  res.cookie('token', token, {
+    httpOnly: true,          // cannot be accessed by JS (prevents XSS theft)
+    secure: true,            // only over HTTPS (set false for local dev if not using HTTPS)
+    sameSite: 'strict',      // blocks CSRF by restricting cross-site sends
+    maxAge: 60 * 60 * 1000 * 48  // 48 hour
+  });
    /** const regToken = await authController.generateToken(req.body);
       var packageReq = {
          token : regToken.data.token.token,
@@ -200,71 +211,7 @@ router.get('/home', async (req, res) => {
 });
 
 
-router.get('/admin/profile/:id', auth, authenticator, checkAdmin, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  //req.body.customer = req.params.
-  //const response = await userController.fetchUser(req.body)
-  res.sendFile(path.join(__dirname, '../public' , 'index-ico-admin.html'));
-});
 
-router.get('/admin/profile/:id/gateways', auth, authenticator, checkAdmin, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'payment-gateways.html'));
-});
-
-router.get('/admin/profile/:id/dashboard', auth, authenticator, checkAdmin, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  //req.body.customer = req.params.
-  //const response = await userController.fetchUser(req.body)
-  res.sendFile(path.join(__dirname, '../public' , 'index-dashboard.html'));
-});
-
-router.get('/admin/profile/:id/trade', auth, authenticator, checkAdmin, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'index-trading-view.html'));
-});
-
-
-router.get('/admin/profile/:id/buy', auth, authenticator, checkAdmin, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'buy-and-sell.html'));
-});
-
-router.get('/admin/profile/:id/affiliate', auth, authenticator, checkAdmin, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , '/affailite-program.html'));
-});
-
-router.get('/admin/profile/:id/wallet', auth, authenticator, checkAdmin, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'my-wallet.html'));
-});
-
-
-router.get('/admin/profile/:id/security', auth, authenticator, checkAdmin, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'security.html'));
-});
-
-router.get('/admin/profile/:id/account', auth, authenticator, checkAdmin, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'account-confirmation.html'));
-});
-
-router.get('/admin/profile/:id/settings', auth, authenticator, checkAdmin, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'settings.html'));
-});
-
-router.get('/admin/profile/:id/faq', auth, authenticator, checkAdmin, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'ui-faq.html'));
-});
-
-router.get('/admmin/profile/:id/support', auth,  authenticator, checkAdmin, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'ui-support.html'));
-});
 
 router.get('/customers', auth, authenticator, checkAdmin,  async (req, res, next) => {
   const response = await userController.fetchAllCustomers();
@@ -302,63 +249,7 @@ router.put('/deActivateSeller/:id', authenticator, checkAdmin, async (req, res) 
   return res.status(response.status).send(response)
 })
 
-router.get('/customer/profile/:id', auth, authenticator, checkUser, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  //req.body.customer = req.params.
-  //const response = await userController.fetchUser(req.body)
-  res.sendFile(path.join(__dirname, '../public' , 'index-dashboard.html'));
-});
 
-router.get('/customer/profile/:id/trade', auth, authenticator, checkUser, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'index-trading-view.html'));
-});
-
-router.get('/customer/profile/:id/user', auth, authenticator, checkUser, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'index-ico-user.html'));
-});
-
-router.get('/customer/profile/:id/buy', auth, authenticator, checkUser, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'buy-and-sell.html'));
-});
-
-router.get('/customer/profile/:id/affiliate', auth, authenticator, checkUser, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , '/affailite-program.html'));
-});
-
-router.get('/customer/profile/:id/wallet', auth, authenticator, checkUser, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'my-wallet.html'));
-});
-
-
-router.get('/customer/profile/:id/security', auth, authenticator, checkUser, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'security.html'));
-});
-
-router.get('/customer/profile/:id/account', auth, authenticator, checkUser, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'account-confirmation.html'));
-});
-
-router.get('/customer/profile/:id/settings', auth, authenticator, checkUser, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'settings.html'));
-});
-
-router.get('/customer/profile/:id/faq', auth, authenticator, checkUser, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'ui-faq.html'));
-});
-
-router.get('/customer/profile/:id/support', auth, authenticator, checkUser, async (req, res) => {
-  req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'ui-support.html'));
-});
 
 
 
@@ -389,14 +280,14 @@ router.get('/customer/profile/:id/support', auth, authenticator, checkUser, asyn
    //return res.status(response.status).send(response);
 }); **/
 
-
+/**
 router.get('/public/index-ico-admin.html', auth, checkAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, "../public/index-ico-admin.html"));
 });
 
 router.get('/public/payment-gateways.html', auth, checkAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, "../public/payment-gateways.html"));
-});
+}); **/
 
 
 

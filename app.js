@@ -6,6 +6,7 @@ const path = require('path');
 //const fileupload = require('express-fileupload')
 //app.use(express.static(__dirname + '/public'))
 require('dotenv').config();
+const cookieParser = require('cookie-parser');
 
 const SESS_LIFETIME = parseInt(process.env.SESS_LIFETIME) || 1000 * 60 * 60 * 48;
 // const SESS_LIFETIME = 1000 * 60 * 5;
@@ -29,6 +30,8 @@ app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
 });
+
+app.use(cookieParser());  
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
