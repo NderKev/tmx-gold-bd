@@ -19,6 +19,29 @@ const createTransaction = async (reqData) => {
   }
 };
 
+
+const createFiatTransaction = async (reqData) => {
+  try {
+    //const validInput = validateTransaction(reqData);
+    const response = await transactionsModel.createFiatTransaction(reqData);
+    return successResponse(201, response, null, 'created')
+  } catch (error) {
+    console.error('error -> ', logStruct('createTransaction', error))
+    return errorResponse(error.status, error.message);
+  }
+};
+
+const createTokenTransaction = async (reqData) => {
+  try {
+    //const validInput = validateTransaction(reqData);
+    const response = await transactionsModel.createTokenTransaction(reqData);
+    return successResponse(201, response, null, 'created')
+  } catch (error) {
+    console.error('error -> ', logStruct('createTransaction', error))
+    return errorResponse(error.status, error.message);
+  }
+};
+
 const fetchTransactionByUser = async (reqData) => {
   try {
     const validInput = validateUserId(reqData);
@@ -117,8 +140,12 @@ try {
 
 
 
+
+
 module.exports = {
   createTransaction,
+  createFiatTransaction,
+  createTokenTransaction,
   fetchTransactionByUser,
   fetchTransactionByID,
   fetchAllTransactions,

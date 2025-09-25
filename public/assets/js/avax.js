@@ -66,7 +66,8 @@ const ERC20_ABI = [
         "avalanche-2",  // AVAX
         "binancecoin",  // BNB
         "tether",       // USDT
-        "usd-coin"      // USDC
+        "usd-coin",     // USDC
+        "celo-kenyan-shilling"
       ];
 
       const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids.join(",")}&vs_currencies=usd`;
@@ -74,6 +75,16 @@ const ERC20_ABI = [
       try {
         const res = await fetch(url);
         const data = await res.json();
+        /** async function getUsdToKes() {
+        const res = await fetch('https://api.exchangerate.host/latest?base=USD&symbols=KES');
+        const data = await res.json();
+        console.log(data);
+        console.log(`1 USD = ${data.rates.KES} KES`);
+        const rate = data.rates.KES;
+        return rate;
+      } **/
+
+        //let kes_usd = getUsdToKes();
 
         return {
           BTC: data.bitcoin.usd,
@@ -83,13 +94,36 @@ const ERC20_ABI = [
           USDT: data.tether.usd,
           USDC: data["usd-coin"].usd,
           USDTe : data.tether.usd,
-          USDCe : data["usd-coin"].usd
+          USDCe : data["usd-coin"].usd,
+          Mpesa : data["celo-kenyan-shilling"].usd,
+          Paystack : data["celo-kenyan-shilling"].usd
         };
       } catch (err) {
         console.error("Error fetching prices:", err);
         return null;
       }
     }
+
+const url = "https://api.coingecko.com/api/v3/simple/price?ids=celo-kenyan-shilling&vs_currencies=usd,kes";
+
+async function getCKESPrice() {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    // Extract prices
+    const ckesUsd = data["celo-kenyan-shilling"].usd;
+    const ckesKes = data["celo-kenyan-shilling"].kes;
+
+    console.log(`CKES Price in USD: $${ckesUsd}`);
+    console.log(`CKES Price in KES: KSh ${ckesKes}`);
+    return { usd: ckesUsd, kes: ckesKes };
+  } catch (error) {
+    console.error("Error fetching CKES price:", error);
+  }
+}
+
+// Call the function
+//getCKESPrice();
 
     /** Example usage
     (async () => {
@@ -99,6 +133,7 @@ const ERC20_ABI = [
 
     // unified send
     const prices = getPrices();
+    const kes_prices = getCKESPrice();
    
 
     async function sendToken({ token, chain, recipient, amount}) {
@@ -113,6 +148,8 @@ const ERC20_ABI = [
       const min_btc = (10/prices.BTC).toFixed(8);
       const min_avax = (10/prices.AVAX).toFixed(4);
       const min_bnb = (10/prices.BNB).toFixed(4);
+      const min_kes = (10/kes_prices.usd).toFixed(0);
+
 
       const minAmount = {
         ETH: min_eth,//ethers.parseEther(min_eth.toString()),
@@ -155,12 +192,16 @@ const ERC20_ABI = [
     let crypto = document.getElementById('amount');
     let input = document.getElementById("usd");
     let usd = document.getElementById('usd').value
+    let _amount = document.getElementById('amount').value
 
   const usdInput = document.getElementById("usd");
   const tokenSelect = document.getElementById("payment_method");
   const cryptoOutput = document.getElementById("amount");
   const cryptoTo = document.getElementById("to_crypto");
-
+  const kes_amount = document.getElementById("paystackAmount");
+  const mpesa_amount = document.getElementById("mpesa_amount");
+  const wallet  = document.getElementById("wallet_address");
+  const user_name  = localStorage.getItem("tmx_gold_name");
 
   async function convertUsdToCrypto() {
      const prices = {
@@ -171,27 +212,46 @@ const ERC20_ABI = [
     USDT: 1,
     USDTe: 1,
     USDCe: 1,
-    BTC: 64000
+    BTC: 64000,
+    Mpesa: 100,
+    Paystack : 100
   };
     const usd = parseFloat(usdInput.value);   // ✅ convert string to number
     const option = tokenSelect.value;         // ✅ get selected token
-
+  
     if (isNaN(usd)) {
       cryptoOutput.value = "Invalid USD";
       return;
     }
-
+     
     let result;
 
+  
     if (prices[option]) {
       result = usd / parseFloat(prices[option]);
     } else {
       result = usd / parseFloat(prices.BTC);
     }
+  
 
     cryptoOutput.value = result.toString();
-    cryptoTo.innerText = option.toString();
+    
+    if (option === "Mpesa"){
+      cryptoTo.innerText = "KES";
+      mpesa_amount.value = result.toString();
+    }
+    else if (option === "Paystack") {
+      cryptoTo.innerText = "USD";
+      kes_amount.value = result.toString();
+    }
+    else {
+      cryptoTo.innerText = option.toString();
+    }
+    
   }
+  
+
+  
 
   // Run when USD changes or token changes
   usdInput.onchange = convertUsdToCrypto;
@@ -214,6 +274,7 @@ const ERC20_ABI = [
     let option = document.getElementById('payment_method').value;
     if (option === 'ETH'){
       await sendToken({ token: "ETH", chain: "ethereum", recipient: ETH_ADDRESS, amount: amount });
+
     
     }
     else if (option === 'AVAX'){
@@ -248,7 +309,7 @@ const ERC20_ABI = [
    }
    else 
     {
-       const selected = document.getElementById("payment_method").value;
+    const selected = document.getElementById("payment_method").value;
     const usdAmount = document.getElementById("usd").value;
     const btcAmount = document.getElementById("amount").value;
 
@@ -274,7 +335,117 @@ const ERC20_ABI = [
       );
     } else if (selected === "") {
       alert("Please select a payment option first.");
-    } else {
+    } else if (selected === "Paystack" || selected === "Mpesa" ) {
+    const paymentMethod = document.getElementById("payment_method").value;
+      if (paymentMethod !== "Paystack" || paymentMethod !== "Mpesa") {
+        return;
+      }
+      if (paymentMethod === "Mpesa") {
+      let amount = document.getElementById("mpesa_amount").value;
+      let mpesa_number = document.getElementById("mpesa_number").value;
+      
+      let kes = parseFloat(10/kes_prices.usd);
+      const minAmountKes = (kes).toFixed(0);
+      if (!email || !amount) {
+        alert("Please enter both email and amount.");
+        return;
+      }
+
+      if (!amount || amount < minAmountKes) {
+        alert("amount must be greater than" + minAmountKes + "Kenyan Shilling");
+        return;
+      }
+
+      let token = parseFloat(amount * kes_prices.usd/0.005);
+
+      var handler = PaystackPop.setup({
+        key: 'pk_live_7bda8bdfc8d90392fde6a15590c7e470127dd2d2', // replace with the TMX public key
+        email: "tony@tmxglobal.com",
+        amount: amount,
+        currency: "KES",
+        ref: '' + Math.floor((Math.random() * 1000000000) + 1),
+        channels: ['mobile_money'],              // ✅ Enable mobile money (includes M-Pesa)
+        metadata: {
+          custom_fields: [
+            { display_name: "Phone Number", variable_name: "phone", value: mpesa_number }
+          ]
+        },
+        callback: function (response) {
+          fetch("/payments/verify-mpesa", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ reference: response.reference, email: user_name, address: wallet.value, amount : amount, token : token, usd: usdAmount })
+          })
+            .then(res => res.json())
+            .then(data => {
+              if (data.status === "success") {
+                alert("Payment successful! Crypto will be sent to your wallet.");
+              } else {
+                alert("Payment verification failed.");
+              }
+            })
+            .catch(err => {
+              console.error("Verification error:", err);
+              alert("Error verifying payment.");
+            });
+        },
+        onClose: function () {
+          alert("Transaction was not completed, window closed.");
+        }
+      });
+
+      handler.openIframe();
+    }
+
+       if (paymentMethod === "Paystack") {
+      let email = document.getElementById("paystackEmail").value;
+      let amount = document.getElementById("paystackAmount").value;
+
+
+      if (!email || !amount) {
+        alert("Please enter both email and amount.");
+        return;
+      }
+
+      if (!amount || amount < 10) {
+        alert("amount must be greater than" + 10 + "USD");
+        return;
+      }
+      let token = parseFloat(amount/0.005);
+
+      var handler = PaystackPop.setup({
+        key: 'pk_live_7bda8bdfc8d90392fde6a15590c7e470127dd2d2', // replace with the TMX public key
+        email: email,
+        amount: amount,
+        currency: "USD",
+        ref: '' + Math.floor((Math.random() * 1000000000) + 1),
+        callback: function (response) {
+          fetch("/payments/paystack", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ reference: response.reference, email: user_name, address: wallet.value, amount : amount, token : token, usd: usdAmount })
+          })
+            .then(res => res.json())
+            .then(data => {
+              if (data.status === "success") {
+                alert("Payment successful! Crypto will be sent to your wallet.");
+              } else {
+                alert("Payment verification failed.");
+              }
+            })
+            .catch(err => {
+              console.error("Verification error:", err);
+              alert("Error verifying payment.");
+            });
+        },
+        onClose: function () {
+          alert("Transaction was not completed, window closed.");
+        }
+      });
+      handler.openIframe();
+    }  
+    }
+    else  {
       alert(`You selected: ${selected}. Checkout for this method is not yet implemented.`);
     }
       //await sendToken({ token: "USDCe", chain: "avalanche", recipient: ETH_ADDRESS, amount: amount });
@@ -282,9 +453,83 @@ const ERC20_ABI = [
    
   }
 
+
+  /* ------------------------------
+            Paystack
+
+-------------------------------*/
+// Show Paystack fields when Paystack is selected
+document.getElementById("payment_method").addEventListener("change", function () {
+  const selected = this.value;
+  const paystackFields = document.getElementById("paystackFields");
+
+  if (selected === "Paystack") {
+    paystackFields.style.display = "block";
+  } else {
+    paystackFields.style.display = "none";
+  }
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+        const dropdown = document.getElementById("payment_method");
+        const fields = document.querySelectorAll(".method-fields");
+
+        function updateFields() {
+            const selected = dropdown.value;
+            fields.forEach(field => {
+            field.style.display = (field.dataset.method === selected) ? "block" : "none";
+            });
+        }
+
+        dropdown.addEventListener("change", updateFields);
+
+        // Show default on load
+        updateFields();
+        connect();
+        });
+
+
+  async function connect() {
+      if (!window.ethereum) return alert("Install MetaMask!");
+       
+      //provider = new ethers.providers.Web3Provider(window.ethereum);
+      provider = new ethers.BrowserProvider(window.ethereum)
+      await provider.send("eth_requestAccounts", []);
+      signer = await provider.getSigner();
+      console.log("Signer address:", signer.address);
+      const account = signer.address;
+      wallet.value = account;
+  }
+
 sendButton.onclick = sendSelectedToken;
 
 
- /** document.getElementById("btnBuyTokens").addEventListener("click", function() {
-    
-  }); **/
+  async function checkPayment(crypto, email, from , amount) {
+    try {
+      const res = await fetch(`/payments/${crypto}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: email,  amount : amount, from : from})
+          })
+      const data = await res.json();
+      const _status = data.status;
+      const _data = data.data;
+      if (_data && _status == 201 ) {
+        document.getElementById("status").textContent = "✅ Payment Confirmed!";
+        document.getElementById("status").className = "confirmed";
+        clearInterval(polling);
+      } else {
+        document.getElementById("status").textContent = "⚡ Payment detected, waiting for confirmations...";
+        document.getElementById("status").className = "pending";
+      }
+    } catch (err) {
+      console.error("Error checking payment:", err);
+    }
+  }
+
+  const _cypto = option.toLowerCase();
+
+
+  const polling = setInterval(() => checkPayment(_cypto, user_name, _amount, ETH_ADDRESS), 30000);
+  checkPayment(cypto, user_name, _amount, ETH_ADDRESS);

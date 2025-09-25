@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+const ethers = require("ethers");
 
 // -------- CONFIG --------
 const dotenv = require('dotenv');
@@ -8,7 +8,8 @@ const listen = require('./listen')
 const {successResponse, errorResponse} = require('../lib/response');
 const RPC_URL = "https://api.avax.network/ext/bc/C/rpc"; // Avalanche mainnet
 const PRIVATE_KEY = process.env.PRIVATE_KEY;   // reserve wallet PK
-const TOKEN_ADDRESS = config.TMX_GOLD_ADDRESS; // ERC20 contract on Avalanche
+const TOKEN_ADDRESS = process.env.TMX_GOLD_ADDRESS; // ERC20 contract on Avalanche
+const transactionsModel = require('../models/transactions');
 
 const logStruct = (func, error) => {
   return {'func': func, 'file': 'TokensController', error}
@@ -50,6 +51,7 @@ const SendTokens = async (reqData) => {
         const tx = await token.transfer(TO_ADDRESS, amountInUnits);
         console.log("Tx submitted:", tx.hash);
         const prices = await listen.getPrices();
+        let _amount = parseFloat(AMOUNT*(prices.TMXG));
         // Wait for confirmation
         let response = await tx.wait();
         let data = {
@@ -59,11 +61,22 @@ const SendTokens = async (reqData) => {
                     mode: "avax",
                     type: "debit",
                     to: TO_ADDRESS,    
-                    status: "complete",
+                    status: "pending",
                     value: value,
-                    usd: AMOUNT*(prices.AVAX)
+                    usd: _amount.toFixed(2)
                  }
         await transactionsModel.createTransaction(data);
+        let dat = {
+                    email: reqData.email,
+                    address: reqData.from,
+                    tx_hash: tx.hash,
+                    type: "buy",
+                    to: TO_ADDRESS,    
+                    status: "pending",
+                    value: value,
+                    usd: _amount.toFixed(2)
+                 }
+        await transactionsModel.createTokenTransaction(dat);
         console.log("✅ Transfer confirmed");
          return successResponse(201, response, 'transactionCreated')
 

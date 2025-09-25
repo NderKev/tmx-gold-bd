@@ -1,9 +1,9 @@
 
-import { ethers } from "ethers";
-import fetch from "node-fetch";
+const ethers = require( "ethers");
+const fetch = require("node-fetch");
 const transactionsModel = require('../models/transactions');
-import WebSocket from "ws";
-import axios from "axios";
+const WebSocket = require("ws");
+const axios = require("axios");
 const {successResponse, errorResponse} = require('../lib/response');
 // ---------- CONFIG ----------
 const config = require('../config');
@@ -39,6 +39,7 @@ async function getPrices() {
       USDC: data["usd-coin"].usd,
       AVAX: data["avalanche-2"].usd,
       BNB: data.binancecoin.usd,
+      TMXG: 0.005
     };
 
     return prices;
@@ -148,7 +149,7 @@ const listenBTC = async (reqData) => {
                 console.log(`💰 BTC deposit received: ${btc} BTC in tx ${data.tx.txid}`);
                  let data = {
                     email: reqData.email,
-                    address: reqData.from,
+                    address: data.tx.from,
                     tx_hash: data.tx.txid,
                     mode: "btc",
                     type: "transfer",

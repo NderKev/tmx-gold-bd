@@ -10,24 +10,10 @@ exports.getTransactionById = async (id) => {
 };
 
 
-exports.getTransactionByUserId = async (user_id) => {
+exports.getTransactionByUserEmail = async (email) => {
   const query = db.read.select('*')
   .from('transactions')
-  .where('user_id', '=', user_id);
-  return query;
-};
-
-
-exports.getTransactionBySellerId = async (seller_id, order_id, product_id) => {
-  const query = db.read.select('transactions.*')
-  .from('transactions')
-  .join('traded_items','traded_items.order_id','=','transactions.destination')
-  .join('orders', 'orders.id', '=', 'traded_items.order_id')
-  //.join('products', 'products.id', '=', 'traded_items.product_id')
-  .where('traded_items.seller_id', '=', seller_id)
-  .where('transactions.destination', '=', order_id)
-  .where('traded_items.product_id', '=', product_id);
-
+  .where('email', '=', email);
   return query;
 };
 
@@ -39,10 +25,11 @@ exports.getAllTransactions = async () => {
   return query;
 };
 
-exports.getTransactionsByMode = async (mode) => {
+exports.getTransactionsByMode = async (data) => {
   const query = db.read.select('*')
   .from('transactions')
-  .where('mode', '=', mode);
+  .where('email', '=', data.email)
+  .where('mode', '=', data.mode);
   return query;
 };
 
@@ -65,13 +52,75 @@ exports.createTransaction = async (data) => {
   return query;
 };
 
+
+exports.createFiatTransaction = async (data) => {
+  const createdAt = moment().format('YYYY-MM-DD HH:mm:ss');
+  const query = db.write('fiat').insert({
+    email: data.email,
+    ref_no: data.ref_no,
+    mode: data.mode,
+    fiat: data.fiat,
+    to: data.to,    
+    status: data.status,
+    amount: data.amount,
+    usd: data.usd,
+    created_at : createdAt,
+    updated_at : createdAt
+  });
+  console.info("query -->", query.toQuery())
+  return query;
+};
+
+
+exports.createTokenTransaction = async (data) => {
+  const createdAt = moment().format('YYYY-MM-DD HH:mm:ss');
+  const query = db.write('tokens').insert({
+    email: data.email,
+    address: data.address,
+    tx_hash: data.tx_hash,
+    type: data.type,
+    to: data.to,    
+    status: data.status,
+    value: data.value,
+    usd: data.usd,
+    created_at : createdAt,
+    updated_at : createdAt
+  });
+  console.info("query -->", query.toQuery())
+  return query;
+};
+
 exports.updateTransaction = async (data) => {
   const createdAt = moment().format('YYYY-MM-DD HH:mm:ss');
   const query = db.write('transactions').update({
     status : data.status,
     updated_at : createdAt
   })
-  .where('id', '=', data.id);
+  .where('tx_hash', '=', data);
+
+  console.info("query -->", query.toQuery())
+  return query;
+};
+
+exports.updateFiatTransaction = async (data) => {
+  const createdAt = moment().format('YYYY-MM-DD HH:mm:ss');
+  const query = db.write('transactions').update({
+    status : data.status,
+    updated_at : createdAt
+  })
+  .where('ref_no', '=', data);
+
+  console.info("query -->", query.toQuery())
+  return query;
+};
+
+exports.updateTokenTransaction = async (data) => {
+  const createdAt = moment().format('YYYY-MM-DD HH:mm:ss');
+  const query = db.write('tokens').update({
+    status : data.status,
+    updated_at : createdAt
+  })
+  .where('tx_hash', '=', data);
 
   console.info("query -->", query.toQuery())
   return query;
@@ -83,8 +132,8 @@ exports.updateTransactionRef = async (data) => {
     status : data.status,
     updated_at : createdAt
   })
-  .where('reference_no', '=', data.reference_no);
-
+  .where('email', '=', data.email)
+  .where('tx_hash', '=', data.tx_hash);
   console.info("query -->", query.toQuery())
   return query;
 };

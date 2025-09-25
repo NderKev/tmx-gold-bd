@@ -34,27 +34,12 @@ $(document).ready(function(){
 
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-        const dropdown = document.getElementById("paymentMethod");
-        const fields = document.querySelectorAll(".method-fields");
 
-        function updateFields() {
-            const selected = dropdown.value;
-            fields.forEach(field => {
-            field.style.display = (field.dataset.method === selected) ? "block" : "none";
-            });
-        }
-
-        dropdown.addEventListener("change", updateFields);
-
-        // Show default on load
-        updateFields();
-        });
 
 /* ------------------------------
             Paystack
 
--------------------------------*/
+-------------------------------
 // Show Paystack fields when Paystack is selected
 document.getElementById("payment_method").addEventListener("change", function () {
   const selected = this.value;
@@ -68,18 +53,23 @@ document.getElementById("payment_method").addEventListener("change", function ()
 });
 
 
-// Paystack button handler
+/** Paystack button handler
 document.getElementById("btnBuyTokens").addEventListener("click", function () {
-  const paymentMethod = document.getElementById("paymentMethod").value;
+  const paymentMethod = document.getElementById("payment_method").value;
   if (paymentMethod !== "Paystack") {
     return;
   }
 
   let email = document.getElementById("paystackEmail").value;
-  let amount = document.getElementById("paystackAmount").value * 100; 
+  let amount = document.getElementById("paystackAmount").value;
 
   if (!email || !amount) {
     alert("Please enter both email and amount.");
+    return;
+  }
+
+   if (!amount || amount < minAmountKes) {
+    alert("amount must be greater than" + minAmountKes + "Kenyan Shilling");
     return;
   }
 
@@ -114,5 +104,5 @@ document.getElementById("btnBuyTokens").addEventListener("click", function () {
   });
 
   handler.openIframe();
-});
+}); **/
 

@@ -71,9 +71,9 @@ app.use('/tmxGold/v1/upload', uploadRoute); **/
 /** -----------------------
   route for paymets 
  -----------------------**/
-/** const paymentRoutes = require('./routes/payments');
+const paymentRoutes = require('./routes/payments');
 app.use('/tmxGold/v1/payments', paymentRoutes);
-**/
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

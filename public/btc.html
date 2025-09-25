@@ -82,7 +82,7 @@
   // ✅ Clear container first to avoid stacking multiple QR codes
   const qrContainer = document.getElementById("qrContainer");
   qrContainer.innerHTML = "";
-
+  const amount_btc =  document.getElementById("amountBtc").value;
   // ✅ Generate QR
   new QRCode(qrContainer, {
     text: qrContent,
@@ -96,6 +96,8 @@
   return { usd, btc, btcAddress };
 }
 
+ const user_name  = localStorage.getItem("tmx_gold_name");
+
   async function checkPayment(expectedBtc, btcAddress) {
     try {
       const res = await fetch(`https://blockstream.info/api/address/${btcAddress}`);
@@ -105,6 +107,11 @@
       if (received >= parseFloat(expectedBtc)) {
         document.getElementById("status").textContent = "✅ Payment Confirmed!";
         document.getElementById("status").className = "confirmed";
+        await fetch("/payments/btc", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: user_name,  amount : amount_btc})
+          })
         clearInterval(polling);
       } else if (received > 0) {
         document.getElementById("status").textContent = "⚡ Payment detected, waiting for confirmations...";
