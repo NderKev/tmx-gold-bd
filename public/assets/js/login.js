@@ -85,21 +85,18 @@ $("#btnLogin").click(function(e){
         //window.location.href = `/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`;
         //window.location.href = '/index-dashboard.html';
         fetch(`/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-          }
-        })
-        .then(async res => {
-          const contentType = res.headers.get("content-type");
-          if (!contentType || !contentType.includes("application/json")) {
-            const text = await res.text(); // inspect raw HTML for debugging
-            throw new Error(`Non-JSON response: ${text.substring(0,100)}…`);
-          }
-          return res.json();
-        })
-        .then(data => console.log(data))
-        .catch(err => console.error(err));
+            headers: {
+              // Remove 'Content-Type': 'application/json' to avoid mismatch
+              'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+          })
+          .then(res => res.text())   // 🔹 Expect HTML, not JSON
+          .then(html => {
+            console.log(html);
+            // For example: insert into a container
+            document.getElementById('content').innerHTML = html;
+          })
+          .catch(err => console.error(err));
       }
       else if (results.status === 401 || results.message === 'wrongPassword'){
         //alert("here");
