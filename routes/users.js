@@ -22,17 +22,17 @@ router.post('/register',  async (req, res) => {
     req.session.password = req.body.password;
     req.session.user_roles = response.meta.user_roles;
   }
-  const payload = { id: response.data[0].id, role: response.data[0].role};
-  const token   = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '48h' });
+  //const payload = { id: response.data[0].id, role: response.data[0].role};
+  //const token   = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '48h' });
 
   // ✅ Set the JWT as a secure HTTP-only cookie
-  res.cookie('token', token, {
+  /**res.cookie('token', token, {
   httpOnly: true,
   secure: true,
   sameSite: 'none',
   domain: '.tmxgoldcoin.co', // note the dot to cover subdomains
   maxAge: 60 * 60 * 1000 * 48
-});
+}); **/
    /** const regToken = await authController.generateToken(req.body);
       var packageReq = {
          token : regToken.data.token.token,
