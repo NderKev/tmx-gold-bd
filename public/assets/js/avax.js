@@ -162,6 +162,7 @@ async function getCKESPrice() {
 
       if (["ETH", "AVAX", "BNB"].includes(token)) {
         parsedAmount = ethers.parseEther(amount.toString());
+        //parsedAmount = parsedAmount.toFixed(4);
         if (parsedAmount < minAmount[token]) {
           return alert(`Amount too low. Min for ${token} is ${ethers.formatEther(minAmount[token])}`);
         }
@@ -229,10 +230,12 @@ async function getCKESPrice() {
   
     if (prices[option]) {
       result = usd / parseFloat(prices[option]);
+      
     } else {
       result = usd / parseFloat(prices.BTC);
     }
-  
+    result = parseFloat(result);
+    result = result.toFixed(4);
 
     cryptoOutput.value = result.toString();
     

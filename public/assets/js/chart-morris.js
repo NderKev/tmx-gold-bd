@@ -109,7 +109,7 @@ jQuery(function($) {
                     value: 45, label: 'active deals'
                 }
                 , {
-                    value: 55, label: 'unconfiremed'
+                    value: 55, label: 'unConfirmed'
                 }
                 ], resize: true, redraw: true, backgroundColor: '#ffffff', labelColor: '#999999', colors: [ "40-#e8962e-#e45131:70-#e45131-#e45131:90-#e45131", '#f7f7f7']
             }
