@@ -1,5 +1,132 @@
 
+
 <!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bitcoin Checkout</title>
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; background:#0f1724; color:#fff; }
+  .card { margin:50px auto; padding:20px; max-width:420px; background:#1a2238; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.4); }
+  h1 { margin-bottom:10px; }
+  .qr { border-radius:10px; margin:15px 0; display:flex; justify-content:center; }
+  code { background:#0b1220; padding:6px 10px; border-radius:6px; display:inline-block; word-break:break-all; }
+  .price { font-size:18px; margin-top:8px; }
+  #status { margin-top:20px; font-weight:bold; }
+  .pending { color:orange; }
+  .confirmed { color:limegreen; }
+  #copyToast {
+    visibility:hidden;
+    background:#222;
+    color:#fff;
+    padding:6px 12px;
+    border-radius:6px;
+    margin-left:10px;
+    font-size:14px;
+    position:relative;
+    top:-2px;
+    transition:opacity 0.3s ease;
+    opacity:0;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Pay with Bitcoin</h1>
+    <div class="qr"><canvas id="qrCanvas" width="200" height="200"></canvas></div>
+
+    <p><b>Send exactly:</b> <span id="amountBtc">—</span> BTC</p>
+    <p class="price">≈ <span id="amountFiat">$0.00</span></p>
+    <p><b>To address:</b></p>
+    <p>
+      <strong>BTC Address:</strong>
+      <a id="btcAddressLink" href="#" target="_blank">
+        <span id="btcAddress"></span>
+      </a>
+      <button id="copyBtn" style="margin-left:10px;padding:4px 8px;cursor:pointer;">Copy</button>
+      <span id="copyToast">Copied!</span>
+    </p>
+    <div id="status" class="pending">⏳ Waiting for payment...</div>
+  </div>
+
+  <!-- QRCode library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script>
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    function generateQR(content) {
+      const canvas = document.getElementById('qrCanvas');
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      QRCode.toCanvas(canvas, content, { errorCorrectionLevel: 'H', width: 200 }, function (error) {
+        if (error) console.error(error);
+      });
+    }
+
+    function populateFromQuery() {
+      const usd = parseFloat(getQueryParam('usd')) || 0;
+      let btc = getQueryParam('btc') || '0.0';
+      const btcAddress = '13hm8o5cG63H7fM5CuioY5iwnukHZPX6VD';
+
+      btc = parseFloat(btc).toFixed(8).replace(/\.0+$/, '');
+      const qrContent = `bitcoin:${btcAddress}?amount=${btc}`;
+
+      document.getElementById('amountBtc').textContent = btc;
+      document.getElementById('amountFiat').textContent = `$${usd.toFixed(2)}`;
+      document.getElementById('btcAddress').textContent = btcAddress;
+      document.getElementById('btcAddressLink').href = qrContent;
+
+      generateQR(qrContent);
+      return { usd, btc, btcAddress };
+    }
+
+    async function checkPayment(expectedBtc, btcAddress) {
+      try {
+        const res = await fetch(`https://blockstream.info/api/address/${btcAddress}`);
+        const data = await res.json();
+        const received = data.chain_stats.funded_txo_sum / 1e8;
+
+        if (received >= parseFloat(expectedBtc)) {
+          document.getElementById('status').textContent = '✅ Payment Confirmed!';
+          document.getElementById('status').className = 'confirmed';
+          clearInterval(polling);
+        } else if (received > 0) {
+          document.getElementById('status').textContent = '⚡ Payment detected, waiting for confirmations...';
+          document.getElementById('status').className = 'pending';
+        }
+      } catch (err) {
+        console.error('Error checking payment:', err);
+      }
+    }
+
+    document.getElementById('copyBtn').addEventListener('click', function() {
+      const address = document.getElementById('btcAddress').textContent;
+      navigator.clipboard.writeText(address).then(() => {
+        const toast = document.getElementById('copyToast');
+        toast.style.visibility = 'visible';
+        toast.style.opacity = '1';
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          setTimeout(() => toast.style.visibility = 'hidden', 300);
+        }, 2000);
+      }).catch(err => console.error('Failed to copy:', err));
+    });
+
+    const { btc, btcAddress } = populateFromQuery();
+    const polling = setInterval(() => checkPayment(btc, btcAddress), 30000);
+    checkPayment(btc, btcAddress);
+  </script>
+</body>
+</html>
+
+
+
+
+<!-- <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -39,7 +166,8 @@
 <body>
   <div class="card">
     <h1>Pay with Bitcoin</h1>
-    <div class="qr" id="qrContainer"></div>
+   <div class="qr" id="qrContainer"></div> 
+
     <p><b>Send exactly:</b> <span id="amountBtc">—</span> BTC</p>
     <p class="price">≈ <span id="amountFiat">$0.00</span></p>
     <p><b>To address:</b></p>
@@ -54,8 +182,9 @@
     <div id="status" class="pending">⏳ Waiting for payment...</div>
   </div>
 
-<!-- ✅ Local QR generator -->
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<!-- ✅ Local QR generator 
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 <script>
   function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
@@ -142,7 +271,7 @@
   checkPayment(btc, btcAddress);
 </script>
 </body>
-</html>
+</html> -->
 
 
 <!-- <!doctype html>
