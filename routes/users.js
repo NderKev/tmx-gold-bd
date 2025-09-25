@@ -27,11 +27,12 @@ router.post('/register',  async (req, res) => {
 
   // ✅ Set the JWT as a secure HTTP-only cookie
   res.cookie('token', token, {
-    httpOnly: true,          // cannot be accessed by JS (prevents XSS theft)
-    secure: true,            // only over HTTPS (set false for local dev if not using HTTPS)
-    sameSite: 'strict',      // blocks CSRF by restricting cross-site sends
-    maxAge: 60 * 60 * 1000 * 48  // 48 hour
-  });
+  httpOnly: true,
+  secure: true,
+  sameSite: 'none',
+  domain: '.tmxgoldcoin.co', // note the dot to cover subdomains
+  maxAge: 60 * 60 * 1000 * 48
+});
    /** const regToken = await authController.generateToken(req.body);
       var packageReq = {
          token : regToken.data.token.token,
