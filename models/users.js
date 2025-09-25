@@ -7,7 +7,7 @@ const moment = require('moment');
 const validateDetails = require('../validators/users');
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/users');
-require('dotenv').config()
+require('dotenv').config('')
 
 // const bcrypt = require('bcrypt');
 // const saltRounds = 10;

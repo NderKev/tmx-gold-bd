@@ -3,12 +3,13 @@
 const express  = require('express');
 const router  = express.Router();
 const userController = require('../controllers/users');
-const {authenticator, auth, allowSeller} = require('../lib/common');
+const {authenticator, allowSeller} = require('../lib/common');
 const path = require('path');
-const authController = require('../controllers/auth');
+//const authController = require('../controllers/auth');
 const url = require('url');
 const checkAdmin = require('../middleware/checkAdmin');
 const checkUser = require('../middleware/checkUser');
+const auth = require('../middleware/auth');
 
 //const createAuthToken = require('../models/users');
 // CRUD user
@@ -36,7 +37,7 @@ router.get('/fetch/:id',  async (req, res) => {
   return res.status(response.status).send(response)
 });
 
-router.post('/updatePassword', auth, async (req, res) => {
+router.post('/updatePassword', async (req, res) => {
   const response = await userController.updatePassword(req.body)
   return res.status(response.status).send(response)
 })
@@ -199,84 +200,84 @@ router.get('/home', async (req, res) => {
 });
 
 
-router.get('/admin/profile/:id', authenticator, checkAdmin, async (req, res) => {
+router.get('/admin/profile/:id', auth, authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   //req.body.customer = req.params.
   //const response = await userController.fetchUser(req.body)
   res.sendFile(path.join(__dirname, '../public' , 'index-ico-admin.html'));
 });
 
-router.get('/admin/profile/:id/gateways', authenticator, checkAdmin, async (req, res) => {
+router.get('/admin/profile/:id/gateways', auth, authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'payment-gateways.html'));
 });
 
-router.get('/admin/profile/:id/dashboard', authenticator, checkAdmin, async (req, res) => {
+router.get('/admin/profile/:id/dashboard', auth, authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   //req.body.customer = req.params.
   //const response = await userController.fetchUser(req.body)
   res.sendFile(path.join(__dirname, '../public' , 'index-dashboard.html'));
 });
 
-router.get('/admin/profile/:id/trade', authenticator, checkAdmin, async (req, res) => {
+router.get('/admin/profile/:id/trade', auth, authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'index-trading-view.html'));
 });
 
 
-router.get('/admin/profile/:id/buy', authenticator, checkAdmin, async (req, res) => {
+router.get('/admin/profile/:id/buy', auth, authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'buy-and-sell.html'));
 });
 
-router.get('/admin/profile/:id/affiliate', authenticator, checkAdmin, async (req, res) => {
+router.get('/admin/profile/:id/affiliate', auth, authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , '/affailite-program.html'));
 });
 
-router.get('/admin/profile/:id/wallet', authenticator, checkAdmin, async (req, res) => {
+router.get('/admin/profile/:id/wallet', auth, authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'my-wallet.html'));
 });
 
 
-router.get('/admin/profile/:id/security', authenticator, checkAdmin, async (req, res) => {
+router.get('/admin/profile/:id/security', auth, authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'security.html'));
 });
 
-router.get('/admin/profile/:id/account', authenticator, checkAdmin, async (req, res) => {
+router.get('/admin/profile/:id/account', auth, authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'account-confirmation.html'));
 });
 
-router.get('/admin/profile/:id/settings', authenticator, checkAdmin, async (req, res) => {
+router.get('/admin/profile/:id/settings', auth, authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'settings.html'));
 });
 
-router.get('/admin/profile/:id/faq', authenticator, checkAdmin, async (req, res) => {
+router.get('/admin/profile/:id/faq', auth, authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'ui-faq.html'));
 });
 
-router.get('/admmin/profile/:id/support', authenticator, checkAdmin, async (req, res) => {
+router.get('/admmin/profile/:id/support', auth,  authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'ui-support.html'));
 });
 
-router.get('/customers', authenticator, checkAdmin,  async (req, res, next) => {
+router.get('/customers', auth, authenticator, checkAdmin,  async (req, res, next) => {
   const response = await userController.fetchAllCustomers();
   return res.status(response.status).send(response)
 })
 
-router.put('/activate/:id', authenticator, checkAdmin, async (req, res) => {
+router.put('/activate/:id', auth, authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   const response = await userController.activateUser(req.body);
   return res.status(response.status).send(response)
 })
 
-router.put('/deActivate/:id', authenticator, checkAdmin, async (req, res) => {
+router.put('/deActivate/:id', auth, authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   const response = await userController.deActivateUser(req.body);
   return res.status(response.status).send(response)
@@ -301,60 +302,60 @@ router.put('/deActivateSeller/:id', authenticator, checkAdmin, async (req, res) 
   return res.status(response.status).send(response)
 })
 
-router.get('/customer/profile/:id', authenticator, checkUser, async (req, res) => {
+router.get('/customer/profile/:id', auth, authenticator, checkUser, async (req, res) => {
   req.body.id = Number(req.params.id);
   //req.body.customer = req.params.
   //const response = await userController.fetchUser(req.body)
   res.sendFile(path.join(__dirname, '../public' , 'index-dashboard.html'));
 });
 
-router.get('/customer/profile/:id/trade', authenticator, checkUser, async (req, res) => {
+router.get('/customer/profile/:id/trade', auth, authenticator, checkUser, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'index-trading-view.html'));
 });
 
-router.get('/customer/profile/:id/user', authenticator, checkUser, async (req, res) => {
+router.get('/customer/profile/:id/user', auth, authenticator, checkUser, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'index-ico-user.html'));
 });
 
-router.get('/customer/profile/:id/buy', authenticator, checkUser, async (req, res) => {
+router.get('/customer/profile/:id/buy', auth, authenticator, checkUser, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'buy-and-sell.html'));
 });
 
-router.get('/customer/profile/:id/affiliate', authenticator, checkUser, async (req, res) => {
+router.get('/customer/profile/:id/affiliate', auth, authenticator, checkUser, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , '/affailite-program.html'));
 });
 
-router.get('/customer/profile/:id/wallet', authenticator, checkUser, async (req, res) => {
+router.get('/customer/profile/:id/wallet', auth, authenticator, checkUser, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'my-wallet.html'));
 });
 
 
-router.get('/customer/profile/:id/security', authenticator, checkUser, async (req, res) => {
+router.get('/customer/profile/:id/security', auth, authenticator, checkUser, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'security.html'));
 });
 
-router.get('/customer/profile/:id/account', authenticator, checkUser, async (req, res) => {
+router.get('/customer/profile/:id/account', auth, authenticator, checkUser, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'account-confirmation.html'));
 });
 
-router.get('/customer/profile/:id/settings', authenticator, checkUser, async (req, res) => {
+router.get('/customer/profile/:id/settings', auth, authenticator, checkUser, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'settings.html'));
 });
 
-router.get('/customer/profile/:id/faq', authenticator, checkUser, async (req, res) => {
+router.get('/customer/profile/:id/faq', auth, authenticator, checkUser, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'ui-faq.html'));
 });
 
-router.get('/customer/profile/:id/support', authenticator, checkUser, async (req, res) => {
+router.get('/customer/profile/:id/support', auth, authenticator, checkUser, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'ui-support.html'));
 });
@@ -389,11 +390,11 @@ router.get('/customer/profile/:id/support', authenticator, checkUser, async (req
 }); **/
 
 
-router.get('/public/index-ico-admin.html', checkAdmin, (req, res) => {
+router.get('/public/index-ico-admin.html', auth, checkAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, "../public/index-ico-admin.html"));
 });
 
-router.get('/public/payment-gateways.html', checkAdmin, (req, res) => {
+router.get('/public/payment-gateways.html', auth, checkAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, "../public/payment-gateways.html"));
 });
 

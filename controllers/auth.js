@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 ///const userModel = require('../models/users');
-require('dotenv').config()
+const dotenv = require('dotenv');
+//dotenv.config({ path: '../../.env'});
+dotenv.config({ path: '../.env'});
 
 const nodemailer = require('nodemailer');
 const {successResponse, errorResponse} = require('../lib/response');

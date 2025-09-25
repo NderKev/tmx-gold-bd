@@ -66,7 +66,7 @@ $("#btnLogin").click(function(e){
           //user_name = email;
           localStorage.setItem('user_id', results.meta.id)
 
-          //localStorage.setItem('token',results.data[0].token)
+          localStorage.setItem('token',results.data[0].token)
 
         }
         /** if (typeof token === 'undefined' || token === null || !token){
@@ -83,7 +83,16 @@ $("#btnLogin").click(function(e){
         //window.location.href = 'http://localhost:8787/tmxGold/v1/user/'+localStorage.getItem('role')+'/profile/'+localStorage.getItem('user_id') + '/';
         //window.location.href = `${AUTH_BACKEND_URL}/api/user/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`;
         //window.location.href = `/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`;
-        window.location.href = '/index-dashboard.html';
+        //window.location.href = '/index-dashboard.html';
+        fetch(`/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          }
+        })
+        .then(res => res.json())
+        .then(console.log)
+        .catch(console.error);
       }
       else if (results.status === 401 || results.message === 'wrongPassword'){
         //alert("here");
