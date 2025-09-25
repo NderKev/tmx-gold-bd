@@ -38,7 +38,12 @@
 
 
     <!-- HEADER SCRIPTS INCLUDED ON THIS PAGE - END -->
-
+    
+ <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css"
+    />
+    
 
     <!-- CORE CSS TEMPLATE - START -->
     <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
@@ -946,10 +951,10 @@
                                                         <option value="USDC">USD Coin</option>
                                                         <option value="USDTe">Avax Tether</option>
                                                         <option value="USDCe">Avax Coinbase</option>  
-                                                        <option value="Bank Transfer" >Bank Transfer</option>
-                                                        <option value="Mpesa">Mpesa</option>
-                                                        <option value="Paystack">PayStack</option>
-                                                        <option value="Wire Transfer">Wire Transfer</option>                       
+                                                        <option value="Bank_Transfer" >Bank Transfer</option>
+                                                        <option value="Mpesa">Mpesa / Airtel Money</option>
+                                                        <option value="Paystack">Debit / Credit Card</option>
+                                                         <option value="Wire_Transfer">Wire Transfer</option>                    
                                                     </select>
                                                     </div>
 
@@ -1044,28 +1049,43 @@
 
                                                 <!-- Mpesa -->
                                                 <div class="method-fields" data-method="Mpesa" style="display:none;">
-                                                  <label>Mpesa Phone Number</label>
-                                                  <input type="text" class="form-control" name="mpesa_number" placeholder="Enter Mpesa number">
+                                                 <!-- <label>Mpesa Phone Number</label>
+                                                  <input type="text" class="form-control" name="mpesa_number" id="phone"  placeholder="Enter Mpesa number"> -->
                                                   <label>Amount (in KES)</label>
-                                                  <input type="text" class="form-control" name="mpesa_amount" placeholder="Enter Amount in Kes">
+                                                  <input type="text" class="form-control" name="mpesa_amount" id="mpesa_amount" placeholder="Enter Amount in Kes">
+                                                </div>
+                                                <!--
+                                                Bank Name: Co-operative Bank of Kenya 
+                                                    Account Name: TMXGLOBAL EXPRESS SERVICE LTD 
+                                                    Account Type: USD Account 
+                                                    Account Number: 02100199856900 
+                                                    SWIFT Code: KCOOKENA 
+                                                    Branch: UNIVERSITY WAY BRANCH 
+                                                    Country: KENYA
+                                                    Best regards,
+                                                    TMXGLOBAL EXPRESS SERVICE
+                                                -->
+                                                <!-- Bank -->
+                                                <div class="method-fields" data-method="Bank_Transfer" style="display:none;">
+                                                  <label>Bank Name</label>
+                                                  <input type="text" class="form-control" name="bank_name"  value="Co-operative Bank of Kenya" readonly>
+                                                  <label>Account Number</label>
+                                                  <input type="text" class="form-control" name="bank_account" value="02100199856900" readonly>
                                                 </div>
 
-                                                <!-- Bank -->
-                                                <div class="method-fields" data-method="Bank" style="display:none;">
-                                                  <label>Bank Name</label>
-                                                  <input type="text" class="form-control" name="bank_name" placeholder="Enter Bank name">
-                                                  <label>Account Number</label>
-                                                  <input type="text" class="form-control" name="bank_account" placeholder="Enter Account number">
-                                                </div>
 
                                                 <!-- Wire Transfer -->
-                                                <div class="method-fields" data-method="Wire Transfer" style="display:none;">
+                                                <div class="method-fields" data-method="Wire_Transfer" style="display:none;">
                                                   <label>Beneficiary Name</label>
-                                                  <input type="text" class="form-control" name="wire_name" placeholder="Enter Beneficiary name">
+                                                  <input type="text" class="form-control" name="wire_name" value="TMXGLOBAL EXPRESS SERVICE LTD" readonly>
                                                   <label>IBAN / Account Number</label>
-                                                  <input type="text" class="form-control" name="wire_account" placeholder="Enter IBAN / Account number">
+                                                  <input type="text" class="form-control" name="wire_account" value="02100199856900" readonly>
                                                   <label>SWIFT/BIC</label>
-                                                  <input type="text" class="form-control" name="wire_swift" placeholder="Enter SWIFT/BIC">
+                                                  <input type="text" class="form-control" name="wire_swift" value="KCOOKENA" readonly>
+                                                  <label>BRANCH</label>
+                                                  <input type="text" class="form-control" name="wire_swift" value="UNIVERSITY WAY BRANCH" readonly>
+                                                  <label>COUNTRY</label>
+                                                  <input type="text" class="form-control" name="wire_swift" value="KENYA" readonly>
                                                 </div>
                                               </div>
                                              </div>
@@ -1517,9 +1537,19 @@
 
     <!-- Paystack inline script -->
     <script src="https://js.paystack.co/v1/inline.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
 
+     <style>
+      .iti {
+        width: 100%;
+      }
 
-    
+      .iti input {
+        width: 100% !important;
+        padding-left: 48px !important;
+        box-sizing: border-box;
+      }
+    </style>
 
 </body>
 

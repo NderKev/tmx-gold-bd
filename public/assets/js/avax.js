@@ -96,7 +96,7 @@ const ERC20_ABI = [
           USDTe : data.tether.usd,
           USDCe : data["usd-coin"].usd,
           Mpesa : data["celo-kenyan-shilling"].usd,
-          Paystack : data["celo-kenyan-shilling"].usd
+          Paystack : data["celo-kenyan-shilling"].kes
         };
       } catch (err) {
         console.error("Error fetching prices:", err);
@@ -132,9 +132,14 @@ async function getCKESPrice() {
     })(); **/
 
     // unified send
-    const prices = getPrices();
-    const kes_prices = getCKESPrice();
+    let prices, kes_prices;
    
+    (async () => {
+       prices = await getPrices();
+      console.log("Prices:", prices);
+       kes_prices = await getCKESPrice();
+       console.log("Prices:", kes_prices);
+    })();
 
     async function sendToken({ token, chain, recipient, amount}) {
       if (!window.ethereum) return alert("MetaMask not found!");
@@ -143,6 +148,7 @@ async function getCKESPrice() {
       
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
+      //prices = await getPrices();
       
       const min_eth = (10/prices.ETH).toFixed(4);
       const min_btc = (10/prices.BTC).toFixed(8);
@@ -192,7 +198,7 @@ async function getCKESPrice() {
     
     let crypto = document.getElementById('amount');
     let input = document.getElementById("usd");
-    let usd = document.getElementById('usd').value
+    
     let _amount = document.getElementById('amount').value
 
   const usdInput = document.getElementById("usd");
@@ -203,9 +209,10 @@ async function getCKESPrice() {
   const mpesa_amount = document.getElementById("mpesa_amount");
   const wallet  = document.getElementById("wallet_address");
   const user_name  = localStorage.getItem("tmx_gold_name");
+  const usd = document.getElementById('usd').value;
 
   async function convertUsdToCrypto() {
-     const prices = {
+     /* prices = {
     ETH: 2600,
     AVAX: 30,
     BNB: 320,
@@ -216,7 +223,8 @@ async function getCKESPrice() {
     BTC: 64000,
     Mpesa: 100,
     Paystack : 100
-  };
+  }; **/
+    prices = await getPrices();
     const usd = parseFloat(usdInput.value);   // ✅ convert string to number
     const option = tokenSelect.value;         // ✅ get selected token
   
@@ -225,27 +233,46 @@ async function getCKESPrice() {
       return;
     }
      
-    let result;
+    let result, result_kes;
 
-  
+    
     if (prices[option]) {
       result = usd / parseFloat(prices[option]);
+      result_kes = usd / parseFloat(prices[option]);
       
     } else {
       result = usd / parseFloat(prices.BTC);
+      result_kes = usd / parseFloat(prices.Paystack);
     }
-    result = parseFloat(result);
+    //result = parseFloat(result);
     result = result.toFixed(5);
 
     cryptoOutput.value = result.toString();
     
     if (option === "Mpesa"){
       cryptoTo.innerText = "KES";
-      mpesa_amount.value = result.toString();
+      result_kes = result_kes.toFixed(0);
+      mpesa_amount.value = result_kes.toString();
     }
     else if (option === "Paystack") {
       cryptoTo.innerText = "USD";
-      kes_amount.value = result.toString();
+      //result_kes = result_kes.toFixed(0);
+      cryptoOutput.value = usd;
+      kes_amount.value = usd;
+    }
+    else if (option === "Bank_Transfer") {
+      cryptoTo.innerText = "USD";
+      //result_kes = result_kes.toFixed(0);
+      cryptoOutput.value = usd;
+      //kes_amount.value = usd;
+      //relayButton.enabled = false;
+    }
+    else if (option === "Wire_Transfer") {
+      cryptoTo.innerText = "USD";
+      //result_kes = result_kes.toFixed(0);
+      cryptoOutput.value = usd;
+      //kes_amount.value = usd;
+      //relayButton.enabled = false;
     }
     else {
       cryptoTo.innerText = option.toString();
@@ -310,47 +337,24 @@ async function getCKESPrice() {
       await sendToken({ token: "USDCe", chain: "avalanche", recipient: ETH_ADDRESS, amount: amount });
     
    }
-   else 
-    {
-    const selected = document.getElementById("payment_method").value;
-    const usdAmount = document.getElementById("usd").value;
-    const btcAmount = document.getElementById("amount").value;
 
-    if (selected === "BTC") {
-      if (!usdAmount || usdAmount <= 0) {
-        alert("Please enter a valid USD amount.");
-        return;
-      }
-
-   
-      
-
-      const width = 500;
-      const height = 600;
-      const left = (window.screen.width / 2) - (width / 2);
-      const top = (window.screen.height / 2) - (height / 2);
-
-      // Pass USD + BTC to checkout.html
-      window.open(
-        `btc.html?usd=${usdAmount}&btc=${btcAmount}`,
-        "btcCheckout",
-        `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
-      );
-    } else if (selected === "") {
-      alert("Please select a payment option first.");
-    } else if (selected === "Paystack" || selected === "Mpesa" ) {
+   else if (option === 'Mpesa'){
     const paymentMethod = document.getElementById("payment_method").value;
-      if (paymentMethod !== "Paystack" || paymentMethod !== "Mpesa") {
+      if (paymentMethod !== "Mpesa") {
         return;
       }
-      if (paymentMethod === "Mpesa") {
-      let amount = document.getElementById("mpesa_amount").value;
-      let mpesa_number = document.getElementById("mpesa_number").value;
+        var iti = window.intlTelInputGlobals.getInstance(
+          document.querySelector("#phone")
+         );
+       let mpesa_number = iti.getNumber();
+       mpesa_number = mpesa_number.replace("+", 0);
+       let amount = document.getElementById("mpesa_amount").value;
+      //let mpesa_number = document.getElementById("mpesa_number").value;
       
       let kes = parseFloat(10/kes_prices.usd);
       const minAmountKes = (kes).toFixed(0);
-      if (!email || !amount) {
-        alert("Please enter both email and amount.");
+      if ( !amount) {
+        alert("Please enter  the amount in kenya shillings.");
         return;
       }
 
@@ -361,10 +365,11 @@ async function getCKESPrice() {
 
       let token = parseFloat(amount * kes_prices.usd/0.005);
 
+
       var handler = PaystackPop.setup({
         key: 'pk_live_7bda8bdfc8d90392fde6a15590c7e470127dd2d2', // replace with the TMX public key
         email: "tony@tmxglobal.com",
-        amount: amount,
+        amount: amount * 100,
         currency: "KES",
         ref: '' + Math.floor((Math.random() * 1000000000) + 1),
         channels: ['mobile_money'],              // ✅ Enable mobile money (includes M-Pesa)
@@ -398,10 +403,14 @@ async function getCKESPrice() {
       });
 
       handler.openIframe();
-    }
-
-       if (paymentMethod === "Paystack") {
-      let email = document.getElementById("paystackEmail").value;
+    
+   }
+   else if (option === 'Paystack'){
+    const paymentMethod = document.getElementById("payment_method").value;
+      if (paymentMethod !== "Paystack") {
+        return;
+      }
+     let email = document.getElementById("paystackEmail").value;
       let amount = document.getElementById("paystackAmount").value;
 
 
@@ -419,7 +428,7 @@ async function getCKESPrice() {
       var handler = PaystackPop.setup({
         key: 'pk_live_7bda8bdfc8d90392fde6a15590c7e470127dd2d2', // replace with the TMX public key
         email: email,
-        amount: amount,
+        amount: amount * 100,
         currency: "USD",
         ref: '' + Math.floor((Math.random() * 1000000000) + 1),
         callback: function (response) {
@@ -446,8 +455,32 @@ async function getCKESPrice() {
         }
       });
       handler.openIframe();
-    }  
-    }
+   }
+
+   else 
+    {
+    const selected = document.getElementById("payment_method").value;
+    const usdAmount = document.getElementById("usd").value;
+    const btcAmount = document.getElementById("amount").value;
+
+    if (selected === "BTC") {
+      if (!usdAmount || usdAmount <= 0) {
+        alert("Please enter a valid USD amount.");
+        return;
+      }
+
+      const width = 500;
+      const height = 600;
+      const left = (window.screen.width / 2) - (width / 2);
+      const top = (window.screen.height / 2) - (height / 2);
+
+      // Pass USD + BTC to checkout.html
+      window.open(
+        `btc.html?usd=${usdAmount}&btc=${btcAmount}`,
+        "btcCheckout",
+        `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
+      );
+    } 
     else  {
       alert(`You selected: ${selected}. Checkout for this method is not yet implemented.`);
     }
@@ -467,6 +500,18 @@ async function getCKESPrice() {
 
 -------------------------------*/
 // Show Paystack fields when Paystack is selected
+document.getElementById("payment_method").addEventListener("change", function () {
+  const selected = this.value;
+  const relayButton =  document.getElementById('btnBuyTokens');
+
+  if (selected === "Wire_Transfer" || selected === "Bank_Transfer") {
+    relayButton.disabled = true;
+  } else {
+    relayButton.disabled = false;
+  }
+});
+
+
 document.getElementById("payment_method").addEventListener("change", function () {
   const selected = this.value;
   const paystackFields = document.getElementById("paystackFields");
@@ -495,6 +540,22 @@ document.addEventListener("DOMContentLoaded", function () {
         // Show default on load
         updateFields();
         connect();
+          var _input = document.querySelector("#phone");
+        window.intlTelInput(_input, {
+          initialCountry: "ke",
+          // geoIpLookup: function (callback) {
+          //   $.get(
+          //     "https://ipinfo.io?token=<YOUR_TOKEN>",
+          //     function () {},
+          //     "jsonp"
+          //   ).always(function (resp) {
+          //     var countryCode = resp && resp.country ? resp.country : "us";
+          //     callback(countryCode);
+          //   });
+          // },
+          utilsScript:
+            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js", // for formatting
+        });
         });
 
 
@@ -536,4 +597,7 @@ sendButton.onclick = sendSelectedToken;
     }
   }
 
- 
+
+
+
+      
