@@ -32,10 +32,10 @@ app.use(function(req, res, next) {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, '/public')));
-app.use("/styles", express.static(path.join(__dirname, '/public/css')));
-app.use("/images", express.static(path.join(__dirname, '/public/img')));
-app.use("/scripts", express.static(path.join(__dirname, '/public/js')));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use("/styles", express.static(path.join(__dirname, 'public/assets/css')));
+app.use("/images", express.static(path.join(__dirname, 'public/assets/images')));
+app.use("/scripts", express.static(path.join(__dirname, 'public/assets/js')));
 app.use(
   session({
     name: 'sid',
