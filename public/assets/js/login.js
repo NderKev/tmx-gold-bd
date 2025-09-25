@@ -82,9 +82,9 @@ $("#btnLogin").click(function(e){
         //window.location.href = "complete_profile.html" //"https://agro-africa.io/tmxGold/v1/user/profile/:id/complete_profile.html";
         //window.location.href = 'http://localhost:8787/tmxGold/v1/user/'+localStorage.getItem('role')+'/profile/'+localStorage.getItem('user_id') + '/';
         //window.location.href = `${AUTH_BACKEND_URL}/api/user/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`;
-        window.location.href = `${AUTH_BACKEND_URL}/api/user/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`;
+        //window.location.href = `${AUTH_BACKEND_URL}/api/user/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`;
         //window.location.href = '/index-dashboard.html';
-        /**fetch(`/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`, {
+        fetch(`${AUTH_BACKEND_URL}/api/user/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`, {
             headers: {
               // Remove 'Content-Type': 'application/json' to avoid mismatch
               'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -96,7 +96,7 @@ $("#btnLogin").click(function(e){
             // For example: insert into a container
             document.getElementById('content').innerHTML = html;
           })
-          .catch(err => console.error(err)); **/
+          .catch(err => console.error(err)); 
       }
       else if (results.status === 401 || results.message === 'wrongPassword'){
         //alert("here");
