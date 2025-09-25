@@ -262,17 +262,12 @@ async function getCKESPrice() {
     }
     else if (option === "Bank_Transfer") {
       cryptoTo.innerText = "USD";
-      //result_kes = result_kes.toFixed(0);
       cryptoOutput.value = usd;
-      //kes_amount.value = usd;
-      //relayButton.enabled = false;
+
     }
     else if (option === "Wire_Transfer") {
       cryptoTo.innerText = "USD";
-      //result_kes = result_kes.toFixed(0);
       cryptoOutput.value = usd;
-      //kes_amount.value = usd;
-      //relayButton.enabled = false;
     }
     else {
       cryptoTo.innerText = option.toString();
