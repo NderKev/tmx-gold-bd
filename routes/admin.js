@@ -13,7 +13,7 @@ router.get('/profile/:id', auth, authenticator, checkAdmin, async (req, res) => 
   req.body.id = Number(req.params.id);
   //req.body.customer = req.params.
   //const response = await userController.fetchUser(req.body)
-  res.sendFile(path.join(__dirname, '../public' , 'index-ico-admin.html'));
+  res.sendFile(path.join(__dirname, "../public/index-ico-admin.html"));
 });
 
 router.get('/profile/:id/gateways', auth, authenticator, checkAdmin, async (req, res) => {
