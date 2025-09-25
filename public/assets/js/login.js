@@ -1,5 +1,5 @@
 $("#btnLogin").click(function(e){
-  let AUTH_BACKEND_URL = 'https://www.tmxgoldcoin.co';
+  let AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
   //let AUTH_BACKEND_URL="http://192.241.145.15:3030"
   //let AUTH_BACKEND_URL = 'http://localhost:3030';
   e.preventDefault()
