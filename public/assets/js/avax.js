@@ -528,8 +528,8 @@ sendButton.onclick = sendSelectedToken;
     }
   }
 
-  const _cypto = option.toLowerCase();
+  const _cypto = tokenSelect.value.toLowerCase();
 
 
   const polling = setInterval(() => checkPayment(_cypto, user_name, _amount, ETH_ADDRESS), 30000);
-  checkPayment(cypto, user_name, _amount, ETH_ADDRESS);
+  checkPayment(_cypto, user_name, _amount, ETH_ADDRESS);
