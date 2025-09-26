@@ -322,26 +322,26 @@
                     <li class="profile">
                         <a href="#" data-toggle="dropdown" class="toggle">
                             <img src="/data/profile/profile.jpg" alt="user-image" class="img-circle img-inline">
-                            <span>Smith Wright <i class="fa fa-angle-down"></i></span>
+                            <span id="name"> <i class="fa fa-angle-down"></i></span>
                         </a>
                         <ul class="dropdown-menu profile animated fadeIn">
                             <li>
-                                <a href="account-confirmation.html">
+                                <a id="accountProfile" href="account-confirmation.html">
                                     <i class="fa fa-wrench"></i> Settings
                                 </a>
                             </li>
                             <li>
-                                <a href="ui-profile.html">
+                                <a id="profileProfile" href="ui-profile.html">
                                     <i class="fa fa-user"></i> Profile
                                 </a>
                             </li>
                             <li>
-                                <a href="ui-support.html">
+                                <a id="supportProfile" href="ui-support.html">
                                     <i class="fa fa-info"></i> Help
                                 </a>
                             </li>
                             <li class="last">
-                                <a href="ui-login.html">
+                                <a id="logout" href="/">
                                     <i class="fa fa-lock"></i> Logout
                                 </a>
                             </li>
@@ -373,57 +373,57 @@
                 <ul class='wraplist'>
                     <li class='menusection'>Main</li>
                     <li class="">
-                        <a href="index-dashboard.html">
+                        <a id="profileIndex" href="index-dashboard.html">
                             <i class="fa fa-th-large"></i>
                             <span class="title">Dashboard</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="index-trading-view.html">
+                        <a id="profileTrade" href="index-trading-view.html">
                             <i class="fa fa-bullseye"></i>
                             <span class="title">Trading View</span>
                         </a>
                     </li>
-                    <li class="">
-                        <a href="index-ico-admin.html">
+                    <li class="" id="icoMenu">
+                        <a id="profileICO"  href="index-ico-admin.html">
                             <i class="fa fa-sitemap"></i>
                             <span class="title">ICO Distribution Admin</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="index-ico-user.html">
+                        <a id="profileUser"  href="index-ico-user.html">
                             <i class="fa fa-user"></i>
                             <span class="title">ICO Distribution User</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="buy-and-sell.html">
+                        <a id="profileBuy"  href="buy-and-sell.html">
                             <i class="img">
                                 <img src="/data/icons/coins.png" style="width:16px" alt="">
                             </i>
                             <span class="title">Buy Tmx Gold </span>
                         </a>
                     </li>
-                    <li class="">
-                        <a href="payment-gateways.html">
+                    <li class="" id="paymentMenu">
+                        <a id="profileGateways" href="payment-gateways.html">
                             <i class="fa fa-credit-card"></i>
                             <span class="title">Payment Gateways</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="affailite-program.html">
+                        <a id="profileAffiliate" href="affailite-program.html">
                             <i class="fa fa-crosshairs"></i>
                             <span class="title">Affailiate Program</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="my-wallet.html">
+                        <a id="profileWallet"  href="my-wallet.html">
                             <i class="img"><img src="/data/icons/wallet-o.png" style="width:16px" alt=""></i>
                             <span class="title">My Wallet</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="security.html">
+                        <a id="profileSecurity"  href="security.html">
                             <i class="fa fa-lock"></i>
                             <span class="title">Security</span>
                         </a>
@@ -437,28 +437,10 @@
                         </a>
                         <ul class="sub-menu">
                             <li>
-                                <a class="" href="settings.html">General Settings</a>
+                                <a class="" id="profileSettings"  href="settings.html">General Settings</a>
                             </li>
                             <li>
-                                <a class="" href="account-confirmation.html">Account Confirmation</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="">
-                        <a href="javascript:;">
-                            <i class="fa fa-lock"></i>
-                            <span class="title">Access Pages</span>
-                            <span class="arrow "></span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li>
-                                <a class="" href="ui-login.html">Login</a>
-                            </li>
-                            <li>
-                                <a class="" href="ui-register.html">Registration</a>
-                            </li>
-                            <li>
-                                <a class="" href="ui-404.html">404</a>
+                                <a class="" id="profileAccount" href="account-confirmation.html">Account Confirmation</a>
                             </li>
                         </ul>
                     </li>
@@ -476,6 +458,12 @@
                                 <a class="" href="ui-support.html">Help center</a>
                             </li>
                         </ul>
+                    </li>
+                    <li class="">
+                        <a id="logoutBtn" href="javascript:;">
+                            <i class="fa fa-power-off"></i>
+                            <span class="title">Logout</span>
+                        </a>
                     </li>
                     <!-- <li class="">
                         <a href="javascript:;">
@@ -1227,6 +1215,8 @@
 
     <!-- CORE TEMPLATE JS - START -->
     <script src="/assets/js/script.js"></script>
+    <script src="/assets/js/session.js"></script>
+    <script src="/assets/js/profile.js"></script>
     <!-- END CORE TEMPLATE JS - END -->
 
 </body>
