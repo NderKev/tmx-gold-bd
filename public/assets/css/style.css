@@ -92,8 +92,8 @@ Mobile Menu Settings - Since 3.1
 /*----------------------------------------
   General Layout Style
 ------------------------------------------*/
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:100,400,300,500,600,700);
-@import url(https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700);
+@import url(https://assets/fonts.googleapis.com/css?family=Open+Sans:100,400,300,500,600,700);
+@import url(https://assets/fonts.googleapis.com/css?family=Roboto:100,300,400,500,700);
 
 html {
     font-size: 100%;
@@ -4660,7 +4660,7 @@ a.cke_button_off:hover, .cke_hc a.cke_button_off:focus, .cke_hc a.cke_button_off
     margin: 0px !important;
     top: 0px;
     left: 0px;
-    background-image: url('../plugins/dropzone/images/custom-dropzone.png') !important;
+    background-image: url('../assets/plugins/dropzone/assets/images/custom-dropzone.png') !important;
     cursor: hand;
     cursor: pointer;
     background-repeat: no-repeat !important;
@@ -5207,7 +5207,7 @@ a.cke_button_off:hover, .cke_hc a.cke_button_off:focus, .cke_hc a.cke_button_off
     background-color: transparent;
     min-height: 92px;
     width: auto;
-    background-image: url("../images/login-logo.png");
+    background-image: url("../assets/images/login-logo.png");
     background-position: center top;
     background-repeat: no-repeat;
     text-indent: -9999px;
@@ -5341,7 +5341,7 @@ a.cke_button_off:hover, .cke_hc a.cke_button_off:focus, .cke_hc a.cke_button_off
     margin: 5px 5px 5px 5px;
 }
 body.login_page {
-    background-image: url('../images/intro.png');
+    background-image: url('../assets/images/intro.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -8018,16 +8018,16 @@ border-left: 3px solid transparent;
 ----------------------------------------------------------*/
 
 .page-topbar .logo-area {
-    background-image: url('../images/logo.png');
+    background-image: url('../assets/images/logo.png');
     background-repeat: no-repeat;
 }
 .page-topbar.sidebar_shift .logo-area {
-    background-image: url('../images/logo-folded.png');
+    background-image: url('../assets/images/logo-folded.png');
     background-repeat: no-repeat;
     background-position: right top;
 }
 .page-topbar.chat_shift .logo-area {
-    background-image: url('../images/logo-folded.png');
+    background-image: url('../assets/images/logo-folded.png');
     background-repeat: no-repeat;
     background-position: right top;
 }
@@ -8899,7 +8899,7 @@ border-left: 3px solid transparent;
         }
 
         .page-topbar .logo-area {
-            background-image: url('../images/logo-folded.png');
+            background-image: url('../assets/images/logo-folded.png');
             background-repeat: no-repeat;
             background-position: left top;
         }

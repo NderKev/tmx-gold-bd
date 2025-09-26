@@ -611,7 +611,7 @@ jQuery(function($) {
                                 "valid_children": ["root"]
                             },
                             "root": {
-                                "icon": "/plugins/jstree/images/tree_icon.png",
+                                "icon": "/assets/plugins/jstree/assets/images/tree_icon.png",
                                 "valid_children": ["default"]
                             },
                             "default": {
