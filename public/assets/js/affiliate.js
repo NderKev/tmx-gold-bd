@@ -1,6 +1,6 @@
 $(document).ready(function(){
 let affiliateIndex = document.getElementById("affiliateIndex");
-let affiliateTrading = document.getElementById("affiliateTrading")
+let affiliateTrading = document.getElementById("affiliateTrade")
 let affiliateICO = document.getElementById("affiliateICO")
 let affiliateUser = document.getElementById("affiliateUser")
 let affiliateBuy = document.getElementById("affiliateBuy")

@@ -1,6 +1,6 @@
 $(document).ready(function(){
 let buyIndex = document.getElementById("buyIndex");
-let buyTrading = document.getElementById("buyTrading")
+let buyTrading = document.getElementById("buyTrade")
 let buyICO = document.getElementById("buyICO")
 let buyUser = document.getElementById("buyUser")
 let buyBuy = document.getElementById("buyBuy")

@@ -1,6 +1,6 @@
 $(document).ready(function(){
 let paymentIndex = document.getElementById("paymentIndex");
-let paymentTrading = document.getElementById("paymentTrading")
+let paymentTrading = document.getElementById("paymentTrade")
 let paymentICO = document.getElementById("paymentICO")
 let paymentUser = document.getElementById("paymentUser")
 let paymentBuy = document.getElementById("paymentBuy")

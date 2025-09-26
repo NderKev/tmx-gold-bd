@@ -1,6 +1,6 @@
 $(document).ready(function(){
 let dashboardIndex = document.getElementById("dashboardIndex");
-let dashboardTrading = document.getElementById("dashboardTrading")
+let dashboardTrading = document.getElementById("dashboardTrade")
 let dashboardICO = document.getElementById("dashboardICO")
 let dashboardUser = document.getElementById("dashboardUser")
 let dashboardBuy = document.getElementById("dashboardBuy")
