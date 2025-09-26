@@ -75,7 +75,7 @@ $("#btnLogin").click(function(e){
           const refreshJWT =   updateJWT(request);
           console.log(refreshJWT);
         } */
-        const role = results.data[0].
+        //const role = results.data[0].
         //alert(refreshJWT);
         refreshLogin();
         console.log(localStorage.getItem('token'))
