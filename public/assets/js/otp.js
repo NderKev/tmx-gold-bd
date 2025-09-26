@@ -23,8 +23,8 @@ $("#verify-otp").click(function(e){
       'otp': otp
     }),
     error: (err) => {
-      refresh();
-      if(err.status === 401) {
+      
+      if(err.status === 400) {
         //alert(err.message);
         $("#otp_placement_error").html('Wrong OTP');
       }
@@ -34,12 +34,14 @@ $("#verify-otp").click(function(e){
       else{
         $("#otp_placement_error").html('Authorization error');
       }
+      $("#otp_placement_error").html('Wrong OTP');
+       refresh();
     },
     success: function (results) {
-       $("#otp_placement_error").html('OTP Verfication Successful');
-        window.location.href = '/index.html';
+       /**$("#otp_placement_error").html('OTP Verfication Successful');
+        window.location.href = '/index.html'; */
         //console.log(success)
-    /**if (results.messsage === "verified" || results.data.success == true){
+    if (results.messsage === "verified" || results.success == true){
          $("#otp_placement_error").html('OTP Verfication Successful');
         window.location.href = '/index.html'
       }
@@ -53,7 +55,7 @@ $("#verify-otp").click(function(e){
         $("#otp_placement_error").html(results.status);
         refresh();
         window.location.href = "/";
-      } **/
+      } 
     }
   })
 

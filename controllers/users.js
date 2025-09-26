@@ -177,7 +177,7 @@ const verifyEmailOtp = async (reqData) => {
     return successResponse(204, resp, 'verified')
   } catch (error) {
     console.error('error -> ', logStruct('verifyEmailOtp', error))
-    return errorResponse(error.status, error.message);
+    return errorResponse(400, error.message);
   }
 };
 
