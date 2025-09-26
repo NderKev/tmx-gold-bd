@@ -30,15 +30,15 @@ $(supportUser).attr("href", '/api/'+ role +'/profile/'+ id + '/user');
 $(supportBuy).attr("href", '/api/'+ role +'/profile/'+ id + '/buy');
 $(supportGateways).attr("href", '/api/'+ role +'/profile/'+ id + '/gateways');
 $(supportAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/affiliate');
-$(supportWallet).attr("href", '/api/'+ role +'profile/'+ id + '/wallet');
-$(supportSecurity).attr("href", '/api/'+ role +'profile/'+ id + '/security');
-$(supportSettings).attr("href", '/api/'+ role +'profile/'+ id + '/settings');
-$(supportAccount).attr("href", '/api/'+ role +'profile/'+ id + '/account');
-$(supportFaq).attr("href", '/api/'+ role +'profile/'+ id + '/support');
-$(supportSupport).attr("href", '/api/'+ role +'profile/'+ id + '/support');
-$(accountSupport).attr("href", '/api/'+ role +'profile/'+ id + '/account');
-$(supportProfile).attr("href", '/api/'+ role +'profile/'+ id + '/profile');
-$(headerSupport).attr("href", '/api/'+ role +'profile/'+ id + '/support');
+$(supportWallet).attr("href", '/api/'+ role +'/profile/'+ id + '/wallet');
+$(supportSecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/security');
+$(supportSettings).attr("href", '/api/'+ role +'/profile/'+ id + '/settings');
+$(supportAccount).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(supportFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(supportSupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(accountSupport).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(supportProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
+$(headerSupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 }
 
 

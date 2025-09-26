@@ -30,15 +30,15 @@ $(settingsUser).attr("href", '/api/'+ role +'/profile/'+ id + '/user');
 $(settingsBuy).attr("href", '/api/'+ role +'/profile/'+ id + '/buy');
 $(settingsGateways).attr("href", '/api/'+ role +'/profile/'+ id + '/gateways');
 $(settingsAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/affiliate');
-$(settingsWallet).attr("href", '/api/'+ role +'profile/'+ id + '/wallet');
-$(settingsSecurity).attr("href", '/api/'+ role +'profile/'+ id + '/security');
-$(settingsSettings).attr("href", '/api/'+ role +'profile/'+ id + '/settings');
-$(settingsAccount).attr("href", '/api/'+ role +'profile/'+ id + '/account');
-$(settingsFaq).attr("href", '/api/'+ role +'profile/'+ id + '/faq');
-$(settingsSupport).attr("href", '/api/'+ role +'profile/'+ id + '/support');
-$(accountSettings).attr("href", '/api/'+ role +'profile/'+ id + '/account');
-$(settingsProfile).attr("href", '/api/'+ role +'profile/'+ id + '/profile');
-$(supportSettings).attr("href", '/api/'+ role +'profile/'+ id + '/support');
+$(settingsWallet).attr("href", '/api/'+ role +'/profile/'+ id + '/wallet');
+$(settingsSecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/security');
+$(settingsSettings).attr("href", '/api/'+ role +'/profile/'+ id + '/settings');
+$(settingsAccount).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(settingsFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/faq');
+$(settingsSupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(accountSettings).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(settingsProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
+$(supportSettings).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 }
 
 

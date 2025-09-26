@@ -30,15 +30,15 @@ $(buyUser).attr("href", '/api/'+ role +'/profile/'+ id + '/user');
 $(buyBuy).attr("href", '/api/'+ role +'/profile/'+ id + '/buy');
 $(buyGateways).attr("href", '/api/'+ role +'/profile/'+ id + '/gateways');
 $(buyAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/affiliate');
-$(buyWallet).attr("href", '/api/'+ role +'profile/'+ id + '/wallet');
-$(buySecurity).attr("href", '/api/'+ role +'profile/'+ id + '/security');
-$(buySettings).attr("href", '/api/'+ role +'profile/'+ id + '/settings');
-$(buyAccount).attr("href", '/api/'+ role +'profile/'+ id + '/account');
-$(buyFaq).attr("href", '/api/'+ role +'profile/'+ id + '/faq');
-$(buySupport).attr("href", '/api/'+ role +'profile/'+ id + '/support');
-$(accountBuy).attr("href", '/api/'+ role +'profile/'+ id + '/account');
-$(buyProfile).attr("href", '/api/'+ role +'profile/'+ id + '/profile');
-$(supportBuy).attr("href", '/api/'+ role +'profile/'+ id + '/support');
+$(buyWallet).attr("href", '/api/'+ role +'/profile/'+ id + '/wallet');
+$(buySecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/security');
+$(buySettings).attr("href", '/api/'+ role +'/profile/'+ id + '/settings');
+$(buyAccount).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(buyFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/faq');
+$(buySupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(accountBuy).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(buyProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
+$(supportBuy).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 }
 
 

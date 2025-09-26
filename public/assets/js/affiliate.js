@@ -30,15 +30,15 @@ $(affiliateUser).attr("href", '/api/'+ role +'/profile/'+ id + '/user');
 $(affiliateBuy).attr("href", '/api/'+ role +'/profile/'+ id + '/buy');
 $(affiliateGateways).attr("href", '/api/'+ role +'/profile/'+ id + '/gateways');
 $(affiliateAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/affiliate');
-$(affiliateWallet).attr("href", '/api/'+ role +'profile/'+ id + '/wallet');
-$(affiliateSecurity).attr("href", '/api/'+ role +'profile/'+ id + '/security');
-$(affiliateSettings).attr("href", '/api/'+ role +'profile/'+ id + '/settings');
-$(affiliateAccount).attr("href", '/api/'+ role +'profile/'+ id + '/account');
-$(affiliateFaq).attr("href", '/api/'+ role +'profile/'+ id + '/faq');
-$(affiliateSupport).attr("href", '/api/'+ role +'profile/'+ id + '/support');
-$(accountAffiliate).attr("href", '/api/'+ role +'profile/'+ id + '/account');
-$(affiliateProfile).attr("href", '/api/'+ role +'profile/'+ id + '/profile');
-$(supportAffiliate).attr("href", '/api/'+ role +'profile/'+ id + '/support');
+$(affiliateWallet).attr("href", '/api/'+ role +'/profile/'+ id + '/wallet');
+$(affiliateSecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/security');
+$(affiliateSettings).attr("href", '/api/'+ role +'/profile/'+ id + '/settings');
+$(affiliateAccount).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(affiliateFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/faq');
+$(affiliateSupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(accountAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(affiliateProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
+$(supportAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 }
 
 

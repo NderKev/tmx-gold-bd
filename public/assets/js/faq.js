@@ -31,14 +31,14 @@ $(faqBuy).attr("href", '/api/'+ role +'/profile/'+ id + '/buy');
 $(faqGateways).attr("href", '/api/'+ role +'/profile/'+ id + '/gateways');
 $(faqAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/affiliate');
 $(faqWallet).attr("href", '/api/'+ role +'profile/'+ id + '/wallet');
-$(faqSecurity).attr("href", '/api/'+ role +'profile/'+ id + '/security');
-$(faqSettings).attr("href", '/api/'+ role +'profile/'+ id + '/settings');
-$(faqAccount).attr("href", '/api/'+ role +'profile/'+ id + '/account');
-$(faqFaq).attr("href", '/api/'+ role +'profile/'+ id + '/faq');
-$(faqSupport).attr("href", '/api/'+ role +'profile/'+ id + '/support');
-$(accountFaq).attr("href", '/api/'+ role +'profile/'+ id + '/account');
-$(faqProfile).attr("href", '/api/'+ role +'profile/'+ id + '/profile');
-$(supportFaq).attr("href", '/api/'+ role +'profile/'+ id + '/support');
+$(faqSecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/security');
+$(faqSettings).attr("href", '/api/'+ role +'/profile/'+ id + '/settings');
+$(faqAccount).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(faqFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/faq');
+$(faqSupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(accountFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(faqProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
+$(supportFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 }
 
 

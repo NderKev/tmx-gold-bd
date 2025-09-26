@@ -30,15 +30,15 @@ $(walletUser).attr("href", '/api/'+ role +'/profile/'+ id + '/user');
 $(walletBuy).attr("href", '/api/'+ role +'/profile/'+ id + '/buy');
 $(walletGateways).attr("href", '/api/'+ role +'/profile/'+ id + '/gateways');
 $(walletAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/affiliate');
-$(walletWallet).attr("href", '/api/'+ role +'profile/'+ id + '/wallet');
-$(walletSecurity).attr("href", '/api/'+ role +'profile/'+ id + '/security');
-$(walletSettings).attr("href", '/api/'+ role +'profile/'+ id + '/settings');
-$(walletAccount).attr("href", '/api/'+ role +'profile/'+ id + '/account');
-$(walletFaq).attr("href", '/api/'+ role +'profile/'+ id + '/faq');
-$(walletSupport).attr("href", '/api/'+ role +'profile/'+ id + '/support');
-$(accountWallet).attr("href", '/api/'+ role +'profile/'+ id + '/account');
-$(walletProfile).attr("href", '/api/'+ role +'profile/'+ id + '/profile');
-$(supportWallet).attr("href", '/api/'+ role +'profile/'+ id + '/support');
+$(walletWallet).attr("href", '/api/'+ role +'/profile/'+ id + '/wallet');
+$(walletSecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/security');
+$(walletSettings).attr("href", '/api/'+ role +'/profile/'+ id + '/settings');
+$(walletAccount).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(walletFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/faq');
+$(walletSupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(accountWallet).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(walletProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
+$(supportWallet).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 }
 
 

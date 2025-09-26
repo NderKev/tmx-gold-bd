@@ -30,15 +30,15 @@ $(tradeUser).attr("href", '/api/'+ role +'/profile/'+ id + '/user');
 $(tradeBuy).attr("href", '/api/'+ role +'/profile/'+ id + '/buy');
 $(tradeGateways).attr("href", '/api/'+ role +'/profile/'+ id + '/gateways');
 $(tradeAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/affiliate');
-$(tradeWallet).attr("href", '/api/'+ role +'profile/'+ id + '/wallet');
-$(tradeSecurity).attr("href", '/api/'+ role +'profile/'+ id + '/security');
-$(tradeSettings).attr("href", '/api/'+ role +'profile/'+ id + '/settings');
-$(tradeAccount).attr("href", '/api/'+ role +'profile/'+ id + '/account');
-$(tradeFaq).attr("href", '/api/'+ role +'profile/'+ id + '/faq');
-$(tradeSupport).attr("href", '/api/'+ role +'profile/'+ id + '/support');
-$(accountTrade).attr("href", '/api/'+ role +'profile/'+ id + '/account');
-$(tradeProfile).attr("href", '/api/'+ role +'profile/'+ id + '/profile');
-$(supportTrade).attr("href", '/api/'+ role +'profile/'+ id + '/support');
+$(tradeWallet).attr("href", '/api/'+ role +'/profile/'+ id + '/wallet');
+$(tradeSecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/security');
+$(tradeSettings).attr("href", '/api/'+ role +'/profile/'+ id + '/settings');
+$(tradeAccount).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(tradeFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/faq');
+$(tradeSupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(accountTrade).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(tradeProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
+$(supportTrade).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 }
 
 
