@@ -123,7 +123,7 @@ input.addEventListener('keyup', reset); **/
     //let phone = fullNumber;
     let password = document.getElementById('password').value
     //let role = document.getElementById('role').value
-    let role_id = 1;
+    let role_id = 2;
     if(email === '') {
       $("#placement_error").html('*Email is required')
       return
