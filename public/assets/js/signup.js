@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  let AUTH_BACKEND_URL = 'https://www.tmxgoldcoin.co';
+  let AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
   function refresh(){
     $("#username").val('')
     $("#email").val('')

@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const secret = process.env.JWT_SECRET;
 
 const auth = (req, res, next) =>  {
-    const header = req.headers['authorization'];
+  const header = req.headers['authorization'];
   if (!header) return res.status(401).json({ error: 'Missing Authorization header' });
 
   const [scheme, token] = header.split(' ');

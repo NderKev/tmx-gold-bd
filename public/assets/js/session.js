@@ -1,5 +1,5 @@
 $(document).ready(function(){
- let AUTH_BACKEND_URL = 'https://www.tmxgoldcoin.co';
+ let AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
    var logout = document.getElementById("logout")
     var isLoggedIn = localStorage.getItem("tmx_gold_name");
     var role = localStorage.getItem("role");
