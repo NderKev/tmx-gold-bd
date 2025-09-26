@@ -75,7 +75,7 @@ $("#btnLogin").click(function(e){
           const refreshJWT =   updateJWT(request);
           console.log(refreshJWT);
         } */
-
+        const role = results.data[0].
         //alert(refreshJWT);
         refreshLogin();
         console.log(localStorage.getItem('token'))
@@ -84,6 +84,8 @@ $("#btnLogin").click(function(e){
         //window.location.href = 'http://localhost:8787/tmxGold/v1/user/'+localStorage.getItem('role')+'/profile/'+localStorage.getItem('user_id') + '/';
         //window.location.href = `${AUTH_BACKEND_URL}/api/user/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`;
         window.location.href = `${AUTH_BACKEND_URL}/api/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`;
+        
+
         //window.location.href='/index-dashboard.html'
        
          /**fetch(`${AUTH_BACKEND_URL}/api/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`, {

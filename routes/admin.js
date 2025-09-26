@@ -11,8 +11,6 @@ const auth = require('../middleware/auth');
 
 router.get('/profile/:id',  authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
-  //req.body.customer = req.params.
-  //const response = await userController.fetchUser(req.body)
   res.sendFile(path.join(__dirname, "../public/index-dashboard.html"));
 });
 
