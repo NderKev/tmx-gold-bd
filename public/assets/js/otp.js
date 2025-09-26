@@ -32,11 +32,11 @@ $(document).ready(function(){
         refresh();
       },
       success: function (results) {
-        if (results.message === "verified" || results.success === true) {
+        if (results.status === 204) {
           $("#otp_placement_error").html('OTP Verification Successful');
           window.location.href = '/index.html';
         } else {
-          $("#otp_placement_error").html('Wrong OTP');
+          $("#otp_placement_error").html('Already verified OTP');
           refresh();
         }
       }
