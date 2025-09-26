@@ -32,7 +32,7 @@ app.use(function(req, res, next) {
 });
 
 app.use(cookieParser());  
-const __dirname = path.resolve();
+//const __dirname = path.resolve();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
