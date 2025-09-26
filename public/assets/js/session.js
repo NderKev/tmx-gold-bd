@@ -36,6 +36,35 @@ $(document).ready(function(){
 });
 
 
+document.addEventListener('DOMContentLoaded', function() {
+  const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
+
+  document.getElementById('logoutBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+
+    // ✅ Clear local tokens
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('user_id');
+
+    // ✅ Tell backend to clear cookie/session
+    fetch(`${AUTH_BACKEND_URL}/api/user/logout`, {
+      method: 'POST',
+      credentials: 'include' // include cookies if using session/cookies
+    })
+    .then(() => {
+      // Redirect to login or landing page
+      window.location.href = '/index.html';
+    })
+    .catch(err => {
+      console.error('Logout failed:', err);
+      // Fallback redirect even if request fails
+      window.location.href = '/index.html';
+    });
+  });
+});
+
+
 
 /* ------------------------------
             Paystack
