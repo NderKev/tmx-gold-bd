@@ -17,67 +17,67 @@
     <!-- Favicon -->
     <link
       rel="shortcut icon"
-      href="assets/images/favicon.ico"
+      href="/images/favicon.ico"
       type="image/x-icon"
     />
     <!-- For iPhone -->
     <link
       rel="apple-touch-icon-precomposed"
-      href="assets/images/apple-touch-icon-57-precomposed.png"
+      href="/images/apple-touch-icon-57-precomposed.png"
     />
     <!-- For iPhone 4 Retina display -->
     <link
       rel="apple-touch-icon-precomposed"
       sizes="114x114"
-      href="assets/images/apple-touch-icon-114-precomposed.png"
+      href="/images/apple-touch-icon-114-precomposed.png"
     />
     <!-- For iPad -->
     <link
       rel="apple-touch-icon-precomposed"
       sizes="72x72"
-      href="assets/images/apple-touch-icon-72-precomposed.png"
+      href="/images/apple-touch-icon-72-precomposed.png"
     />
     <!-- For iPad Retina display -->
     <link
       rel="apple-touch-icon-precomposed"
       sizes="144x144"
-      href="assets/images/apple-touch-icon-144-precomposed.png"
+      href="/images/apple-touch-icon-144-precomposed.png"
     />
 
     <!-- CORE CSS FRAMEWORK - START -->
     <link
-      href="assets/plugins/pace/pace-theme-flash.css"
+      href="/plugins/pace/pace-theme-flash.css"
       rel="stylesheet"
       type="text/css"
       media="screen"
     />
     <link
-      href="assets/plugins/bootstrap/css/bootstrap.min.css"
+      href="/plugins/bootstrap/css/bootstrap.min.css"
       rel="stylesheet"
       type="text/css"
     />
     <link
-      href="assets/plugins/bootstrap/css/bootstrap-theme.min.css"
+      href="/plugins/bootstrap/css/bootstrap-theme.min.css"
       rel="stylesheet"
       type="text/css"
     />
     <link
-      href="assets/fonts/font-awesome/css/font-awesome.css"
+      href="/fonts/font-awesome/css/font-awesome.css"
       rel="stylesheet"
       type="text/css"
     />
     <link
-      href="assets/fonts/webfont/cryptocoins.css"
+      href="/fonts/webfont/cryptocoins.css"
       rel="stylesheet"
       type="text/css"
     />
     <link
-      href="assets/css/animate.min.css"
+      href="/styles/animate.min.css"
       rel="stylesheet"
       type="text/css"
     />
     <link
-      href="assets/plugins/perfect-scrollbar/perfect-scrollbar.css"
+      href="/plugins/perfect-scrollbar/perfect-scrollbar.css"
       rel="stylesheet"
       type="text/css"
     />
@@ -88,9 +88,9 @@
     <!-- HEADER SCRIPTS INCLUDED ON THIS PAGE - END -->
 
     <!-- CORE CSS TEMPLATE - START -->
-    <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/styles/style.css" rel="stylesheet" type="text/css" />
     <link
-      href="assets/css/responsive.css"
+      href="/styles/responsive.css"
       rel="stylesheet"
       type="text/css"
     />
@@ -434,22 +434,22 @@
               </a>
               <ul class="dropdown-menu profile animated fadeIn">
                 <li>
-                  <a href="account-confirmation.html">
+                  <a id="accountWallet" href="account-confirmation.html">
                     <i class="fa fa-wrench"></i> Settings
                   </a>
                 </li>
                 <li>
-                  <a href="ui-profile.html">
+                  <a id="walletProfile" href="ui-profile.html">
                     <i class="fa fa-user"></i> Profile
                   </a>
                 </li>
                 <li>
-                  <a href="ui-support.html">
+                  <a id="supportWallet" href="ui-support.html">
                     <i class="fa fa-info"></i> Help
                   </a>
                 </li>
                 <li class="last">
-                  <a id="logout">
+                  <a id="logout" href="/">
                     <i class="fa fa-lock"></i> Logout
                   </a>
                 </li>
@@ -477,31 +477,31 @@
           <ul class="wraplist">
             <li class="menusection">Main</li>
             <li class="">
-              <a href="index-dashboard.html">
+              <a id="walletIndex"  href="index-dashboard.html">
                 <i class="fa fa-th-large"></i>
                 <span class="title">Dashboard</span>
               </a>
             </li>
             <li class="">
-              <a href="index-trading-view.html">
+              <a id="walletTrade"  href="index-trading-view.html">
                 <i class="fa fa-bullseye"></i>
                 <span class="title">Trading View</span>
               </a>
             </li>
-            <li class="">
-              <a href="index-ico-admin.html">
+            <li class="" id="icoMenu">
+              <a id="walletICO" href="index-ico-admin.html">
                 <i class="fa fa-sitemap"></i>
                 <span class="title">ICO Distribution Admin</span>
               </a>
             </li>
             <li class="">
-              <a href="index-ico-user.html">
+              <a id="walletUser" href="index-ico-user.html">
                 <i class="fa fa-user"></i>
                 <span class="title">ICO Distribution User</span>
               </a>
             </li>
             <li class="">
-              <a href="buy-and-sell.html">
+              <a id="walletBuy" href="buy-and-sell.html">
                 <i class="img">
                   <img
                     src="data/icons/coins.png"
@@ -512,20 +512,20 @@
                 <span class="title">Buy Tmx Gold </span>
               </a>
             </li>
-            <li class="">
-              <a href="payment-gateways.html">
+            <li class="" id="paymentMenu">
+              <a id="walletGateways" href="payment-gateways.html">
                 <i class="fa fa-credit-card"></i>
                 <span class="title">Payment Gateways</span>
               </a>
             </li>
             <li class="">
-              <a href="affailite-program.html">
+              <a id="walletAffiliate" href="affailite-program.html">
                 <i class="fa fa-crosshairs"></i>
                 <span class="title">Affailiate Program</span>
               </a>
             </li>
             <li class="open">
-              <a href="my-wallet.html">
+              <a id="walletWallet" href="my-wallet.html">
                 <i class="img"
                   ><img
                     src="data/icons/wallet-o.png"
@@ -536,7 +536,7 @@
               </a>
             </li>
             <li class="">
-              <a href="security.html">
+              <a id="walletSecurity" href="security.html">
                 <i class="fa fa-lock"></i>
                 <span class="title">Security</span>
               </a>
@@ -550,10 +550,10 @@
               </a>
               <ul class="sub-menu">
                 <li>
-                  <a class="" href="settings.html">General Settings</a>
+                  <a class=""id="walletSettings"  href="settings.html">General Settings</a>
                 </li>
                 <li>
-                  <a class="" href="account-confirmation.html"
+                  <a class="" id="walletAccount"  href="account-confirmation.html"
                     >Account Confirmation</a
                   >
                 </li>
@@ -585,10 +585,10 @@
               </a>
               <ul class="sub-menu">
                 <li>
-                  <a class="" href="ui-faq.html">FAQ</a>
+                  <a class="" id="walletFaq"  href="ui-faq.html">FAQ</a>
                 </li>
                 <li>
-                  <a class="" href="ui-support.html">Help center</a>
+                  <a class="" id="walletSupport"  href="ui-support.html">Help center</a>
                 </li>
               </ul>
             </li>
@@ -953,7 +953,7 @@
                     <div class="r4_counter db_box">
                       <!-- <div class="icon-after cc BTC-alt"></div> -->
                       <!-- <i class="pull-left cc BTC-alt icon-md mt-10"></i> -->
-                      <div><img src="assets/images/logo-folded.png" alt="TMX Icon" class="pull-left icon-md mt-10" style="width: 55px; padding-right: 8px;"> </div>
+                      <div><img src="/images/logo-folded.png" alt="TMX Icon" class="pull-left icon-md mt-10" style="width: 55px; padding-right: 8px;"> </div>
                       <div class="stats">
                         <h3 class="mb-5">Network</h3>
                          <span id="network"></span>
@@ -1370,7 +1370,7 @@
                       <div class="transfer-wraper">
                         <div class="crypto-icon">
                           <!-- <i class="cc ETC-alt color-primary"></i> -->
-                           <img src="assets/images/logo-folded.png" style="width: 50px;">
+                           <img src="/images/logo-folded.png" style="width: 50px;">
                         </div>
                         <strong class="mb-20">TMX</strong>
                         <div class="form-group no-mb">
@@ -1786,32 +1786,33 @@
     <!-- LOAD FILES AT PAGE END FOR FASTER LOADING -->
 
     <!-- CORE JS FRAMEWORK - START -->
-    <script src="assets/js/jquery-1.11.2.min.js"></script>
-    <script src="assets/js/jquery.easing.min.js"></script>
-    <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/plugins/pace/pace.min.js"></script>
-    <script src="assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-    <script src="assets/plugins/viewport/viewportchecker.js"></script>
+    <script src="/scripts/jquery-1.11.2.min.js"></script>
+    <script src="/scripts/jquery.easing.min.js"></script>
+    <script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/plugins/pace/pace.min.js"></script>
+    <script src="/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="/plugins/viewport/viewportchecker.js"></script>
     <script>
       window.jQuery ||
         document.write(
-          '<script src="assets/js/jquery-1.11.2.min.js"><\/script>'
+          '<script src="/scripts/jquery-1.11.2.min.js"><\/script>'
         );
     </script>
     <!-- CORE JS FRAMEWORK - END -->
 
     <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
-    <script src="assets/plugins/echarts/echarts-all.js"></script>
-    <script src="assets/js/chart-echarts.js"></script>
+    <script src="/plugins/echarts/echarts-all.js"></script>
+    <script src="/scripts/chart-echarts.js"></script>
 
-    <script src="assets/plugins/autosize/autosize.min.js"></script>
-    <script src="assets/plugins/icheck/icheck.min.js"></script>
+    <script src="/plugins/autosize/autosize.min.js"></script>
+    <script src="/plugins/icheck/icheck.min.js"></script>
     <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
 
     <!-- CORE TEMPLATE JS - START -->
-    <script src="assets/js/scripts.js"></script>
-    <script src="assets/js/session.js"></script>
-    <script src="assets/js/wallet.js"></script>
+    <script src="/scripts/scripts.js"></script>
+    <script src="/scripts/session.js"></script>
+    <script src="/scripts/wallet.js"></script>
+    <script src="/scripts/my-wallet.js"></script>
     <!-- END CORE TEMPLATE JS - END -->
   </body>
 </html>

@@ -67,4 +67,10 @@ router.get('/profile/:id/support',  authenticator, checkUser, async (req, res) =
   res.sendFile(path.join(__dirname, '../public' , 'ui-support.html'));
 });
 
+
+router.get('/profile/:id/profile',   authenticator, checkUser, async (req, res) => {
+  req.body.id = Number(req.params.id);
+  res.sendFile(path.join(__dirname, '../public' , 'ui-profile.html'));
+});
+
 module.exports = router;

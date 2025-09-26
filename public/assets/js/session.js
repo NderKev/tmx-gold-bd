@@ -15,6 +15,7 @@ $(document).ready(function(){
         localStorage.setItem('tmx_gold_name', "");
         localStorage.setItem('user_id',"");
         localStorage.setItem('role', "");
+        localStorage.setItem('token', "");
       $.ajax({
             url: `${AUTH_BACKEND_URL}/api/user/logout`,
             dataType: "JSON",

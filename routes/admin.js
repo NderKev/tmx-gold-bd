@@ -13,7 +13,7 @@ router.get('/profile/:id',  authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   //req.body.customer = req.params.
   //const response = await userController.fetchUser(req.body)
-  res.sendFile(path.join(__dirname, "../public/index-ico-admin.html"));
+  res.sendFile(path.join(__dirname, "../public/index-dashboard.html"));
 });
 
 router.get('/profile/:id/gateways',  authenticator, checkAdmin, async (req, res) => {
@@ -21,11 +21,14 @@ router.get('/profile/:id/gateways',  authenticator, checkAdmin, async (req, res)
   res.sendFile(path.join(__dirname, '../public' , 'payment-gateways.html'));
 });
 
-router.get('/profile/:id/dashboard',  authenticator, checkAdmin, async (req, res) => {
+router.get('/profile/:id/ico',  authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
-  //req.body.customer = req.params.
-  //const response = await userController.fetchUser(req.body)
-  res.sendFile(path.join(__dirname, '../public' , 'index-dashboard.html'));
+  res.sendFile(path.join(__dirname, '../public' , 'index-ico-admin.html'));
+});
+
+router.get('/profile/:id/user',  authenticator, checkAdmin, async (req, res) => {
+  req.body.id = Number(req.params.id);
+  res.sendFile(path.join(__dirname, '../public' , 'index-ico-user.html'));
 });
 
 router.get('/profile/:id/trade',  authenticator, checkAdmin, async (req, res) => {
@@ -75,6 +78,10 @@ router.get('/profile/:id/support',   authenticator, checkAdmin, async (req, res)
   res.sendFile(path.join(__dirname, '../public' , 'ui-support.html'));
 });
 
+router.get('/profile/:id/profile',   authenticator, checkAdmin, async (req, res) => {
+  req.body.id = Number(req.params.id);
+  res.sendFile(path.join(__dirname, '../public' , 'ui-profile.html'));
+});
 
 
 module.exports = router;

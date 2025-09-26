@@ -66,7 +66,7 @@ $("#btnLogin").click(function(e){
           //user_name = email;
           localStorage.setItem('user_id', results.meta.id)
 
-          localStorage.setItem('token',results.data[0].token)
+          localStorage.setItem('token', results.data[0].token)
 
         }
         /** if (typeof token === 'undefined' || token === null || !token){
