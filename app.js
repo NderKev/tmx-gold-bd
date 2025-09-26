@@ -32,7 +32,7 @@ app.use(function(req, res, next) {
 });
 
 app.use(cookieParser());  
-
+const __dirname = path.resolve();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -41,6 +41,7 @@ app.use("/images", express.static(path.join(__dirname, 'public/assets/images')))
 app.use("/scripts", express.static(path.join(__dirname, 'public/assets/js')));
 app.use("/fonts", express.static(path.join(__dirname, 'public/assets/fonts')));
 app.use("/plugins", express.static(path.join(__dirname, 'public/assets/plugins')));
+app.use("/data", express.static(path.join(__dirname, 'public/data')));
 app.use(
   session({
     name: 'sid',
