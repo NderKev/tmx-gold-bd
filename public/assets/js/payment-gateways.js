@@ -23,25 +23,25 @@ var isLoggedIn = localStorage.getItem("tmx_gold_name");
 if (typeof isLoggedIn === 'undefined' || isLoggedIn === null || !isLoggedIn || role !== 'admin'){
   window.location.href = "/index.html";
 }else{
-$(paymentIndex).attr("href", '/api/admin'+'/data/profile/'+ id);
-$(paymentTrading).attr("href", '/api/admin'+'/data/profile/'+ id + '/trade');
-$(paymentICO).attr("href", '/api/admin'+'/data/profile/'+ id + '/ico');
-$(paymentUser).attr("href", '/api/admin'+'/data/profile/'+ id + '/user');
-$(paymentBuy).attr("href", '/api/admin'+'/data/profile/'+ id + '/buy');
-$(paymentGateways).attr("href", '/api/admin'+'/data/profile/'+ id + '/gateways');
-$(paymentAffiliate).attr("href", '/api/admin'+'/data/profile/'+ id + '/affiliate');
-$(paymentWallet).attr("href", '/api/admin'+'/data/profile/'+ id + '/wallet');
-$(paymentSecurity).attr("href", '/api/admin'+'/data/profile/'+ id + '/security');
-$(paymentSettings).attr("href", '/api/admin'+'/data/profile/'+ id + '/settings');
-$(paymentAccount).attr("href", '/api/admin'+'/data/profile/'+ id + '/account');
-$(paymentFaq).attr("href", '/api/admin'+'/data/profile/'+ id + '/faq');
-$(paymentSupport).attr("href", '/api/admin'+'/data/profile/'+ id + '/support');
-$(paymentAccount).attr("href", '/api/admin'+'/data/profile/'+ id + '/account');
-$(paymentFaq).attr("href", '/api/admin'+'/data/profile/'+ id + '/faq');
-$(paymentSupport).attr("href", '/api/admin'+'/data/profile/'+ id + '/support');
-$(accountPayment).attr("href", '/api/admin'+'/data/profile/'+ id + '/account');
-$(paymentProfile).attr("href", '/api/admin'+'/data/profile/'+ id + '/data/profile');
-$(supportPayment).attr("href", '/api/admin'+'/data/profile/'+ id + '/support');
+$(paymentIndex).attr("href", '/api/admin'+'/profile/'+ id);
+$(paymentTrading).attr("href", '/api/admin'+'/profile/'+ id + '/trade');
+$(paymentICO).attr("href", '/api/admin'+'/profile/'+ id + '/ico');
+$(paymentUser).attr("href", '/api/admin'+'/profile/'+ id + '/user');
+$(paymentBuy).attr("href", '/api/admin'+'/profile/'+ id + '/buy');
+$(paymentGateways).attr("href", '/api/admin'+'/profile/'+ id + '/gateways');
+$(paymentAffiliate).attr("href", '/api/admin'+'/profile/'+ id + '/affiliate');
+$(paymentWallet).attr("href", '/api/admin'+'/profile/'+ id + '/wallet');
+$(paymentSecurity).attr("href", '/api/admin'+'/profile/'+ id + '/security');
+$(paymentSettings).attr("href", '/api/admin'+'/profile/'+ id + '/settings');
+$(paymentAccount).attr("href", '/api/admin'+'/profile/'+ id + '/account');
+$(paymentFaq).attr("href", '/api/admin'+'/profile/'+ id + '/faq');
+$(paymentSupport).attr("href", '/api/admin'+'/profile/'+ id + '/support');
+$(paymentAccount).attr("href", '/api/admin'+'/profile/'+ id + '/account');
+$(paymentFaq).attr("href", '/api/admin'+'/profile/'+ id + '/faq');
+$(paymentSupport).attr("href", '/api/admin'+'/profile/'+ id + '/support');
+$(accountPayment).attr("href", '/api/admin'+'/profile/'+ id + '/account');
+$(paymentProfile).attr("href", '/api/admin'+'/profile/'+ id + '/data/profile');
+$(supportPayment).attr("href", '/api/admin'+'/profile/'+ id + '/support');
 }
 
 });

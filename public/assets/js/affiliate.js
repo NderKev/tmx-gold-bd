@@ -23,22 +23,22 @@ var isLoggedIn = localStorage.getItem("tmx_gold_name");
 if (typeof isLoggedIn === 'undefined' || isLoggedIn === null || !isLoggedIn){
   window.location.href = "/index.html";
 }else{
-$(affiliateIndex).attr("href", '/api/'+ role +'/data/profile/'+ id);
-$(affiliateTrading).attr("href", '/api/'+ role +'/data/profile/'+ id + '/trade');
-$(affiliateICO).attr("href", '/api/'+ role +'/data/profile/'+ id + '/ico');
-$(affiliateUser).attr("href", '/api/'+ role +'/data/profile/'+ id + '/user');
-$(affiliateBuy).attr("href", '/api/'+ role +'/data/profile/'+ id + '/buy');
-$(affiliateGateways).attr("href", '/api/'+ role +'/data/profile/'+ id + '/gateways');
-$(affiliateAffiliate).attr("href", '/api/'+ role +'/data/profile/'+ id + '/affiliate');
-$(affiliateWallet).attr("href", '/api/'+ role +'/data/profile/'+ id + '/wallet');
-$(affiliateSecurity).attr("href", '/api/'+ role +'/data/profile/'+ id + '/security');
-$(affiliateSettings).attr("href", '/api/'+ role +'/data/profile/'+ id + '/settings');
-$(affiliateAccount).attr("href", '/api/'+ role +'/data/profile/'+ id + '/account');
-$(affiliateFaq).attr("href", '/api/'+ role +'/data/profile/'+ id + '/faq');
-$(affiliateSupport).attr("href", '/api/'+ role +'/data/profile/'+ id + '/support');
-$(accountAffiliate).attr("href", '/api/'+ role +'/data/profile/'+ id + '/account');
-$(affiliateProfile).attr("href", '/api/'+ role +'/data/profile/'+ id + '/data/profile');
-$(supportAffiliate).attr("href", '/api/'+ role +'/data/profile/'+ id + '/support');
+$(affiliateIndex).attr("href", '/api/'+ role +'/profile/'+ id);
+$(affiliateTrading).attr("href", '/api/'+ role +'/profile/'+ id + '/trade');
+$(affiliateICO).attr("href", '/api/'+ role +'/profile/'+ id + '/ico');
+$(affiliateUser).attr("href", '/api/'+ role +'/profile/'+ id + '/user');
+$(affiliateBuy).attr("href", '/api/'+ role +'/profile/'+ id + '/buy');
+$(affiliateGateways).attr("href", '/api/'+ role +'/profile/'+ id + '/gateways');
+$(affiliateAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/affiliate');
+$(affiliateWallet).attr("href", '/api/'+ role +'/profile/'+ id + '/wallet');
+$(affiliateSecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/security');
+$(affiliateSettings).attr("href", '/api/'+ role +'/profile/'+ id + '/settings');
+$(affiliateAccount).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(affiliateFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/faq');
+$(affiliateSupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(accountAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(affiliateProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/data/profile');
+$(supportAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 }
 
 
