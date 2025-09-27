@@ -42,6 +42,15 @@ app.use("/scripts", express.static(path.join(__dirname, 'public/assets/js')));
 app.use("/fonts", express.static(path.join(__dirname, 'public/assets/fonts')));
 app.use("/plugins", express.static(path.join(__dirname, 'public/assets/plugins'))); **/
 app.use("/data", express.static(path.join(__dirname, 'public/data')));
+
+app.use('/assets/fonts', express.static(path.join(__dirname, 'public/assets/fonts'), {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.woff')) res.setHeader('Content-Type', 'font/woff');
+    if (path.endsWith('.woff2')) res.setHeader('Content-Type', 'font/woff2');
+    if (path.endsWith('.ttf')) res.setHeader('Content-Type', 'font/ttf');
+  }
+}));
+
 app.use(
   session({
     name: 'sid',
