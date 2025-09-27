@@ -104,8 +104,8 @@ input.addEventListener('keyup', reset); **/
   if (isLoggedIn){
   var UserName = localStorage.getItem("tmx_gold_name");
   $("#name").text(UserName)
-  //  window.location.href = 'kidney_beans.html?id='+localStorage.getItem('user_id');///https://agro-africa.io//agroAfrica/v1/user/profile/" + //localStorage.getItem('user_id') + "complete_profile.html";
-      window.location.href = '/tmxGold/v1/user/'+localStorage.getItem('role')+'/profile/'+localStorage.getItem('user_id') + '/';
+  //  window.location.href = 'kidney_beans.html?id='+localStorage.getItem('user_id');///https://agro-africa.io//agroAfrica/v1/user/data/profile/" + //localStorage.getItem('user_id') + "complete_profile.html";
+      window.location.href = '/tmxGold/v1/user/'+localStorage.getItem('role')+'/data/profile/'+localStorage.getItem('user_id') + '/';
   }
 }) **/
 
