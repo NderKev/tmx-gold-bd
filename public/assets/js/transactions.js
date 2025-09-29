@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(async() => {
 const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
 let transactionsIndex = document.getElementById("transactionsIndex");
 let transactionsTrading = document.getElementById("transactionsTrade")
@@ -170,8 +170,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     // document.getElementById('icoMenu').style.display = 'none';
   }
   //const addr = "0xE88a92EcbAeeC20241D43A3e2512A4E705A847b8";
-  connect();
+  await connect();
   let addr = localStorage.getItem('address');
+  console.log("address :" + addr);
   addr = addr.toLowerCase();
   if (!addr) {
     alert('Please enter an address');
