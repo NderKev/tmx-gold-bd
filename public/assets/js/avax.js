@@ -471,7 +471,7 @@ const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
 
       // Pass USD + BTC to checkout.html
       window.open(
-        `/btc?usd=${usdAmount}&btc=${btcAmount}`,
+        `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}/btc?usd=${usdAmount}&btc=${btcAmount}`,
         "btcCheckout",
         `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
       );
