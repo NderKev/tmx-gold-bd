@@ -181,36 +181,43 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   //const txs = await fetchTransactions(addr);
   //populateTable(txs);
- 
-  const provider = new ethers.JsonRpcProvider(INFURA_URL);
-  const latest = await provider.getBlockNumber();
-  const blocksToScan = 20000000; // number of latest blocks to scan
-  const tbody = document.querySelector("#table-contract-transactions tbody");
-  tbody.innerHTML = "Scanning...";
+const provider   = new ethers.JsonRpcProvider(INFURA_URL);
+const startBlock = 56180690;   // 🔹 your custom starting block
 
+const tbody = document.querySelector("#table-contract-transactions tbody");
+tbody.innerHTML = "Scanning from block " + startBlock + "…";
+
+try {
+  const latest = await provider.getBlockNumber();
   let rows = "";
-  for (let i = 0; i < blocksToScan; i++) {
-    const blockNum = latest - i;
-    const block = await  provider.getBlock(blockNum, true);
+
+  for (let blockNum = startBlock; blockNum <= latest; blockNum++) {
+    const block = await provider.getBlock(blockNum, true); // true = include full tx objects
+
     block.transactions.forEach(tx => {
-     if (
-        (tx.from && tx.from.toLowerCase() === addr) ||
-        (tx.to && tx.to.toLowerCase() === addr)
-      ) {
+      const from = tx.from?.toLowerCase() || "";
+      const to   = tx.to?.toLowerCase() || "";
+
+      if (from === addr || to === addr) {
         rows += `
           <tr>
             <td>${blockNum}</td>
-            <td><a href="https://snowtrace.io/tx/${tx.hash}" target="_blank">${tx.hash.slice(0,12)}…</a></td>
+            <td><a href="https://snowtrace.io/tx/${tx.hash}" target="_blank">
+                ${tx.hash.slice(0,12)}…</a></td>
             <td>${tx.from}</td>
             <td>${tx.to || ""}</td>
-            <td>${ethers.utils.formatEther(tx.value)}</td>
+            <td>${ethers.formatEther(tx.value)}</td>
           </tr>
         `;
       }
     });
   }
 
-  tbody.innerHTML = rows || "<tr><td colspan='5'>No transactions found in last " + blocksToScan + " blocks</td></tr>";
+  tbody.innerHTML = rows || `<tr><td colspan="5">No matching transactions found.</td></tr>`;
+} catch (err) {
+  console.error(err);
+  tbody.innerHTML = `<tr><td colspan="5">Error: ${err.message}</td></tr>`;
+}
 });
 const INFURA_URL = "https://avalanche-mainnet.infura.io/v3/4a66158c06d1425dab6ef27cd2a6d8aa";
 const API_KEY = 'tmxgold';  // replace with your Snowtrace / Routescan key
