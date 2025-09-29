@@ -1,5 +1,5 @@
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.11.1/dist/ethers.umd.min.js"></script>
-$(document).ready(async() => {
+$(document).ready(function() {
 const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
 let transactionsIndex = document.getElementById("transactionsIndex");
 let transactionsTrading = document.getElementById("transactionsTrade")
