@@ -136,3 +136,24 @@ document.getElementById("btnBuyTokens").addEventListener("click", function () {
   handler.openIframe();
 }); **/
 
+setInterval(function(){
+  const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
+    $.ajax({
+      url: `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/profile/${localStorage.getItem("settings_id")}/`,
+      dataType: "JSON",
+      contentType: "application/json",
+      method: "GET",
+      error: (err) => {
+        if (err.status === 401){
+        alert("Session Expired! Kindly login again");
+        localStorage.setItem('tmx_gold_name', "");
+        localStorage.setItem('role', "");
+        localStorage.setItem('token', "");
+        window.location.href = "/index.html";
+      }
+      },
+      success: function(results){
+
+      }
+    });
+  }, 1800000);

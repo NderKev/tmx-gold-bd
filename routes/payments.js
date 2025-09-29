@@ -5,13 +5,14 @@ const listen = require("../controllers/listen");
 const tokens = require("../controllers/tokens");
 const transactions = require("../controllers/transactions");
 const FROM_ADDRESS = "0x9C70dB844aFF616CC01ca3914a80dCA555Eb8d9A";
+const {authenticator} = require('../lib/common');
 const router = express.Router();
 
 // you can create a .env file on the server for the public and private keys
 const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET;
 
 
-router.post("/paystack", async (req, res) => {
+router.post("/paystack", authenticator, async (req, res) => {
   try {
     const { reference, address, email, amount, token, usd} = req.body;
 
@@ -80,7 +81,7 @@ router.post("/paystack", async (req, res) => {
 });
 
 // ✅ Verify payment endpoint
-router.post("/verify-mpesa", async (req, res) => {
+router.post("/verify-mpesa", authenticator, async (req, res) => {
   //const reference = req.query.reference;
   const { reference, address, email, amount, token, usd} = req.body;
   try {
@@ -115,14 +116,14 @@ router.post("/verify-mpesa", async (req, res) => {
   }
 });
 
-router.post('/btc', async (req, res) => {
+router.post('/btc', authenticator, async (req, res) => {
   const {email, from} = req.body;
   const response = await listen.listenBTC({email : email, from : from});;
   
   return res.status(response.status).send(response);
 });
 
-router.post('/eth', async (req, res) => {
+router.post('/eth', authenticator, async (req, res) => {
    const {email, from, amount} = req.body;
 
   const response =  await listen.listenEth({email : email, from : from, amount : amount});
@@ -131,7 +132,7 @@ router.post('/eth', async (req, res) => {
 });
 
 
-router.post('/avax', async (req, res) => {
+router.post('/avax', authenticator, async (req, res) => {
    const {email, from, amount} = req.body;
 
   const response = await listen.listenAvax({email : email, from : from, amount : amount});
@@ -140,14 +141,14 @@ router.post('/avax', async (req, res) => {
 });
 
 
-router.post('/bnb', async (req, res) => {
+router.post('/bnb', authenticator, async (req, res) => {
    const {email, from, amount} = req.body;
   const response = await listen.listenBnb({email : email, from : from, amount : amount});
   
   return res.status(response.status).send(response);
 });
 
-router.post('/usdc', async (req, res) => {
+router.post('/usdc', authenticator, async (req, res) => {
    const {email, from, amount} = req.body;
 
   const response =   await listen.listenUSDC({email : email, from : from, amount : amount});
@@ -155,7 +156,7 @@ router.post('/usdc', async (req, res) => {
   return res.status(response.status).send(response);
 });
 
-router.post('/usdt', async (req, res) => {
+router.post('/usdt', authenticator, async (req, res) => {
    const {email, from, amount} = req.body;
 
   const response = await listen.listenUSDT({email : email, from : from, amount : amount});
@@ -163,7 +164,7 @@ router.post('/usdt', async (req, res) => {
   return res.status(response.status).send(response);
 });
 
-router.post('/avax-usdc', async (req, res) => {
+router.post('/avax-usdc', authenticator, async (req, res) => {
    const {email, from, amount} = req.body;
 
   const response = await listen.listenAvaxUSDC({email : email, from : from, amount : amount});
@@ -171,7 +172,7 @@ router.post('/avax-usdc', async (req, res) => {
   return res.status(response.status).send(response);
 });
 
-router.post('/avax-usdt', async (req, res) => {
+router.post('/avax-usdt', authenticator, async (req, res) => {
    const {email, from, amount} = req.body;
 
   const response = await listen.listenAvaxUSDT({email : email, from : from, amount : amount});
@@ -180,14 +181,14 @@ router.post('/avax-usdt', async (req, res) => {
 });
 
 
-router.post('/send-tokens', async (req, res) => {
+router.post('/send-tokens', authenticator, async (req, res) => {
    const {email, token, address} = req.body
   const response = await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
   
   return res.status(response.status).send(response);
 });
 
-router.post('/tx', async (req, res) => {
+router.post('/tx', authenticator, async (req, res) => {
   const response = await transactions.createTransaction(req.body);
   return res.status(response.status).send(response);
 });

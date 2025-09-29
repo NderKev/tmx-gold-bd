@@ -121,7 +121,7 @@ async function getCKESPrice() {
     console.error("Error fetching CKES price:", error);
   }
 }
-
+const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
 // Call the function
 //getCKESPrice();
 
@@ -289,7 +289,7 @@ async function getCKESPrice() {
 
     let sendButton =  document.getElementById('btnBuyTokens');
     
-
+    
     // demo functions
     
     async function sendSelectedToken(){
@@ -360,7 +360,7 @@ async function getCKESPrice() {
 
       let token = parseFloat(amount * kes_prices.usd/0.005);
 
-
+   
       var handler = PaystackPop.setup({
         key: 'pk_live_7bda8bdfc8d90392fde6a15590c7e470127dd2d2', // replace with the TMX public key
         email: "tony@tmxglobal.com",
@@ -374,7 +374,7 @@ async function getCKESPrice() {
           ]
         },
         callback: function (response) {
-          fetch("/payments/verify-mpesa", {
+          fetch(`${AUTH_BACKEND_URL}/api/payments/verify-mpesa`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ reference: response.reference, email: user_name, address: wallet.value, amount : amount, token : token, usd: usdAmount })
@@ -427,7 +427,7 @@ async function getCKESPrice() {
         currency: "USD",
         ref: '' + Math.floor((Math.random() * 1000000000) + 1),
         callback: function (response) {
-          fetch("/payments/paystack", {
+          fetch(`${AUTH_BACKEND_URL}/api/payments/paystack`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ reference: response.reference, email: user_name, address: wallet.value, amount : amount, token : token, usd: usdAmount })
@@ -571,7 +571,7 @@ sendButton.onclick = sendSelectedToken;
 
   async function checkPayment(crypto, email, from , amount) {
     try {
-      const res = await fetch(`/payments/${crypto}`, {
+      const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email: email,  amount : amount, from : from})

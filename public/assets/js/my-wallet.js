@@ -48,7 +48,7 @@ $(supportWallet).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 setInterval(function(){
   const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
     $.ajax({
-      url: `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/data/profile/${localStorage.getItem("wallet_id")}/`,
+      url: `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/profile/${localStorage.getItem("wallet_id")}/`,
       dataType: "JSON",
       contentType: "application/json",
       method: "GET",
