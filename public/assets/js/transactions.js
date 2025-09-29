@@ -158,7 +158,7 @@ setInterval(function(){
   }, 1800000);
 
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async () => {
   const role = localStorage.getItem('role');   // e.g. "admin" or "customer"
 
   if (role === 'customer') {
@@ -169,6 +169,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Option 2 (alternative): just hide it
     // document.getElementById('icoMenu').style.display = 'none';
   }
+  const addr = "0xE88a92EcbAeeC20241D43A3e2512A4E705A847b8";
+  if (!addr) {
+    alert('Please enter an address');
+    return;
+  }
+  const txs = await fetchTransactions(addr);
+  populateTable(txs);
 });
 
 const API_KEY = 'tmxgold';  // replace with your Snowtrace / Routescan key
@@ -216,10 +223,3 @@ function populateTable(txList) {
   });
 }
 
-  const addr = "0xE88a92EcbAeeC20241D43A3e2512A4E705A847b8";
-  if (!addr) {
-    alert('Please enter an address');
-    return;
-  }
-  const txs = await fetchTransactions(addr);
-  populateTable(txs);
