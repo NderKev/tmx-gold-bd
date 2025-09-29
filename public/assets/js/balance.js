@@ -486,6 +486,7 @@ const AVALANCHE_CHAIN_ID = "0xa86a";
         const account = signer.address;
         address.innerText =  account;
         wallet.innerText = account;
+        localStorage.setItem('address', account);
 
         const rawBalance = await token.balanceOf(account);
         const formatted = ethers.formatUnits(rawBalance, decimals);

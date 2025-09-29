@@ -169,7 +169,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Option 2 (alternative): just hide it
     // document.getElementById('icoMenu').style.display = 'none';
   }
-  const addr = "0xE88a92EcbAeeC20241D43A3e2512A4E705A847b8";
+  //const addr = "0xE88a92EcbAeeC20241D43A3e2512A4E705A847b8";
+  const addr = localStorage.getItem('address');
   if (!addr) {
     alert('Please enter an address');
     return;
