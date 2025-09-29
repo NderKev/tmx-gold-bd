@@ -54,11 +54,11 @@ $.ajax({
   		},
   		success: function(results) {
   			if (results.data.length>0){
-       for (var order_count = 0; order_count < results.data.length; order_count++){
+       //for (var order_count = 0; order_count < results.data.length; order_count++){
   			var trHTML = '';
       
-          let  crypo_items = results.data[order_count];
-    
+          //let  crypo_items = results.data[order_count];
+          $.each(results.data, function (i, crypo_items) {
            if(crypo_items.mode === 'eth'){
            trHTML += '<tr><td>' + crypo_items.address + '</td><td> <a href="https://etherscan.io/tx/' + crypo_items.tx_hash + '">'+crypo_items.tx_hash+'</a></td><td>'+crypo_items.mode+'</a></td><td>' + crypo_items.type + '</td><td>$' + crypo_items.status + '</td><td>' + crypo_items.value+ '</td><td>' + crypo_items.usd  +  '</td></tr>';
          }
@@ -78,8 +78,8 @@ $.ajax({
          {
            trHTML += '<tr><td>' + crypo_items.address + '</td><td> <a href="https://etherscan.io/tx/' + crypo_items.tx_hash + '">'+crypo_items.tx_hash+'</a></td><td>'+crypo_items.mode+'</a></td><td>' + crypo_items.type + '</td><td>$' + crypo_items.status + '</td><td>' + crypo_items.value + '</td><td>' + crypo_items.usd  +  '</td></tr>';
          }
-      // });
-        }
+      });
+        //}
         $('#table-crypo-transactions').append(trHTML);
   }
 }
@@ -96,14 +96,14 @@ $.ajax({
   		},
   		success: function(results) {
   			if (results.data.length>0){
-       for (var fiat_count = 0; fiat_count < results.data.length; fiat_count++){
+       //for (var fiat_count = 0; fiat_count < results.data.length; fiat_count++){
   			var trHTML = '';
-      
-          let  fiat_items = results.data[fiat_count];
+      $.each(results.data, function (i, fiat_items) {
+          //let  fiat_items = results.data[fiat_count];
            trHTML += '<tr><td>' + fiat_items.ref_no + '</td><td>'+fiat_items.mode+'</a></td><td>' + fiat_items.fiat + '</td><td>$' + fiat_items.status + '</td><td>' + fiat_items.amount+ '</td><td>' + fiat_items.usd  +  '</td></tr>';
          
-      // });
-        }
+      });
+       // }
         $('#table-fiat-transactions').append(trHTML);
   }
 }
@@ -119,13 +119,13 @@ $.ajax({
   		},
   		success: function(results) {
   			if (results.data.length>0){
-       for (var tmx_count = 0; tmx_count < results.data.length; tmx_count++){
+      // for (var tmx_count = 0; tmx_count < results.data.length; tmx_count++){
   			var trHTML = '';
-      
-          let  tmx_items = results.data[tmx_count];
+      $.each(results.data, function (i, tmx_items) {
+          //let  tmx_items = results.data[tmx_count];
            trHTML += '<tr><td>' + tmx_items.address + '</td><td> <a href="https://snowtrace.io/tx/' + tmx_items.tx_hash + '">'+tmx_items.tx_hash+'</a></td><td>' + tmx_items.type + '</td><td>' + tmx_items.status + '</td><td>' + tmx_items.value+ '</td><td>$' + tmx_items.usd  +  '</td></tr>';
-      // });
-        }
+      });
+        //}
         $('#table-tmxgold-transactions').append(trHTML);
   }
 }
