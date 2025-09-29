@@ -42,6 +42,7 @@ const createTokenTransaction = async (reqData) => {
   }
 };
 
+
 const fetchTransactionByUser = async (reqData) => {
   try {
     const validInput = validateUserId(reqData);
@@ -49,6 +50,36 @@ const fetchTransactionByUser = async (reqData) => {
     return successResponse(200, response)
   } catch (error) {
     console.error('error -> ', logStruct('fetchTransactionByUser', error))
+    return errorResponse(error.status, error.message);
+  }
+};
+
+const getTransactionByUserEmail = async (reqData) => {
+  try {
+    const response = await transactionsModel.getTransactionByUserEmail(reqData.email);
+    return successResponse(200, response)
+  } catch (error) {
+    console.error('error -> ', logStruct('getTransactionByUserEmail', error))
+    return errorResponse(error.status, error.message);
+  }
+};
+
+const getFiatTransactionByUserEmail = async (reqData) => {
+  try {
+    const response = await transactionsModel.getFiatTransactionByUserEmail(reqData.email);
+    return successResponse(200, response)
+  } catch (error) {
+    console.error('error -> ', logStruct('getFiatTransactionByUserEmail', error))
+    return errorResponse(error.status, error.message);
+  }
+};
+
+const getTokenTransactionByUserEmail = async (reqData) => {
+  try {
+    const response = await transactionsModel.getFiatTransactionByUserEmail(reqData.email);
+    return successResponse(200, response)
+  } catch (error) {
+    console.error('error -> ', logStruct('getTokenTransactionByUserEmail', error))
     return errorResponse(error.status, error.message);
   }
 };
@@ -147,6 +178,9 @@ module.exports = {
   createFiatTransaction,
   createTokenTransaction,
   fetchTransactionByUser,
+  getTransactionByUserEmail,
+  getFiatTransactionByUserEmail,
+  getTokenTransactionByUserEmail,
   fetchTransactionByID,
   fetchAllTransactions,
   updateTransactionByID,
