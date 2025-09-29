@@ -19,7 +19,7 @@ $(document).ready(function () {
       url: `${AUTH_BACKEND_URL}/api/user/verify`,
       method: "POST",
       contentType: "application/json",  // keep JSON request
-      data: JSON.stringify({ otp }),
+      data: JSON.stringify({ otp : otp}),
       // ✅ handle specific HTTP codes here:
       statusCode: {
         204: function () {
@@ -42,7 +42,7 @@ $(document).ready(function () {
       },
       success: function (data) {
         // This only runs if a JSON body is returned (not for 204)
-        if (data && data.message === "verified") {
+        if (data && data.data.message === "verified" && data.message ==="verified") {
           $("#otp_placement_error").html('OTP Verification Successful');
           window.location.href = '/index.html';
         }

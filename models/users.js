@@ -88,21 +88,22 @@ exports.updatePassword = async (data) => {
    return query;
  };
 
+
+
 exports.updateProfile = async (data) => {
+  data.updated_at = moment().format('YYYY-MM-DD HH:mm:ss');
+
+  const toBeUpdated = {};
+  const canBeUpdated = ['about_me', 'phone','street', 'city', 'zipcode', 'state', 'country', 'latitude', 'longitude','updated_at'];
+  for (let i in data) {
+    if (canBeUpdated.indexOf(i) > -1) {
+      toBeUpdated[i] = data[i];
+    }
+  }
   const query = db.write('users')
     .where('email', data.email)
-    .update({
-      about_me: data.about,
-      phone : data.telephone,
-      street : data.street,
-      city : data.city,
-      zipcode : data.zipcode,
-      state : data.state,
-      country : data.country,
-      latitude : data.latitude,
-      longitude : data.logitude,
-      updated_at: moment().format('YYYY-MM-DD HH:mm:ss')
-    });
+    .update(toBeUpdated);
+
   console.info("query -->", query.toQuery())
   return query;
 };
@@ -369,6 +370,15 @@ exports.verifyEmailOTP = async (data) => {
       used : 1,
       updatedAt : moment().format('YYYY-MM-DD HH:mm:ss')
     });
+  console.info("query -->", query.toQuery())
+  return query;
+};
+
+exports.fetchEmailOTP = async (data) => {
+const query = db.read.select('user_otps.email')
+  .from('user_otps')
+  .where('otp', '=', data)
+  .where('used', '=', 0);
   console.info("query -->", query.toQuery())
   return query;
 };

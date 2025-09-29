@@ -6,7 +6,7 @@ const userModel = require('../models/users');
 const {successResponse, errorResponse} = require('../lib/response');
 const { validateUserRegister, validateUserToken, validateUserRole, validateUserPermission,   validateAuth, validateSeller } = require('../validators/users');
 const { validateId} = require('../validators/common');
-const { RegisterMail, VerifyMail } = require('../mails');
+const { RegisterMail, VerifyMail, ResetPasswordMail, PasswordResetMail } = require('../mails');
 const sendEmail = require('../helpers/sendMail');
 //const nodemailer = require('nodemailer');
 
@@ -45,7 +45,7 @@ const createUser = async (reqData) => {
     let eml = token_data.user_name;
     const new_token = await userModel.genToken(token_data);
     await userModel.createUserToken(new_token);
-    let link = `https://www.tmxgoldcoin.co/api/user/verify/"${eml}/${new_token.token}`;//"www.tmxgoldcoin.co";
+    let link = `https://www.tmxgoldcoin.co/api/user/verify/${eml}/${new_token.token}`;//"www.tmxgoldcoin.co";
     let {otp, expirationTime} = generateExpiringOTP();
     let data = {};
     data.email = validInput.email;
@@ -68,11 +68,29 @@ const createUser = async (reqData) => {
 
 const updatePassword = async (reqData) => {
   try {
-    const userExists = await userModel.getUserDetailsByEmail(reqData.email);
+    let _email;
+    const emailExists = await userModel.fetchEmailOTP(reqData.otp);
+     if (emailExists && emailExists.length) {
+       _email = emailExists[0].email;
+     }
+      else{
+    return errorResponse(400, 'otpNotSent');
+  }
+    const userExists = await userModel.getUserDetailsByEmail(_email);
     if (userExists && userExists.length) {
+      reqData.email = _email;
       reqData.password = bcrypt.hashSync(String(reqData.password), saltRounds);
       const response = await userModel.updatePassword(reqData);
-      return successResponse(204, 'passwordUpdated')
+       try {
+      await sendEmail(reqData, PasswordResetMail(reqData.email));
+    } catch (error) {
+      console.log(error);
+    } 
+     let _data = {
+      message : "passwordUpdated",
+      data : reqData.email
+     }
+      return successResponse(204, _data, 'passwordUpdated')
     }
     else{
     return errorResponse(403, 'userNotRegistered');
@@ -97,6 +115,8 @@ const updateProfile = async (reqData) => {
     console.error('error -> ', logStruct('updateProfile', error))
     return errorResponse(error.status, error.message);
   }
+
+  
 };
 
 const fetchUser = async (reqData) => {
@@ -108,6 +128,44 @@ const fetchUser = async (reqData) => {
     console.error('error -> ', logStruct('fetchUser', error))
     return errorResponse(error.status, error.message);
   }
+};
+
+const sendResetPassword = async (reqData) => {
+  try {
+      let user_name = await userModel.fetchUserName(reqData);
+      user_name = user_name[0].name;
+      let {otp, expirationTime} = generateExpiringOTP();
+      let data = {};
+      data.email = reqData;
+      data.otp = otp;
+      data.expiry = expirationTime;
+      data.used = 0;
+      let _data =
+      {
+        message : "sent",
+        data : reqData
+      }
+      await userModel.createEmailOTP(data);
+      await sendEmail(reqData, ResetPasswordMail(user_name, otp));
+      return successResponse(200, _data);
+      //await sendEmail(validInput.email, VerifyMail(validInput.name, otp));
+    } catch (error) {
+      console.log(error);
+      return errorResponse(error.status, error.message);
+    } 
+};
+
+const sendResetPasswordSuccess = async (reqData) => {
+  try {
+      let user_name = await userModel.fetchUserName(reqData);
+      user_name = user_name[0].name;
+      await sendEmail(reqData, PasswordResetMail(user_name));
+      return successResponse(200, user_name, "sent");
+      //await sendEmail(validInput.email, VerifyMail(validInput.name, otp));
+    } catch (error) {
+      console.log(error);
+      return errorResponse(error.status, error.message);
+    } 
 };
 
 const createUserPermission = async (reqData) => {
@@ -172,9 +230,9 @@ const verifyEmailOtp = async (reqData) => {
   try {
     let resp = {}
     const response = await userModel.verifyEmailOTP(reqData);
-    resp.success = true;
-    resp.response = response;
-    return successResponse(204, resp, 'verified')
+    resp.message = "verified";
+    resp.data = response;
+    return successResponse(204, resp, 'verified');
   } catch (error) {
     console.error('error -> ', logStruct('verifyEmailOtp', error))
     return errorResponse(400, error.message);
@@ -361,6 +419,8 @@ module.exports = {
   updatePassword,
   updateProfile,
   fetchUser,
+  sendResetPassword,
+  sendResetPasswordSuccess,
   createUserPermission,
   createUserRole,
   activateUser,

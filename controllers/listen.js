@@ -4,6 +4,9 @@ const fetch = require("node-fetch");
 const transactionsModel = require('../models/transactions');
 const WebSocket = require("ws");
 const axios = require("axios");
+const { TransactionMail} = require('../mails');
+const sendEmail = require('../helpers/sendMail');
+const userModel = require("../models/users");
 const {successResponse, errorResponse} = require('../lib/response');
 // ---------- CONFIG ----------
 const config = require('../config');
@@ -60,8 +63,8 @@ async function getPrices() {
   BNB: 540
 } **/
 
-
-
+let prices;
+ 
 const listenAvax = async (reqData) => {
   try {
     // choose network RPC (ETH Mainnet, Avalanche, or BNB Chain)
@@ -73,7 +76,8 @@ const listenAvax = async (reqData) => {
   // or use ethers.JsonRpcProvider if WS not supported by your RPC
 
     console.log("🔍 Listening for payments to:", MONITOR_ADDRESS);
-
+    prices = await getPrices();
+    
   // -------------------------------
   // 1. Native coin deposits (AVAX/ETH/BNB)
   // -------------------------------
@@ -84,6 +88,8 @@ const listenAvax = async (reqData) => {
         const value = ethers.formatEther(tx.value);
         const from = tx.from;
         const prices = await getPrices();
+        let _avax_usd = parseFloat(value*(prices.AVAX));
+        _avax_usd = _avax_usd.toFixed(2);
         if(value == reqData.amount && reqData.from === from){
          let data = {
             email: reqData.email,
@@ -93,10 +99,21 @@ const listenAvax = async (reqData) => {
             type: "transfer",
             to: tx.to,    
             status: "complete",
-            value: value,
-            usd: value*(prices.AVAX)
+            value: value, 
+            usd: _avax_usd
          }
          await transactionsModel.createTransaction(data);
+           try {
+            let _amount = parseFloat(value*(prices.AVAX));
+            let user_name = await userModel.fetchUserName(reqData.email);
+            user_name = user_name[0].name;
+            _amount = _amount.toFixed(2);
+            let crypto = "AVAX"
+            const link = `https://snowtrace.io/tx/${tx.hash}`
+            await sendEmail(reqData.email, TransactionMail(user_name, link, _amount, crypto, tx.to));
+          } catch (error) {
+            console.log(error);
+          } 
          console.log(`💰 Native deposit received: ${value} AVAX at tx ${tx.hash}`);
          return successResponse(201, data, 'transactionCreated')
         }
@@ -120,7 +137,7 @@ const listenAvax = async (reqData) => {
 const listenBTC = async (reqData) => {
   try {
         const ADDRESS = config.BTC_ADDRESS;
-        const prices = getPrices();
+        prices = await getPrices();
         const btc_price = prices.BTC;
         const MIN_AMOUNT = (10 / btc_price); // BTC threshold
         
@@ -145,6 +162,8 @@ const listenBTC = async (reqData) => {
                 }
             }
             const btc = totalReceived / 1e8;
+            let _btc_usd = parseFloat(btc*(prices.AVAX));
+             _btc_usd = _avax_usd.toFixed(2);
             if (btc >= MIN_AMOUNT) {
                 console.log(`💰 BTC deposit received: ${btc} BTC in tx ${data.tx.txid}`);
                  let data = {
@@ -156,9 +175,20 @@ const listenBTC = async (reqData) => {
                     to: ADDRESS,    
                     status: "complete",
                     value: btc,
-                    usd: btc*(prices.BTC)
+                    usd: _btc_usd
                 }
                 await transactionsModel.createTransaction(data);
+               try {
+                  let _amount = parseFloat(btc*(prices.AVAX));
+                  _amount = _amount.toFixed(2);
+                  let user_name = await userModel.fetchUserName(reqData.email);
+                   user_name = user_name[0].name;
+                  let crypto = "Bitcoin"
+                  const link = `https://live.blockcyper.com/tx/${data.tx.txid}`
+                  await sendEmail(reqData.email, TransactionMail(user_name, link, _amount, crypto, ADDRESS));
+                } catch (error) {
+                  console.log(error);
+                } 
                 console.log(`💰 Native deposit received: ${btc} BTC at tx ${data.tx.txid}`);
                 return successResponse(201, data, 'transactionCreated')
             }
@@ -181,7 +211,7 @@ const listenEth = async (reqData) => {
     const RPC_URL = `https://mainnet.infura.io/v3/4a66158c06d1425dab6ef27cd2a6d8aa/${config.INFURA_KEY}`
     const provider = new ethers.WebSocketProvider(`wss://mainnet.infura.io/ws/v3/${config.INFURA_KEY}`); 
   // or use ethers.JsonRpcProvider if WS not supported by your RPC
-
+    prices = await getPrices();
     console.log("🔍 Listening for payments to:", MONITOR_ADDRESS);
 
   // -------------------------------
@@ -194,6 +224,8 @@ const listenEth = async (reqData) => {
         const value = ethers.formatEther(tx.value);
         const from = tx.from;
         const prices = await getPrices();
+        let _eth_usd = parseFloat(value*(prices.AVAX));
+        _eth_usd = _avax_usd.toFixed(2);
         if(value == reqData.amount && reqData.from === from){
          let data = {
             email: reqData.email,
@@ -204,9 +236,20 @@ const listenEth = async (reqData) => {
             to: tx.to,    
             status: "complete",
             value: value,
-            usd: value*(prices.ETH)
+            usd: _eth_usd
          }
          await transactionsModel.createTransaction(data);
+         try {
+            let _amount = parseFloat(value*(prices.ETH));
+            _amount = _amount.toFixed(2);
+            let user_name = await userModel.fetchUserName(reqData.email);
+            user_name = user_name[0].name;
+            let crypto = "Ether"
+            const link = `https://etherscan.io/tx/${tx.hash}`
+            await sendEmail(reqData.email, TransactionMail(user_name, link, _amount, crypto, tx.to));
+          } catch (error) {
+            console.log(error);
+          } 
          console.log(`💰 Native deposit received: ${value} ETH at tx ${tx.hash}`);
          return successResponse(201, data, 'transactionCreated')
         }
@@ -234,7 +277,7 @@ const listenBnb = async (reqData) => {
   // or use ethers.JsonRpcProvider if WS not supported by your RPC
 
     console.log("🔍 Listening for payments to:", MONITOR_ADDRESS);
-
+    prices = await getPrices();
   // -------------------------------
   // 1. Native coin deposits (AVAX/ETH/BNB)
   // -------------------------------
@@ -245,6 +288,8 @@ const listenBnb = async (reqData) => {
         const value = ethers.formatEther(tx.value);
         const from = tx.from;
         const prices = await getPrices();
+         let _bnb_usd = parseFloat(value*(prices.AVAX));
+         _bnb_usd = _avax_usd.toFixed(2);
         if(value == reqData.amount && reqData.from === from){
          let data = {
             email: reqData.email,
@@ -255,9 +300,20 @@ const listenBnb = async (reqData) => {
             to: tx.to,    
             status: "complete",
             value: value,
-            usd: value*(prices.BNB)
+            usd: _bnb_usd
          }
          await transactionsModel.createTransaction(data);
+          try {
+            let _amount = parseFloat(value*(prices.BNB));
+            _amount = _amount.toFixed(2);
+            let user_name = await userModel.fetchUserName(reqData.email);
+            user_name = user_name[0].name;
+            let crypto = "Ether"
+            const link = `https://bscscan.com/tx/${tx.hash}`
+            await sendEmail(reqData.email, TransactionMail(user_name, link, _amount, crypto, tx.to));
+          } catch (error) {
+            console.log(error);
+          } 
          console.log(`💰 Native deposit received: ${value} BNB at tx ${tx.hash}`);
          return successResponse(201, data, 'transactionCreated')
         }
@@ -282,7 +338,7 @@ const listenAvaxUSDC = async (reqData) => {
     
     const RPC_URL = "https://api.avax.network/ext/bc/C/rpc"
     const provider = new ethers.JsonRpcProvider("wss://api.avax.network/ext/bc/C/ws"); 
- 
+    prices = await getPrices();
     const ERC20_ABI = [
   "event Transfer(address indexed from, address indexed to, uint256 value)",
   "function decimals() view returns (uint8)"
@@ -297,6 +353,8 @@ const listenAvaxUSDC = async (reqData) => {
         const amount = ethers.formatUnits(value, decimals);
         //const from = from;
         const prices = await getPrices();
+        let _avax_usd = parseFloat(value*(prices.USDC));
+         _avax_usd = _avax_usd.toFixed(2);
         if(value == reqData.amount && reqData.from === from){
          let data = {
             email: reqData.email,
@@ -307,9 +365,20 @@ const listenAvaxUSDC = async (reqData) => {
             to: to,    
             status: "complete",
             value: amount,
-            usd: value*(prices.USDC)
+            usd: _avax_usd
          }
          await transactionsModel.createTransaction(data);
+            try {
+            let _amount = parseFloat(value*(prices.USDC));
+            _amount = _amount.toFixed(2);
+            let user_name = await userModel.fetchUserName(reqData.email);
+            user_name = user_name[0].name;
+            let crypto = "Avax Usd Coin"
+            const link = `https://snowtrace.io/tx/${event.log.transactionHash}`
+            await sendEmail(reqData.email, TransactionMail(user_name, link, _amount, crypto, to));
+          } catch (error) {
+            console.log(error);
+          } 
          console.log(`💰 Avax USDC deposit received: ${amount} from ${from} at tx ${event.log.transactionHash}`);
          return successResponse(201, data, 'transactionCreated')
         }
@@ -333,7 +402,7 @@ const listenAvaxUSDT = async (reqData) => {
    try{
     const RPC_URL = "https://api.avax.network/ext/bc/C/rpc"
     const provider = new ethers.WebSocketProvider("wss://api.avax.network/ext/bc/C/ws"); 
-  
+    prices = await getPrices();
     const ERC20_ABI = [
   "event Transfer(address indexed from, address indexed to, uint256 value)",
   "function decimals() view returns (uint8)"
@@ -348,6 +417,8 @@ const listenAvaxUSDT = async (reqData) => {
         const amount = ethers.formatUnits(value, decimals);
         //const from = from;
         const prices = await getPrices();
+        let _amount = parseFloat(value*(prices.USDT));
+         _amount = _amount.toFixed(2);
         if(value == reqData.amount && reqData.from === from){
          let data = {
             email: reqData.email,
@@ -358,9 +429,18 @@ const listenAvaxUSDT = async (reqData) => {
             to: to,    
             status: "complete",
             value: amount,
-            usd: value*(prices.USDT)
+            usd: _amount
          }
          await transactionsModel.createTransaction(data);
+          try {         
+            let crypto = "Avax Tether Coin"
+            const link = `https://snowtrace.io/tx/${event.log.transactionHash}`
+            let user_name = await userModel.fetchUserName(reqData.email);
+            user_name = user_name[0].name;
+            await sendEmail(reqData.email, TransactionMail(user_name, link, _amount, crypto, tx.to));
+          } catch (error) {
+            console.log(error);
+          } 
          console.log(`💰 Avax USDT deposit received: ${amount} from ${from} at tx ${event.log.transactionHash}`);
          return successResponse(201, data, 'transactionCreated')
         }
@@ -385,7 +465,7 @@ const listenUSDC = async (reqData) => {
     
     const RPC_URL = `https://mainnet.infura.io/v3/4a66158c06d1425dab6ef27cd2a6d8aa/${config.INFURA_KEY}`
     const provider = new ethers.WebSocketProvider(`wss://mainnet.infura.io/ws/v3/${config.INFURA_KEY}`); 
- 
+    prices = await getPrices();
     const ERC20_ABI = [
   "event Transfer(address indexed from, address indexed to, uint256 value)",
   "function decimals() view returns (uint8)"
@@ -400,6 +480,8 @@ const listenUSDC = async (reqData) => {
         const amount = ethers.formatUnits(value, decimals);
         //const from = from;
         const prices = await getPrices();
+        let _amount = parseFloat(value*(prices.USDT));
+        _amount = _amount.toFixed(2);
         if(value == reqData.amount && reqData.from === from){
          let data = {
             email: reqData.email,
@@ -410,9 +492,18 @@ const listenUSDC = async (reqData) => {
             to: to,    
             status: "complete",
             value: amount,
-            usd: value*(prices.USDC)
+            usd: _amount
          }
          await transactionsModel.createTransaction(data);
+         try {         
+            let crypto = "USD Coin"
+            const link = `https://etherscan.io/tx/${event.log.transactionHash}`
+            let user_name = await userModel.fetchUserName(reqData.email);
+            user_name = user_name[0].name;
+            await sendEmail(reqData.email, TransactionMail(user_name, link, _amount, crypto, to));
+          } catch (error) {
+            console.log(error);
+          } 
          console.log(`💰 USDC deposit received: ${amount} from ${from} at tx ${event.log.transactionHash}`);
          return successResponse(201, data, 'transactionCreated')
         }
@@ -436,7 +527,7 @@ const listenUSDT = async (reqData) => {
     
     const RPC_URL = `https://mainnet.infura.io/v3/4a66158c06d1425dab6ef27cd2a6d8aa/${config.INFURA_KEY}`
     const provider = new ethers.WebSocketProvider(`wss://mainnet.infura.io/ws/v3/${config.INFURA_KEY}`); 
- 
+    prices = await getPrices();
     const ERC20_ABI = [
   "event Transfer(address indexed from, address indexed to, uint256 value)",
   "function decimals() view returns (uint8)"
@@ -451,6 +542,8 @@ const listenUSDT = async (reqData) => {
         const amount = ethers.formatUnits(value, decimals);
         //const from = from;
         const prices = await getPrices();
+          let _amount = parseFloat(value*(prices.USDT));
+         _amount = _amount.toFixed(2);
         if(value == reqData.amount && reqData.from === from){
          let data = {
             email: reqData.email,
@@ -461,9 +554,18 @@ const listenUSDT = async (reqData) => {
             to: to,    
             status: "complete",
             value: amount,
-            usd: value*(prices.USDT)
+            usd: _amount
          }
          await transactionsModel.createTransaction(data);
+         try {         
+            let crypto = "Tether Coin"
+            const link = `https://etherscan.io/tx/${event.log.transactionHash}`
+            let user_name = await userModel.fetchUserName(reqData.email);
+            user_name = user_name[0].name;
+            await sendEmail(reqData.email, TransactionMail(user_name, link, _amount, crypto, to));
+          } catch (error) {
+            console.log(error);
+          } 
          console.log(`💰 USDC deposit received: ${amount} from ${from} at tx ${event.log.transactionHash}`);
          return successResponse(201, data, 'transactionCreated')
         }

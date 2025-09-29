@@ -10,6 +10,8 @@ const RPC_URL = "https://api.avax.network/ext/bc/C/rpc"; // Avalanche mainnet
 const PRIVATE_KEY = process.env.PRIVATE_KEY;   // reserve wallet PK
 const TOKEN_ADDRESS = process.env.TMX_GOLD_ADDRESS; // ERC20 contract on Avalanche
 const transactionsModel = require('../models/transactions');
+const { DepositMail } = require('../mails');
+const userModel = require("../models/users");
 
 const logStruct = (func, error) => {
   return {'func': func, 'file': 'TokensController', error}
@@ -77,6 +79,15 @@ const SendTokens = async (reqData) => {
                     usd: _amount.toFixed(2)
                  }
         await transactionsModel.createTokenTransaction(dat);
+        try {         
+            //let crypto = "TMX Gold"
+            const link = `https://snowtrace.io/tx/${tx.hash}`
+            let user_name = await userModel.fetchUserName(reqData.email);
+            user_name = user_name[0].name;
+            await sendEmail(reqData.email, DepositMail(user_name, link, _amount, TO_ADDRESS));
+          } catch (error) {
+            console.log(error);
+          } 
         console.log("✅ Transfer confirmed");
          return successResponse(201, response, 'transactionCreated')
 

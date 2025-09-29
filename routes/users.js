@@ -73,6 +73,16 @@ router.post('/sendAuth', async (req, res) => {
   return res.status(response.status).send(response);
 })
 
+router.post('/sendReset', async (req, res) => {
+  const response = await userController.sendResetPassword(req.body.email);
+  return res.status(200).send(response);
+})
+
+router.post('/resetSuccess', async (req, res) => {
+  const response = await userController.sendResetPasswordSuccess(req.body.email);
+  return res.status(200).send(response);
+})
+
 router.get('/verify/:email/:token', async (req, res) => {
   var token = req.params.token;
   var email = req.params.email;
@@ -99,6 +109,12 @@ res.redirect(getFormattedUrl(req));
 
 router.post('/verify', async (req, res) => {
   const response = await userController.verifyEmailOtp(req.body.otp);
+  return res.status(response.status).send(response);
+})
+
+
+router.post('/sendReset', async (req, res) => {
+  const response = await userController.sendResetPassword(req.body.email);
   return res.status(response.status).send(response);
 })
 
@@ -232,7 +248,7 @@ router.put('/deActivateSeller/:id', authenticator, checkAdmin, async (req, res) 
   return res.status(response.status).send(response)
 })
 
-
+ 
 
 
 

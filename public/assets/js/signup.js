@@ -109,8 +109,21 @@ input.addEventListener('keyup', reset); **/
   }
 }) **/
 
+  function checkEmail() {
+  const email = document.getElementById("email").value.trim();
+  const respMessage = document.getElementById("successMessage");
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // simple regex
+  if (emailPattern.test(email)) {
+    respMessage.innerText = '✅ Valid email';
+    //alert("");
+  } else {
+    respMessage.innerText = '❌ Invalid email';
+  }
+}
+
   $("#btnRegister").click(function(e){
     e.preventDefault()
+    checkEmail()
    var iti = window.intlTelInputGlobals.getInstance(
           document.querySelector("#phone")
     );
@@ -180,4 +193,8 @@ input.addEventListener('keyup', reset); **/
     })
   })
 
-})
+});
+
+
+
+

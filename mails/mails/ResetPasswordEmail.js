@@ -1,15 +1,55 @@
 const Link = require('../components/Link');
 const ContentBlock = require('../components/ContentBlock');
 const Text = require('../components/Text');
-//const link = `http://102.133.149.187/backend/verify/:token`
-const ResetPasswordEmailContent = (link) => `
-${ContentBlock(
-  `${Text(
-    'Reset Your Password For TmxGold Account ✔',
-  )}`,
-)}
-${ContentBlock(`${Text('Please follow the link below to reset your tmxgoldcoin account password')}`)}
-${Link('Click here to reset your password!', link)}
+
+const ResetPasswordEmailContent = (otp) => `
+  <div style="
+      background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+      padding: 40px 20px;
+      font-family: Arial, Helvetica, sans-serif;
+      text-align: center;
+      color: #333;
+  ">
+    <div style="
+        max-width: 600px;
+        margin: auto;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    ">
+      ${ContentBlock(
+        `${Text(
+          `<h1 style="color:#2e7d32; margin-bottom: 20px;">
+            Reset Your TMX GoldCoin Password ✔
+          </h1>`
+        )}`
+      )}
+      ${ContentBlock(
+        `${Text(
+          `<p style="font-size:16px; line-height:1.6; color:#555;">
+            We received a request to reset your TMX GoldCoin account password.  
+          </p>`
+        )}`
+      )}
+      <div style="margin: 30px 0;">
+        ${Text(
+          'Enter the otp below to reset your password!',
+          otp,
+          'background:#2e7d32;color:#ffffff;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block;'
+        )}
+        
+      </div>
+      ${ContentBlock(
+        `${Text(
+          `<p style="font-size:14px; color:#777; line-height:1.6;">
+            If you didn’t request this, you can safely ignore this email.  
+            This otp will expire in <b>30 minutes</b> for security purposes.
+          </p>`
+        )}`
+      )}
+    </div>
+  </div>
 `;
 
 module.exports = ResetPasswordEmailContent;
