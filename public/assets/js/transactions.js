@@ -193,7 +193,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const blockNum = latest - i;
     const block = await  provider.getBlock(blockNum, true);
     block.transactions.forEach(tx => {
-      if (tx.from.toLowerCase() === addr || (tx.to && tx.to.toLowerCase() === addr)) {
+     if (
+        (tx.from && tx.from.toLowerCase() === addr) ||
+        (tx.to && tx.to.toLowerCase() === addr)
+      ) {
         rows += `
           <tr>
             <td>${blockNum}</td>
