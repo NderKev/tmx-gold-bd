@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('user_id');
+    localStorage.removeItem('address');
 
     // ✅ Tell backend to clear cookie/session
     fetch(`${AUTH_BACKEND_URL}/api/user/logout`, {
@@ -149,6 +150,7 @@ setInterval(function(){
         localStorage.setItem('tmx_gold_name', "");
         localStorage.setItem('role', "");
         localStorage.setItem('token', "");
+        localStorage.setItem('address', "");
         window.location.href = "/index.html";
       }
       },

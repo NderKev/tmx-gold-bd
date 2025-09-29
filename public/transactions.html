@@ -902,17 +902,18 @@
                                 <div class="col-xs-12">
 
                                     <div class="table-responsive" data-pattern="priority-columns">
-                                        <table id="table-tmxgold-transactions" class="table table-small-font mb-10 table-bordered table-striped">
+                                        <table id="table-contract-transactions" class="table table-small-font mb-10 table-bordered table-striped">
                                             <thead>
                                                 <tr>
-                                                     <th>Block</th>
+                                                     <!--<th>Block</th>
                                                     <th>Timestamp</th>
                                                     <th>Tx Hash</th>
                                                     <th>From</th>
                                                     <th>To</th>
                                                     <th>Value</th>
-                                                    <th>Gas Used</th>
-                                                </tr>tr>
+                                                    <th>Gas Used</th> -->
+                                                    <th>Block</th><th>Hash</th><th>From</th><th>To</th><th>Value (AVAX)</th>
+                                                </tr>
                                             </thead>
                                             <tbody>
                                             <tr> </tr>
@@ -1123,6 +1124,7 @@
     <!-- CORE TEMPLATE JS - START -->
     <script src="/assets/js/script.js"></script>
     <script src="/assets/js/session.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <script src="/assets/js/transactions.js"></script>
     <!-- END CORE TEMPLATE JS - END -->
 

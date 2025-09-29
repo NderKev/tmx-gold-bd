@@ -170,15 +170,43 @@ document.addEventListener('DOMContentLoaded', async () => {
     // document.getElementById('icoMenu').style.display = 'none';
   }
   //const addr = "0xE88a92EcbAeeC20241D43A3e2512A4E705A847b8";
+  connect();
   const addr = localStorage.getItem('address');
   if (!addr) {
     alert('Please enter an address');
     return;
   }
-  const txs = await fetchTransactions(addr);
-  populateTable(txs);
-});
+  //const txs = await fetchTransactions(addr);
+  //populateTable(txs);
+ 
+  const provider = new ethers.providers.JsonRpcProvider(INFURA_URL);
+  const latest = await provider.getBlockNumber();
+  const blocksToScan = 100000; // number of latest blocks to scan
+  const tbody = document.querySelector("#table-contract-transactions tbody");
+  tbody.innerHTML = "Scanning...";
 
+  let rows = "";
+  for (let i = 0; i < blocksToScan; i++) {
+    const blockNum = latest - i;
+    const block = await provider.getBlockWithTransactions(blockNum);
+    block.transactions.forEach(tx => {
+      if (tx.from.toLowerCase() === target || (tx.to && tx.to.toLowerCase() === target)) {
+        rows += `
+          <tr>
+            <td>${blockNum}</td>
+            <td><a href="https://snowtrace.io/tx/${tx.hash}" target="_blank">${tx.hash.slice(0,12)}…</a></td>
+            <td>${tx.from}</td>
+            <td>${tx.to || ""}</td>
+            <td>${ethers.utils.formatEther(tx.value)}</td>
+          </tr>
+        `;
+      }
+    });
+  }
+
+  tbody.innerHTML = rows || "<tr><td colspan='5'>No transactions found in last " + blocksToScan + " blocks</td></tr>";
+});
+const INFURA_URL = "https://avalanche-mainnet.infura.io/v3/4a66158c06d1425dab6ef27cd2a6d8aa";
 const API_KEY = 'tmxgold';  // replace with your Snowtrace / Routescan key
 
 async function fetchTransactions(address) {
@@ -224,3 +252,14 @@ function populateTable(txList) {
   });
 }
 
+  async function connect() {
+      if (!window.ethereum) return alert("Install MetaMask!");
+       
+      //provider = new ethers.providers.Web3Provider(window.ethereum);
+      provider = new ethers.BrowserProvider(window.ethereum)
+      await provider.send("eth_requestAccounts", []);
+      signer = await provider.getSigner();
+      console.log("Signer address:", signer.address);
+      const account = signer.address;
+      localStorage.setItem('address', account);
+  }
