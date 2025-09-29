@@ -6,6 +6,9 @@ const tokens = require("../controllers/tokens");
 const transactions = require("../controllers/transactions");
 const FROM_ADDRESS = "0x9C70dB844aFF616CC01ca3914a80dCA555Eb8d9A";
 const {authenticator} = require('../lib/common');
+const { FiatTransactionMail} = require('../mails');
+const sendEmail = require('../helpers/sendMail');
+const userModel = require("../models/users");
 const router = express.Router();
 
 // you can create a .env file on the server for the public and private keys
@@ -55,6 +58,14 @@ router.post("/paystack", authenticator, async (req, res) => {
         usd: usd
       }
       await transactions.createFiatTransaction(reqData);
+      try {
+      let user_name = await userModel.fetchUserName(reqData.email);
+      user_name = user_name[0].name;
+      await sendEmail(email, FiatTransactionMail(user_name, reference, "paystack", "usd", amount, usd));
+      
+    } catch (error) {
+      console.log(error);
+    } 
       // transfer of TMX coins to the user should be added here
 
        await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
@@ -96,7 +107,7 @@ router.post("/verify-mpesa", authenticator, async (req, res) => {
         email: email,
         ref_no: reference,
         mode: "mpesa",
-        fiat: "usd",
+        fiat: "kes",
         to: "TMX Global Mpesa",    
         status: "complete",
         amount: amount,
@@ -104,7 +115,14 @@ router.post("/verify-mpesa", authenticator, async (req, res) => {
       }
       await transactions.createFiatTransaction(reqData);
       // transfer of TMX coins to the user should be added here
-
+      try {
+      let user_name = await userModel.fetchUserName(reqData.email);
+      user_name = user_name[0].name;
+      await sendEmail(email, FiatTransactionMail(user_name, reference, "mpesa", "kes", amount, usd));
+      
+    } catch (error) {
+      console.log(error);
+    } 
        await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
       return res.json({ status: "success", data: result.data });
     } else {
@@ -118,7 +136,7 @@ router.post("/verify-mpesa", authenticator, async (req, res) => {
 
 router.post('/btc', authenticator, async (req, res) => {
   const {email, from} = req.body;
-  const response = await listen.listenBTC({email : email, from : from});;
+  const response = await listen.listenBTC({email : email, from : from});
   
   return res.status(response.status).send(response);
 });

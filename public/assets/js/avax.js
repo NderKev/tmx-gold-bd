@@ -335,6 +335,7 @@ const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
 
    else if (option === 'Mpesa'){
     const paymentMethod = document.getElementById("payment_method").value;
+    const usdAmount = document.getElementById("usd").value;
       if (paymentMethod !== "Mpesa") {
         return;
       }
@@ -402,6 +403,7 @@ const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
    }
    else if (option === 'Paystack'){
     const paymentMethod = document.getElementById("payment_method").value;
+    const usdAmount = document.getElementById("usd").value;
       if (paymentMethod !== "Paystack") {
         return;
       }
