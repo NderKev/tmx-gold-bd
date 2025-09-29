@@ -170,3 +170,56 @@ document.addEventListener('DOMContentLoaded', function () {
     // document.getElementById('icoMenu').style.display = 'none';
   }
 });
+
+const API_KEY = 'tmxgold';  // replace with your Snowtrace / Routescan key
+
+async function fetchTransactions(address) {
+  const network = 'mainnet';       // or testnet if you’re using test
+  const chainId = '43114';         // Avalanche C-Chain
+  const url = `https://api.routescan.io/v2/network/${network}/evm/${chainId}/address/${address}/transactions?apikey=${API_KEY}`;
+
+  try {
+    const resp = await fetch(url);
+    const json = await resp.json();
+    if (json.status !== "1") {
+      console.error("API responded with error:", json);
+      return [];
+    }
+    return json.result;
+  } catch (err) {
+    console.error("Fetch error:", err);
+    return [];
+  }
+}
+
+function formatTimestamp(ts) {
+  const d = new Date(+ts * 1000);
+  return d.toLocaleString();
+}
+
+function populateTable(txList) {
+  const tbody = document.querySelector('#table-contract-transactions tbody');
+  tbody.innerHTML = '';  // clear previous rows
+
+  txList.forEach(tx => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${tx.blockNumber}</td>
+      <td>${formatTimestamp(tx.timeStamp)}</td>
+      <td><a href="https://snowtrace.io/tx/${tx.hash}" target="_blank">${tx.hash.slice(0, 12)}…</a></td>
+      <td>${tx.from}</td>
+      <td>${tx.to}</td>
+      <td>${(Number(tx.value) / 1e18).toFixed(6)}</td>
+      <td>${tx.gasUsed}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+  const addr = "0xE88a92EcbAeeC20241D43A3e2512A4E705A847b8";
+  if (!addr) {
+    alert('Please enter an address');
+    return;
+  }
+  const txs = await fetchTransactions(addr);
+  populateTable(txs);
