@@ -80,7 +80,7 @@ $(usersTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transaction
              var user_id = id.replace(/[^0-9]/g,'');
              console.log(user_id);
              $.ajax({
-               url: `${AUTH_BACKEND_URL}/agroAfrica/v1/user/deActivate/${user_id}`,
+               url: `${AUTH_BACKEND_URL}/api/user/deActivate/${user_id}`,
                dataType: "JSON",
                contentType: "application/json",
                method: "PUT",
@@ -105,7 +105,7 @@ $(usersTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transaction
              var user_id = id.replace(/[^0-9]/g,'');
              console.log(user_id);
              $.ajax({
-               url: `${AUTH_BACKEND_URL}/agroAfrica/v1/user/activate/${user_id}`,
+               url: `${AUTH_BACKEND_URL}/api/user/activate/${user_id}`,
                dataType: "JSON",
                contentType: "application/json",
                method: "PUT",

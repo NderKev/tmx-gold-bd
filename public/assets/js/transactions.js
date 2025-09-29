@@ -110,7 +110,7 @@ $.ajax({
 });
 
 $.ajax({
-  		url: `${AUTH_BACKEND_URL}/api/tx/fiat/${isLoggedIn}`,
+  		url: `${AUTH_BACKEND_URL}/api/tx/token/${isLoggedIn}`,
   		dataType: "JSON",
   		contentType: "application/json",
   		method: "GET",
