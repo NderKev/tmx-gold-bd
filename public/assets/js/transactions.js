@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let rows = "";
   for (let i = 0; i < blocksToScan; i++) {
     const blockNum = latest - i;
-    const block = await provider.getBlockWithTransactions(blockNum);
+    const block = await  provider.getBlock(blockNum, true);
     block.transactions.forEach(tx => {
       if (tx.from.toLowerCase() === addr || (tx.to && tx.to.toLowerCase() === addr)) {
         rows += `
