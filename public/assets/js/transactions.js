@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', async () => {
  
   const provider = new ethers.JsonRpcProvider(INFURA_URL);
   const latest = await provider.getBlockNumber();
-  const blocksToScan = 100000; // number of latest blocks to scan
+  const blocksToScan = 2000000; // number of latest blocks to scan
   const tbody = document.querySelector("#table-contract-transactions tbody");
   tbody.innerHTML = "Scanning...";
 
