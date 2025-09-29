@@ -10,9 +10,31 @@ exports.getTransactionById = async (id) => {
 };
 
 
+exports.fetchAllTransactions = async () => {
+  const query = db.read.select('*')
+  .from('transactions')
+  return query;
+};
+
+
 exports.getTransactionByUserEmail = async (email) => {
   const query = db.read.select('*')
   .from('transactions')
+  .where('email', '=', email);
+  return query;
+};
+
+
+exports.getFiatTransactionByUserEmail = async (email) => {
+  const query = db.read.select('*')
+  .from('fiat')
+  .where('email', '=', email);
+  return query;
+};
+
+exports.getTokenTransactionByUserEmail = async (email) => {
+  const query = db.read.select('*')
+  .from('tokens')
   .where('email', '=', email);
   return query;
 };

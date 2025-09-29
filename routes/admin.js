@@ -87,5 +87,15 @@ router.get('/profile/:id/btc',   authenticator, checkAdmin, async (req, res) => 
   res.sendFile(path.join(__dirname, '../public' , 'btc.html'));
 });
 
+router.get('/profile/:id/transactions',   authenticator, checkAdmin, async (req, res) => {
+  req.body.id = Number(req.params.id);
+  res.sendFile(path.join(__dirname, '../public' , 'transactions.html'));
+});
+
+router.get('/profile/:id/users',   authenticator, checkAdmin, async (req, res) => {
+  req.body.id = Number(req.params.id);
+  res.sendFile(path.join(__dirname, '../public' , 'users.html'));
+});
+
 
 module.exports = router;

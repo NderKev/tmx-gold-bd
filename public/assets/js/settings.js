@@ -15,6 +15,7 @@ let settingsSupport = document.getElementById("settingsSupport")
 let accountSettings = document.getElementById("accountSettings")
 let settingsProfile = document.getElementById("settingsProfile")
 let supportSettings = document.getElementById("supportSettings")
+let settingsTransactions = document.getElementById("supportSettings")
 
 var role = localStorage.getItem("role");
 var id =  localStorage.getItem("user_id");
@@ -37,8 +38,9 @@ $(settingsAccount).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
 $(settingsFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/faq');
 $(settingsSupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 $(accountSettings).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
-$(settingsProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/data/profile');
+$(settingsProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
 $(supportSettings).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(settingsTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transactions');
 }
 
 
@@ -48,7 +50,7 @@ $(supportSettings).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 setInterval(function(){
   const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
     $.ajax({
-      url: `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/profile/${localStorage.getItem("settings_id")}/`,
+      url: `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
       dataType: "JSON",
       contentType: "application/json",
       method: "GET",

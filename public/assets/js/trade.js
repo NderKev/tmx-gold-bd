@@ -15,6 +15,7 @@ let tradeSupport = document.getElementById("tradeSupport")
 let accountTrade = document.getElementById("accountTrade")
 let tradeProfile = document.getElementById("tradeProfile")
 let supportTrade = document.getElementById("supportTrade")
+let tradeTransactions = document.getElementById("tradeTransactions")
 
 var role = localStorage.getItem("role");
 var id =  localStorage.getItem("user_id");
@@ -37,8 +38,9 @@ $(tradeAccount).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
 $(tradeFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/faq');
 $(tradeSupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 $(accountTrade).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
-$(tradeProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/data/profile');
+$(tradeProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
 $(supportTrade).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(tradeTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transactions');
 }
 
 
@@ -48,7 +50,7 @@ $(supportTrade).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 setInterval(function(){
   const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
     $.ajax({
-      url: `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/profile/${localStorage.getItem("trade_id")}/`,
+      url: `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
       dataType: "JSON",
       contentType: "application/json",
       method: "GET",

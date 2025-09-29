@@ -76,5 +76,10 @@ router.get('/profile/:id/btc',   authenticator, checkUser, async (req, res) => {
   res.sendFile(path.join(__dirname, '../public' , 'btc.html'));
 });
 
+router.get('/profile/:id/transactions',   authenticator, checkUser, async (req, res) => {
+  req.body.id = Number(req.params.id);
+  res.sendFile(path.join(__dirname, '../public' , 'transactions.html'));
+});
+
 
 module.exports = router;

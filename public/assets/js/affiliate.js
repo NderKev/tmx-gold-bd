@@ -15,6 +15,7 @@ let affiliateSupport = document.getElementById("affiliateSupport")
 let accountAffiliate = document.getElementById("accountAffiliate")
 let affiliateProfile = document.getElementById("affiliateProfile")
 let supportAffiliate = document.getElementById("supportAffiliate")
+let affiliateTransactions = document.getElementById("affiliateTransactions")
 
 var role = localStorage.getItem("role");
 var id =  localStorage.getItem("user_id");
@@ -37,8 +38,9 @@ $(affiliateAccount).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
 $(affiliateFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/faq');
 $(affiliateSupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 $(accountAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
-$(affiliateProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/data/profile');
+$(affiliateProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
 $(supportAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(affiliateTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transactions');
 }
 
 
@@ -48,7 +50,7 @@ $(supportAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 setInterval(function(){
   const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
     $.ajax({
-      url: `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}/`,
+      url: `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
       dataType: "JSON",
       contentType: "application/json",
       method: "GET",

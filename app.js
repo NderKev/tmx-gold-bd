@@ -75,6 +75,8 @@ const customerRoutes = require('./routes/customer')
 app.use('/tmxGold/v1/customer', customerRoutes);
 const adminRoutes = require('./routes/admin')
 app.use('/tmxGold/v1/admin', adminRoutes);
+const txRoutes = require('./routes/transactions')
+app.use('/tmxGold/v1/tx', txRoutes);
 //const btcRoutes = require('./routes/btc');
 //app.use('/tmxGold/v1/btc', btcRoutes);
 /** const productRoutes = require('./routes/products')

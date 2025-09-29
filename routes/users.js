@@ -212,18 +212,18 @@ router.get('/home', async (req, res) => {
 
 
 
-router.get('/customers', auth, authenticator, checkAdmin,  async (req, res, next) => {
+router.get('/customers', authenticator, checkAdmin,  async (req, res, next) => {
   const response = await userController.fetchAllCustomers();
   return res.status(response.status).send(response)
 })
 
-router.put('/activate/:id', auth, authenticator, checkAdmin, async (req, res) => {
+router.put('/activate/:id',  authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   const response = await userController.activateUser(req.body);
   return res.status(response.status).send(response)
 })
 
-router.put('/deActivate/:id', auth, authenticator, checkAdmin, async (req, res) => {
+router.put('/deActivate/:id', authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
   const response = await userController.deActivateUser(req.body);
   return res.status(response.status).send(response)

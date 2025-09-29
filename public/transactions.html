@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zxx">
 
 <head>
     <!-- 
@@ -12,29 +12,28 @@
     <meta content="" name="description" />
     <meta content="" name="author" />
 
-    <link rel="shortcut icon" href="/assets/images/tmxg.png" type="image/x-icon" />
     <!-- Favicon -->
-    <link rel="apple-touch-icon-precomposed" href="/assets/images/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon" />
     <!-- For iPhone -->
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/images/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/assets/images/apple-touch-icon-57-precomposed.png">
     <!-- For iPhone 4 Retina display -->
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/images/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/images/apple-touch-icon-114-precomposed.png">
     <!-- For iPad -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/images/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/images/apple-touch-icon-72-precomposed.png">
     <!-- For iPad Retina display -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/images/apple-touch-icon-144-precomposed.png">
 
     <!-- CORE CSS FRAMEWORK - START -->
     <link href="/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/fonts/webfont/cryptocoins.css" rel="stylesheet" type="text/css" />
     <link href="/assets/css/animate.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" type="text/css" />
     <!-- CORE CSS FRAMEWORK - END -->
 
     <!-- HEADER SCRIPTS INCLUDED ON THIS PAGE - START -->
-
-    <link href="/assets/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" media="screen" />
 
     <!-- HEADER SCRIPTS INCLUDED ON THIS PAGE - END -->
 
@@ -71,7 +70,7 @@
 
                             <li class="list">
 
-                                                                <ul class="dropdown-menu-list list-unstyled ps-scrollbar">
+                                <ul class="dropdown-menu-list list-unstyled ps-scrollbar">
                                     <li class="unread status-available">
                                         <a href="javascript:;">
                                             <div class="user-img">
@@ -278,7 +277,7 @@
                                             </div>
                                         </a>
                                     </li>
-                                   
+
                                     <li class=" available">
                                         <!-- available: success, warning, info, error -->
                                         <a href="javascript:;">
@@ -323,26 +322,26 @@
                     <li class="profile">
                         <a href="#" data-toggle="dropdown" class="toggle">
                             <img src="/data/data/profile/data/profile.jpg" alt="user-image" class="img-circle img-inline">
-                            <span>Smith Wright <i class="fa fa-angle-down"></i></span>
+                            <span id="name"> <i class="fa fa-angle-down"></i></span>
                         </a>
                         <ul class="dropdown-menu profile animated fadeIn">
                             <li>
-                                <a href="account-confirmation.html">
+                                <a id="accountTransactions" href="account-confirmation.html">
                                     <i class="fa fa-wrench"></i> Settings
                                 </a>
                             </li>
                             <li>
-                                <a href="ui-profile.html">
+                                <a id="transactionsProfile" href="ui-profile.html">
                                     <i class="fa fa-user"></i> Profile
                                 </a>
                             </li>
                             <li>
-                                <a href="ui-support.html">
+                                <a id="supportTransactions" href="ui-support.html">
                                     <i class="fa fa-info"></i> Help
                                 </a>
                             </li>
                             <li class="last">
-                                <a href="ui-login.html">
+                                <a id="logout" href="/">
                                     <i class="fa fa-lock"></i> Logout
                                 </a>
                             </li>
@@ -371,61 +370,66 @@
             <!-- MAIN MENU - START -->
             <div class="page-sidebar-wrapper" id="main-menu-wrapper">
 
-
                 <ul class='wraplist'>
                     <li class='menusection'>Main</li>
                     <li class="">
-                        <a href="index-dashboard.html">
+                        <a id="transactionsIndex" href="index-dashboard.html">
                             <i class="fa fa-th-large"></i>
                             <span class="title">Dashboard</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="index-trading-view.html">
+                        <a id="transactionsTrade" href="index-trading-view.html">
                             <i class="fa fa-bullseye"></i>
                             <span class="title">Trading View</span>
                         </a>
                     </li>
-                    <li class="">
-                        <a href="index-ico-admin.html">
+                    <li class="" id="icoMenu">
+                        <a id="transactionsICO"  href="index-ico-admin.html">
                             <i class="fa fa-sitemap"></i>
                             <span class="title">ICO Distribution Admin</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="index-ico-user.html">
+                        <a id="transactionsUser"  href="index-ico-user.html">
                             <i class="fa fa-user"></i>
                             <span class="title">ICO Distribution User</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="buy-and-sell.html">
+                        <a id="transactionsBuy"  href="buy-and-sell.html">
                             <i class="img">
                                 <img src="/data/icons/coins.png" style="width:16px" alt="">
                             </i>
                             <span class="title">Buy Tmx Gold </span>
                         </a>
                     </li>
-                    <li class="">
-                        <a href="payment-gateways.html">
+                    <li class="" id="paymentMenu">
+                        <a id="transactionsGateways" href="payment-gateways.html">
                             <i class="fa fa-credit-card"></i>
                             <span class="title">Payment Gateways</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="affailite-program.html">
+                        <a id="transactionsAffiliate" href="affailite-program.html">
                             <i class="fa fa-crosshairs"></i>
                             <span class="title">Affiliate Program</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="my-wallet.html">
+                        <a id="transactionsWallet"  href="my-wallet.html">
                             <i class="img"><img src="/data/icons/wallet-o.png" style="width:16px" alt=""></i>
                             <span class="title">My Wallet</span>
                         </a>
                     </li>
+                    <li>
+                    <a id="transactionsTransactions" href="transactions.html">
+                        <i class="fa fa-exchange"></i>
+                        <span class="title">Transactions</span>
+                    </a>
+                    </li>
                     <li class="">
-                        <a href="security.html">
+                        <a id="transactionsSecurity"  href="security.html">
                             <i class="fa fa-lock"></i>
                             <span class="title">Security</span>
                         </a>
@@ -439,28 +443,10 @@
                         </a>
                         <ul class="sub-menu">
                             <li>
-                                <a class="" href="settings.html">General Settings</a>
+                                <a class="" id="transactionsSettings"  href="settings.html">General Settings</a>
                             </li>
                             <li>
-                                <a class="" href="account-confirmation.html">Account Confirmation</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="">
-                        <a href="javascript:;">
-                            <i class="fa fa-lock"></i>
-                            <span class="title">Access Pages</span>
-                            <span class="arrow "></span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li>
-                                <a class="" href="ui-login.html">Login</a>
-                            </li>
-                            <li>
-                                <a class="" href="ui-register.html">Registration</a>
-                            </li>
-                            <li>
-                                <a class="" href="ui-404.html">404</a>
+                                <a class="" id="transactionsAccount" href="account-confirmation.html">Account Confirmation</a>
                             </li>
                         </ul>
                     </li>
@@ -472,14 +458,20 @@
                         </a>
                         <ul class="sub-menu">
                             <li>
-                                <a class="" href="ui-faq.html">FAQ</a>
+                                <a class="" id="transactionsFaq" href="ui-faq.html">FAQ</a>
                             </li>
                             <li>
-                                <a class="" href="ui-support.html">Help center</a>
+                                <a class="" id="transactionsSupport" href="ui-support.html">Help center</a>
                             </li>
                         </ul>
                     </li>
                     <li class="">
+                        <a id="logoutBtn" href="javascript:;">
+                            <i class="fa fa-power-off"></i>
+                            <span class="title">Logout</span>
+                        </a>
+                    </li>
+                    <!-- <li class="">
                         <a href="javascript:;">
                             <i class="fa fa-columns"></i>
                             <span class="title">Layouts</span>
@@ -630,12 +622,11 @@
                             </li>
                         </ul>
                     </li>
-                    
+
                     <li class='menusection'>User Interface</li>
-                    <li class="open">
-                        <a href="javascript:;"> <i class="fa fa-folder-open"></i> <span class="title">Ui Elements</span> <span class="arrow open"></span> </a>
+                    <li class="">
+                        <a href="javascript:;"> <i class="fa fa-folder-open"></i> <span class="title">Ui Elements</span> <span class="arrow "></span> </a>
                         <ul class="sub-menu">
-                            
 
                             <li class="">
                                 <a href="javascript:;"><span class="title">Timeline</span> <span class="arrow "></span> </a>
@@ -673,11 +664,11 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="open">
-                                <a href="javascript:;"><span class="title">Form Elements</span> <span class="arrow open"></span> </a>
+                            <li>
+                                <a href="javascript:;"><span class="title">Form Elements</span> <span class="arrow "></span> </a>
                                 <ul class="sub-menu">
                                     <li>
-                                        <a class="active" href="form-elements.html">Field Elements</a>
+                                        <a class="" href="form-elements.html">Field Elements</a>
                                     </li>
                                     <li>
                                         <a class="" href="form-elements-premade.html">Pre Made Forms</a>
@@ -696,10 +687,10 @@
                             <li>
                                 <a href="form-validation.html"> <span class="title">Form Validations</span> </a>
                             </li>
-                            
+
                         </ul>
                     </li>
-                    
+
                     <li class="">
                         <a href="javascript:;">
                             <i class="fa fa-puzzle-piece"></i>
@@ -773,8 +764,8 @@
                             </li>
                         </ul>
                     </li>
-                    
-                </ul>
+
+                </ul> -->
 
             </div>
             <!-- MAIN MENU - END -->
@@ -784,42 +775,10 @@
         <!-- START CONTENT -->
         <section id="main-content" class=" ">
             <div class="wrapper main-wrapper row" style=''>
-
-                <div class='col-xs-12'>
-                    <div class="page-title">
-
-                        <div class="pull-left">
-                            <!-- PAGE HEADING TAG - START -->
-                            <h1 class="title">Form Elements - Basic Fields</h1>
-                            <!-- PAGE HEADING TAG - END -->
-                        </div>
-
-                        <div class="pull-right hidden-xs">
-                            <ol class="breadcrumb">
-                                <li>
-                                    <a href="index-dashboard.html"><i class="fa fa-home"></i>Home</a>
-                                </li>
-                                <li>
-                                    <a href="form-elements.html">Ui Elements</a>
-                                </li>
-                                <li>
-                                    <a href="form-elements.html">Form Elements</a>
-                                </li>
-                                <li class="active">
-                                    <strong>Field Elements</strong>
-                                </li>
-                            </ol>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-                <!-- MAIN CONTENT AREA STARTS -->
-
-                <div class="col-xs-12">
-                    <section class="box ">
+                   <div class="col-lg-6">
+                    <section class="box has-border-left-3">
                         <header class="panel_header">
-                            <h2 class="title pull-left">Basic Elements</h2>
+                            <h2 class="title pull-left">Recent  Crypto Transactions</h2>
                             <div class="actions panel_actions pull-right">
                                 <a class="box_toggle fa fa-chevron-down"></a>
                                 <a class="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></a>
@@ -828,128 +787,35 @@
                         </header>
                         <div class="content-body">
                             <div class="row">
-                                <div class="col-md-8 col-sm-9 col-xs-10">
+                                <div class="col-xs-12">
 
-                                    <div class="form-group">
-                                        <label class="form-label" for="field-1">Name</label>
-                                        <span class="desc">e.g. "LightLabs"</span>
-                                        <div class="controls">
-                                            <input type="text" class="form-control" id="field-1">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label" for="field-2">Password</label>
-                                        <span class="desc">e.g. "Cre@t!v!ty"</span>
-                                        <div class="controls">
-                                            <input type="password" value="Cre@t!v!ty" class="form-control" id="field-2">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label" for="field-3">Email</label>
-                                        <span class="desc">e.g. "me@somesite.com"</span>
-                                        <div class="controls">
-                                            <input type="text" class="form-control" id="field-3">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label" for="field-4">Placeholder</label>
-                                        <span class="desc">e.g. "Username"</span>
-                                        <div class="controls">
-                                            <input type="text" id="field-4" placeholder="Enter your desired text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label" for="field-5">Disabled</label>
-                                        <span class="desc">e.g. "non-editable text"</span>
-                                        <div class="controls">
-                                            <input type="text" id="field-5" placeholder="Disabled input field" class="form-control" disabled="disabled">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label" for="field-6">Text area</label>
-                                        <span class="desc">e.g. "Enter any size of text description here"</span>
-                                        <div class="controls">
-                                            <textarea class="form-control" cols="5" id="field-6"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label" for="field-7">Auto grow</label>
-                                        <span class="desc">e.g. "This text area field auto grows"</span>
-                                        <div class="controls">
-                                            <textarea class="form-control autogrow" cols="5" id="field-7" placeholder="This textarea will grow in size with new lines." style="overflow: hidden; word-wrap: break-word; resize: horizontal; height: 50px;"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group has-error">
-                                        <label class="form-label" for="field-8">Error Field</label>
-                                        <span class="desc">e.g. "LightLabs"</span>
-                                        <div class="controls">
-                                            <input type="text" class="form-control" id="field-8" placeholder="I am a error field">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group has-warning">
-                                        <label class="form-label" for="field-9">Warning Field</label>
-                                        <span class="desc">e.g. "LightLabs"</span>
-                                        <div class="controls">
-                                            <input type="text" class="form-control" id="field-9" placeholder="I am a warning field">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group has-success">
-                                        <label class="form-label" for="field-10">Success Field</label>
-                                        <span class="desc">e.g. "LightLabs"</span>
-                                        <div class="controls">
-                                            <input type="text" class="form-control" id="field-10" placeholder="I am a success field">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group has-info">
-                                        <label class="form-label" for="field-11">Info Field</label>
-                                        <span class="desc">e.g. "LightLabs"</span>
-                                        <div class="controls">
-                                            <input type="text" class="form-control" id="field-11" placeholder="I am a info field">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group has-focus">
-                                        <label class="form-label" for="field-12">Focus</label>
-                                        <span class="desc">e.g. "LightLabs"</span>
-                                        <div class="controls">
-                                            <input type="text" class="form-control" id="field-12" placeholder="I am a focused field ">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group has-help">
-                                        <label class="form-label" for="field-13">Help Field</label>
-                                        <div class="controls">
-                                            <input type="text" class="form-control" id="field-13" placeholder="I am a help field">
-                                            <span class="help-block">A help or brief description message of the input field.</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group has-static">
-                                        <label class="form-label">Static Field</label>
-                                        <div class="controls">
-                                            <p class="form-control-static">A static text field</p>
-                                        </div>
+                                    <div class="table-responsive" data-pattern="priority-columns">
+                                        <table id="table-crypo-transactions" class="table table-small-font mb-10 table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th> Address </th>
+                                                    <th> Transaction Hash</th>
+                                                    <th>Crypto</th>
+                                                    <th>Type</th>
+                                                     <th> Status </th>
+                                                     <th> Amount </th>
+                                                     <th> Value (USD) </th>
+                                            </thead>
+                                            <tbody>
+                                            <tr> </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
 
                                 </div>
                             </div>
-
                         </div>
                     </section>
                 </div>
-
-                <div class="col-xs-12">
-                    <section class="box ">
+                <div class="col-lg-6">
+                    <section class="box has-border-left-3">
                         <header class="panel_header">
-                            <h2 class="title pull-left">Input Groups</h2>
+                            <h2 class="title pull-left">Recent  Fiat Transactions</h2>
                             <div class="actions panel_actions pull-right">
                                 <a class="box_toggle fa fa-chevron-down"></a>
                                 <a class="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></a>
@@ -958,103 +824,35 @@
                         </header>
                         <div class="content-body">
                             <div class="row">
-                                <div class="col-md-8 col-sm-9 col-xs-10">
+                                <div class="col-xs-12">
 
-                                    <div class="input-group transparent">
-                                        <span class="input-group-addon">
-                                            <i class="fa fa-user"></i>
-                                        </span>
-                                        <input type="text" class="form-control" placeholder="Transparent">
-                                    </div>
-
-                                    <br>
-
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                        <span class="arrow"></span>
-                                        <i class="fa fa-envelope"></i>
-                                        </span>
-                                        <input type="text" class="form-control" placeholder="Default">
-                                    </div>
-
-                                    <br>
-
-                                    <div class="input-group primary">
-                                        <span class="input-group-addon">                
-                                        <span class="arrow"></span>
-                                        <i class="fa fa-user"></i>
-                                        </span>
-                                        <input type="text" class="form-control" placeholder="Primary">
-                                    </div>
-
-                                    <br>
-
-                                    <div class="input-group primary">
-                                        <input type="text" class="form-control text-right" placeholder="Right Align" aria-describedby="basic-addon1">
-                                        <span class="input-group-addon" id="basic-addon1"><span class="arrow"></span><i class="fa fa-user"></i></span>
-                                    </div>
-                                    <br>
-
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
-                                        <span class="input-group-addon" id="basic-addon2">@example.com</span>
-                                    </div>
-                                    <br>
-
-                                    <div class="input-group primary">
-                                        <span class="input-group-addon">$</span>
-                                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-                                        <span class="input-group-addon">.00</span>
-                                    </div>
-
-                                    <br>
-
-                                    <div class="input-group">
-                                        <span class="input-group-addon">$</span>
-                                        <input type="text" class="form-control">
-                                        <span class="input-group-addon">.00</span>
-                                    </div>
-
-                                    <br>
-
-                                    <div class="input-group primary">
-                                        <div class="input-group-btn">
-                                            <button type="button" class="btn btn-red dropdown-toggle" data-toggle="dropdown">
-                                                Action <span class="caret"></span>
-                                            </button>
-
-                                            <ul class="dropdown-menu dropdown-red no-spacing">
-                                                <li><a href="#">Action</a></li>
-                                                <li><a href="#">Another action</a></li>
-                                                <li><a href="#">Something else here</a></li>
-                                                <li class="divider"></li>
-                                                <li><a href="#">Separated link</a></li>
-                                            </ul>
-                                        </div>
-
-                                        <input type="text" class="form-control no-left-border form-focus-red" placeholder="Dropdown">
-                                    </div>
-
-                                    <br>
-
-                                    <div class="input-group m-bot15">
-                                        <span class="input-group-addon">
-                                            <input type="checkbox" class="iCheck">
-                                        </span>
-                                        <input type="text" class="form-control" placeholder="Input with Checkbox">
+                                    <div class="table-responsive" data-pattern="priority-columns">
+                                        <table id="table-fiat-transactions" class="table table-small-font mb-10 table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                   <th> Reference Number </th>
+                                                    <th> Mode </th>
+                                                    <th>Currency</th>
+                                                     <th> Status </th>
+                                                     <th> Amount </th>
+                                                     <th> Value (USD) </th>
+                                            </thead>
+                                            <tbody>
+                                            <tr> </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
 
                                 </div>
                             </div>
-
                         </div>
                     </section>
                 </div>
 
-                <div class="col-xs-12">
-                    <section class="box ">
+                 <div class="col-lg-6">
+                    <section class="box has-border-left-3">
                         <header class="panel_header">
-                            <h2 class="title pull-left">Element Sizes</h2>
+                            <h2 class="title pull-left">Recent  Tmx Gold Transactions</h2>
                             <div class="actions panel_actions pull-right">
                                 <a class="box_toggle fa fa-chevron-down"></a>
                                 <a class="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></a>
@@ -1063,40 +861,30 @@
                         </header>
                         <div class="content-body">
                             <div class="row">
-                                <div class="col-md-8 col-sm-9 col-xs-10">
+                                <div class="col-xs-12">
 
-                                    <input class="form-control input-lg m-bot15" type="text" placeholder=".input-lg">
-                                    <br>
-                                    <input class="form-control m-bot15" type="text" placeholder="Default input">
-                                    <br>
-                                    <input class="form-control input-sm m-bot15" type="text" placeholder=".input-sm">
-                                    <br>
-
-                                    <select class="form-control input-lg m-bot15">
-                                        <option>Option 1</option>
-                                        <option>Option 2</option>
-                                        <option>Option 3</option>
-                                    </select>
-                                    <br>
-                                    <select class="form-control m-bot15">
-                                        <option>Option 1</option>
-                                        <option>Option 2</option>
-                                        <option>Option 3</option>
-                                    </select>
-                                    <br>
-                                    <select class="form-control input-sm m-bot15">
-                                        <option>Option 1</option>
-                                        <option>Option 2</option>
-                                        <option>Option 3</option>
-                                    </select>
+                                    <div class="table-responsive" data-pattern="priority-columns">
+                                        <table id="table-tmxgold-transactions" class="table table-small-font mb-10 table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                   <th> Address </th>
+                                                    <th> Transaction Hash </th>
+                                                    <th>Currency</th>
+                                                     <th> Status </th>
+                                                     <th> Amount </th>
+                                                     <th> Value (USD) </th>
+                                            </thead>
+                                            <tbody>
+                                            <tr> </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
 
                                 </div>
                             </div>
-
                         </div>
                     </section>
                 </div>
-
                 <!-- MAIN CONTENT AREA ENDS -->
             </div>
         </section>
@@ -1107,7 +895,7 @@
                 <input type="text" placeholder="Search" class="form-control">
             </div>
 
-                        <div class="chat-wrapper">
+            <div class="chat-wrapper">
 
                 <h4 class="group-head">Favourites</h4>
                 <ul class="contact-list">
@@ -1265,6 +1053,7 @@
 
                 </ul>
             </div>
+
         </div>
 
         <div class="chatapi-windows ">
@@ -1289,11 +1078,12 @@
     <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
 
     <script src="/assets/plugins/autosize/autosize.min.js"></script>
-    <script src="/assets/plugins/icheck/icheck.min.js"></script>
     <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
 
     <!-- CORE TEMPLATE JS - START -->
     <script src="/assets/js/script.js"></script>
+    <script src="/assets/js/session.js"></script>
+    <script src="/assets/js/transactions.js"></script>
     <!-- END CORE TEMPLATE JS - END -->
 
 </body>

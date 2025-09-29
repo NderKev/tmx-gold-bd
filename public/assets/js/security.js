@@ -15,6 +15,7 @@ let securitySupport = document.getElementById("securitySupport")
 let accountSecurity = document.getElementById("accountSecurity")
 let securityProfile = document.getElementById("securityProfile")
 let supportSecurity = document.getElementById("supportSecurity")
+let securityTransactions = document.getElementById("securityTransactions")
 
 var role = localStorage.getItem("role");
 var id =  localStorage.getItem("user_id");
@@ -37,8 +38,9 @@ $(securityAccount).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
 $(securityFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/faq');
 $(securitySupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 $(accountSecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
-$(securityProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/data/profile');
+$(securityProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
 $(supportSecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(securityTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transactions');
 }
 
 
@@ -48,7 +50,7 @@ $(supportSecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 setInterval(function(){
   const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
     $.ajax({
-      url: `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}/`,
+      url: `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
       dataType: "JSON",
       contentType: "application/json",
       method: "GET",

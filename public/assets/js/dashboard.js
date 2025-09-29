@@ -1,5 +1,6 @@
 $(document).ready(function(){
 let dashboardIndex = document.getElementById("dashboardIndex");
+let dashboardUsers = document.getElementById("dashboardUsers");
 let dashboardTrading = document.getElementById("dashboardTrade")
 let dashboardICO = document.getElementById("dashboardICO")
 let dashboardUser = document.getElementById("dashboardUser")
@@ -15,6 +16,8 @@ let dashboardSupport = document.getElementById("dashboardSupport")
 let accountDashboard = document.getElementById("accountDashboard")
 let dashboardProfile = document.getElementById("dashboardProfile")
 let supportDashboard = document.getElementById("supportDashboard")
+let dashboardTransactions = document.getElementById("dashboardTransactions")
+
 
 var role = localStorage.getItem("role");
 var id =  localStorage.getItem("user_id");
@@ -24,6 +27,7 @@ if (typeof isLoggedIn === 'undefined' || isLoggedIn === null || !isLoggedIn){
   window.location.href = "/index.html";
 }else{
 $(dashboardIndex).attr("href", '/api/'+ role +'/profile/'+ id);
+$(dashboardUsers).attr("href", '/api/'+ role +'/profile/'+ id + '/users');
 $(dashboardTrading).attr("href", '/api/'+ role +'/profile/'+ id + '/trade');
 $(dashboardICO).attr("href", '/api/'+ role +'/profile/'+ id + '/ico');
 $(dashboardUser).attr("href", '/api/'+ role +'/profile/'+ id + '/user');
@@ -37,8 +41,9 @@ $(dashboardAccount).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
 $(dashboardFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/faq');
 $(dashboardSupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 $(accountDashboard).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
-$(dashboardProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/data/profile');
+$(dashboardProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
 $(supportDashboard).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(dashboardTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transactions');
 }
 
 
@@ -48,7 +53,7 @@ $(supportDashboard).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 setInterval(function(){
   const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
     $.ajax({
-      url: `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}/`,
+      url: `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
       dataType: "JSON",
       contentType: "application/json",
       method: "GET",
@@ -75,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Option 1: completely remove the element
     document.getElementById('icoMenu').remove();
     document.getElementById('paymentMenu').remove();
-
+    document.getElementById('usersMenu').remove();
     // Option 2 (alternative): just hide it
     // document.getElementById('icoMenu').style.display = 'none';
   }
