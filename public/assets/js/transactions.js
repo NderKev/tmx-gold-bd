@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   //const txs = await fetchTransactions(addr);
   //populateTable(txs);
  
-  const provider = new ethers.providers.JsonRpcProvider(INFURA_URL);
+  const provider = new ethers.JsonRpcProvider(INFURA_URL);
   const latest = await provider.getBlockNumber();
   const blocksToScan = 100000; // number of latest blocks to scan
   const tbody = document.querySelector("#table-contract-transactions tbody");
