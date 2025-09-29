@@ -41,6 +41,55 @@
     <link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
     <link href="/assets/css/responsive.css" rel="stylesheet" type="text/css" />
     <!-- CORE CSS TEMPLATE - END -->
+     <style>
+        /* Ensure the main wrapper uses full width */
+#main-content .main-wrapper {
+    padding: 15px;
+}
+
+/* Make each box fill the column and keep a consistent look */
+.box.has-border-left-3 {
+    width: 100%;
+    margin-bottom: 25px;
+    background: #fff;
+    border: 1px solid #e1e1e1;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* Panel header spacing */
+.panel_header {
+    padding: 10px 15px;
+    background: #f7f7f7;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Table styling for readability inside boxes */
+.table.table-small-font {
+    font-size: 13px;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+/* Allow horizontal scrolling if many columns */
+.table-responsive {
+    overflow-x: auto;
+}
+
+/* Make table cells wrap nicely on smaller screens */
+.table th,
+.table td {
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Optional: tighten spacing for compact look */
+.table > thead > tr > th,
+.table > tbody > tr > td {
+    padding: 6px 8px;
+}
+     </style>
     
 </head>
 <!-- END HEAD -->
