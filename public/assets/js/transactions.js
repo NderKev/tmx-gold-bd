@@ -171,7 +171,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   //const addr = "0xE88a92EcbAeeC20241D43A3e2512A4E705A847b8";
   connect();
-  const addr = localStorage.getItem('address');
+  let addr = localStorage.getItem('address');
+  addr = addr.toLocaleLowerCase();
   if (!addr) {
     alert('Please enter an address');
     return;
@@ -190,7 +191,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const blockNum = latest - i;
     const block = await provider.getBlockWithTransactions(blockNum);
     block.transactions.forEach(tx => {
-      if (tx.from.toLowerCase() === target || (tx.to && tx.to.toLowerCase() === target)) {
+      if (tx.from.toLowerCase() === addr || (tx.to && tx.to.toLowerCase() === addr)) {
         rows += `
           <tr>
             <td>${blockNum}</td>
