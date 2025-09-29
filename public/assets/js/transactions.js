@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   //const addr = "0xE88a92EcbAeeC20241D43A3e2512A4E705A847b8";
   connect();
   let addr = localStorage.getItem('address');
-  addr = addr.toLocaleLowerCase();
+  addr = addr.toLowerCase();
   if (!addr) {
     alert('Please enter an address');
     return;
