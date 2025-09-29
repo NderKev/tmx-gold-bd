@@ -82,4 +82,10 @@ router.get('/profile/:id/profile',   authenticator, checkAdmin, async (req, res)
 });
 
 
+router.get('/profile/:id/btc',   authenticator, checkAdmin, async (req, res) => {
+  req.body.id = Number(req.params.id);
+  res.sendFile(path.join(__dirname, '../public' , 'btc.html'));
+});
+
+
 module.exports = router;

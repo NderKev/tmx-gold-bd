@@ -471,7 +471,7 @@ async function getCKESPrice() {
 
       // Pass USD + BTC to checkout.html
       window.open(
-        `btc.html?usd=${usdAmount}&btc=${btcAmount}`,
+        `/btc/?usd=${usdAmount}&btc=${btcAmount}`,
         "btcCheckout",
         `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
       );
