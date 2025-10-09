@@ -132,11 +132,12 @@ input.addEventListener('keyup', reset); **/
     console.log("User phone:", fullNumber);
     //alert("phone number :" + fullNumber);
     let email = document.getElementById('email').value
-    let name = document.getElementById('username').value
+    //et name = document.getElementById('username').value
     //let phone = fullNumber;
     let password = document.getElementById('password').value
     //let role = document.getElementById('role').value
     let role_id = 2;
+    let  username = email.split('@')[0];
     if(email === '') {
       $("#placement_error").html('*Email is required')
       return
@@ -149,7 +150,7 @@ input.addEventListener('keyup', reset); **/
       cache : false,
       data: JSON.stringify({
         'email': email,
-        'name': name,
+        'name': username,
         'phone' : fullNumber,
         'password' : password,
         "role_id": role_id

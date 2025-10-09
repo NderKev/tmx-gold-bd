@@ -1,5 +1,5 @@
 /**
-* @Package:  - TMX Gold Coin ICO Dashboard
+* @Package:  - TMX Gold Coin
 * @Version: 1.0.0
 */
 

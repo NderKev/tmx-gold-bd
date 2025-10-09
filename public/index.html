@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <!-- 
-        * @Package:  TMX Gold Coin ICO Dashboard
+        * @Package:  TMX Gold Coin
         * @Version: 1.0.0
     -->
     <meta charset="utf-8" />
@@ -10,7 +10,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <title>TMX Gold Coin ICO Dashboard</title>
+    <title>TMX Gold Coin</title>
     <meta content="" name="description" />
     <meta content="" name="author" />
 
@@ -76,12 +76,25 @@
 
     <!-- HEADER SCRIPTS INCLUDED ON THIS PAGE - START -->
 
+    <link
+      href="/assets/plugins/icheck/skins/all.css"
+      rel="stylesheet"
+      type="text/css"
+      media="screen"
+    />
+
     <!-- HEADER SCRIPTS INCLUDED ON THIS PAGE - END -->
 
     <!-- CORE CSS TEMPLATE - START -->
     <link href="/assets/css/style.css" rel="stylesheet" type="text/css" />
     <link href="/assets/css/responsive.css" rel="stylesheet" type="text/css" />
     <!-- CORE CSS TEMPLATE - END -->
+
+    <!-- intl-tel-input CSS for phone number country dropdown codes-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css"
+    />
   </head>
   <!-- END HEAD -->
 
@@ -92,23 +105,21 @@
       <div class="login-wrapper row">
         <div
           id="login"
-          class="login loginpage col-lg-offset-4 col-md-offset-3 col-sm-offset-3 col-xs-offset-0 col-xs-12 col-sm-6 col-lg-4"
+          class="login loginpage col-lg-offset-2 col-md-offset-3 col-sm-offset-3 col-xs-offset-0 col-xs-12 col-sm-6 col-lg-8"
         >
           <div class="login-form-header">
             <img
-              src="/data/icons/padlock.png"
+              src="/data/icons/signup.png"
               alt="login-icon"
               style="max-width: 64px"
             />
             <div class="login-header">
-              <h4 class="bold color-white">Login Now!</h4>
-              <h4 style="color: white">
-                <small>Please enter your credentials to login.</small>
-              </h4>
+              <h4 class="bold color-white">Signup Now!</h4>
+              <h4><small>Please enter your data to register.</small></h4>
             </div>
           </div>
 
-          <div class="box login">
+          <!-- <div class="box login">
             <div class="content-body" style="padding-top: 30px">
               <form
                 id="msg_validate"
@@ -117,58 +128,169 @@
                 class="no-mb no-mt"
               >
                 <div class="row">
-                  <div class="col-xs-12">
-                    <div class="form-group">
-                      <label class="form-label">Email</label>
-                      <div class="controls">
-                        <input
-                          id="log_email"
-                          type="text"
-                          class="form-control"
-                          name="formfield2"
-                          placeholder="email"
-                        />
+                 <div class="col-xs-12">
+                    <div class="col-lg-6 no-pl">
+                      <div class="form-group">
+                        <label class="form-label">User name</label>
+                        <div class="controls">
+                          <input
+                            id="username"
+                            type="text"
+                            class="form-control"
+                            name="formfield2"
+                            placeholder="enter username"
+                          />
+                        </div>
+                      </div>
+                    </div> 
+
+                    <div class="col-lg-6 no-pr">
+                      <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <div class="controls">
+                          <input
+                            id="email"
+                            type="email"
+                            class="form-control"
+                            name="formfield1"
+                            placeholder="enter email"
+                          />
+                        </div>
                       </div>
                     </div>
 
-                    <div class="form-group">
-                      <label class="form-label">Password</label>
-                      <div class="controls">
-                        <input
-                          id="log_pword"
-                          type="password"
-                          class="form-control"
-                          name="formfield1"
-                          placeholder="password"
-                        />
+                    <div class="col-lg-6 no-pl">
+                      <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <div class="controls">
+                          <input
+                            id="phone"
+                            type="text"
+                            class="form-control"
+                            name="formfield2"
+                            placeholder="enter phone number"
+                          />
+                        </div>
                       </div>
                     </div>
+
+                    <div class="col-lg-6 no-pr">
+                      <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="controls">
+                          <input
+                            id="password"
+                            type="password"
+                            class="form-control"
+                            name="formfield2"
+                            placeholder="enter password"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-6 no-pl">
+                      <div class="form-group">
+                        <label class="form-label">Repeat Password</label>
+                        <div class="controls">
+                          <input
+                            id="c_password"
+                            type="password"
+                            class="form-control"
+                            name="formfield1"
+                            placeholder="repeat password"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
                     <div>
                       <p>
-                        <span
-                          style="color: red"
-                          id="login_placement_error"
-                        ></span>
+                        <span style="color: red" id="placement_error"></span>
                       </p>
                     </div>
 
                     <div class="pull-left">
                       <a
+                        href=""
                         class="btn btn-primary mt-10 btn-corner right-15"
-                        id="btnLogin"
-                        >Log in</a
+                        id="btnRegister"
+                        >Sign up</a
                       >
                       <a
-                        href="ui-register.html"
+                        href="ui-login.html"
                         class="btn mt-10 btn-corner signup"
-                        >Sign up</a
+                        >Login</a
                       >
                     </div>
                   </div>
                 </div>
               </form>
             </div>
+          </div> -->
+        <div class="box login">
+          <div class="content-body" style="padding-top: 30px; display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+            <form id="msg_validate" action="#" novalidate="novalidate" class="no-mb no-mt">
+              <div class="row gx-3"> <!-- gx-3 adds horizontal gutter spacing -->
+
+                <!-- Email -->
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <div class="controls">
+                      <input id="email" type="email" class="form-control" name="formfield1" placeholder="enter email" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <div class="controls">
+                      <input id="phone" type="text" class="form-control" name="formfield2" placeholder="enter phone number" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Password -->
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="controls">
+                      <input id="password" type="password" class="form-control" name="formfield2" placeholder="enter password" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Repeat Password -->
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label class="form-label">Repeat Password</label>
+                    <div class="controls">
+                      <input id="c_password" type="password" class="form-control" name="formfield1" placeholder="repeat password" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Error message -->
+                <div class="col-12">
+                  <p><span style="color: red" id="placement_error"></span></p>
+                </div>
+
+              </div>
+
+              <!-- Bottom Center Buttons -->
+              <div class="form-buttons" style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
+                <a href="" class="btn btn-primary btn-corner" id="btnRegister">Sign up</a>
+                <a href="ui-login.html" class="btn btn-secondary btn-corner">Login</a>
+              </div>
+
+            </form>
           </div>
+        </div>
+
+
 
           <p id="nav">
             <a
@@ -180,10 +302,10 @@
             >
             <a
               class="pull-right"
-              href="ui-register.html"
+              href="ui-login.html"
               title="Sign Up"
               style="color: white"
-              >Sign Up</a
+              >Login</a
             >
           </p>
         </div>
@@ -200,7 +322,7 @@
     <script src="/assets/plugins/pace/pace.min.js"></script>
     <script src="/assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="/assets/plugins/viewport/viewportchecker.js"></script>
-    <script src="/assets/js/login.js"></script>
+    <script src="/assets/js/signup.js"></script>
     <script>
       window.jQuery ||
         document.write(
@@ -211,10 +333,35 @@
 
     <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
 
+    <script src="/assets/plugins/icheck/icheck.min.js"></script>
     <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
 
     <!-- CORE TEMPLATE JS - START -->
     <script src="/assets/js/script.js"></script>
     <!-- END CORE TEMPLATE JS - END -->
+
+    <!-- intl-tel-input JS for country phone number dropdown-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
+
+    <!-- Migrate this JS and CSS to the appropriate files 
+    <script>
+      $(document).ready(function () {
+        
+      });
+
+      
+    </script> -->
+
+    <style>
+      .iti {
+        width: 100%;
+      }
+
+      .iti input {
+        width: 100% !important;
+        padding-left: 48px !important;
+        box-sizing: border-box;
+      }
+    </style>
   </body>
 </html>
