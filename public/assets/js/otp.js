@@ -49,7 +49,7 @@ $(document).ready(function () {
             $("#otp_placement_error").html("❌ Wrong OTP, please try again.");
             refresh();
           } else {
-            $("#otp_placement_error").html("⚠️ Unexpected response.");
+            $("#otp_placement_error").html("❌ Wrong OTP, please try again.");
             console.log("Unexpected data:", data);
           }
         }
