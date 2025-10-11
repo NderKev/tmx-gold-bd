@@ -54,7 +54,7 @@ const createUser = async (reqData) => {
     data.used = 0;
     await userModel.createEmailOTP(data);
     try {
-      await sendEmail(validInput.email, RegisterMail(validInput.name, link));
+      //await sendEmail(validInput.email, RegisterMail(validInput.name, link));
       await sendEmail(validInput.email, VerifyMail(validInput.name, otp));
     } catch (error) {
       console.log(error);
