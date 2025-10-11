@@ -119,11 +119,11 @@ input.addEventListener('keyup', reset); **/
   } else {
     respMessage.innerText = '❌ Invalid email';
   }
-}
+} 
 
   $("#btnRegister").click(function(e){
     e.preventDefault()
-    checkEmail()
+    //checkEmail()
    var iti = window.intlTelInputGlobals.getInstance(
           document.querySelector("#phone")
     );
