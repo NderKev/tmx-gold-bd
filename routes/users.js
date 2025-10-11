@@ -112,6 +112,12 @@ router.post('/verify', async (req, res) => {
   return res.status(response.status).send(response);
 })
 
+router.post('/resend-otp', async (req, res) => {
+  const response = await userController.verifyEmailOtp(req.body.otp);
+  return res.status(response.status).send(response);
+});
+
+
 
 router.post('/sendReset', async (req, res) => {
   const response = await userController.sendResetPassword(req.body.email);

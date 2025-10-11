@@ -18,35 +18,67 @@ $(document).ready(function () {
     $.ajax({
       url: `${AUTH_BACKEND_URL}/api/user/verify`,
       method: "POST",
-      contentType: "application/json",  // keep JSON request
-      data: JSON.stringify({ otp : otp}),
-      // ✅ handle specific HTTP codes here:
+      contentType: "application/json",
+      data: JSON.stringify({ otp: otp }),
+
       statusCode: {
         204: function () {
-          $("#otp_placement_error").html('OTP Verification Successful');
-          window.location.href = '/index.html';
+          $("#otp_placement_error").html("✅ OTP Verification Successful");
+          window.location.href = "/index.html";
         },
-        400: function () {
-          $("#otp_placement_error").html('Wrong OTP');
+       400: function (xhr) {
+          $("#otp_placement_error").html(xhr.responseJSON?.message || '❌ Invalid or expired OTP');
           refresh();
         },
         403: function () {
-          $("#otp_placement_error").html('Error verifying OTP');
+          $("#otp_placement_error").html("⚠️ Error verifying OTP");
           refresh();
+        },
+      },
+      success: function (data, textStatus, xhr) {
+        // handle valid JSON responses (status 200)
+        if (xhr.status === 200 && data) {
+          if (data.message === "verified" || data.data?.message === "verified") {
+            $("#otp_placement_error").html("✅ OTP Verification Successful");
+            window.location.href = "/index.html";
+          } else if (
+            data.message === "wrong_otp" ||
+            data.message === "invalid" ||
+            data.error === "invalid_otp"
+          ) {
+            $("#otp_placement_error").html("❌ Wrong OTP, please try again.");
+            refresh();
+          } else {
+            $("#otp_placement_error").html("⚠️ Unexpected response.");
+            console.log("Unexpected data:", data);
+          }
         }
       },
+
       error: function (xhr) {
-        // fallback for other errors
-        $("#otp_placement_error").html('Authorization error');
+        console.error("Error response:", xhr);
+        $("#otp_placement_error").html("❌ Authorization or network error");
         refresh();
       },
-      success: function (data) {
-        // This only runs if a JSON body is returned (not for 204)
-        if (data && data.data.message === "verified" && data.message ==="verified") {
-          $("#otp_placement_error").html('OTP Verification Successful');
-          window.location.href = '/index.html';
-        }
-      }
     });
+
   });
+
+  $("#resendOtpBtn").click(function () {
+  const email = localStorage.getItem("tmx_gold_name"); // ensure email is available
+  $("#resend_status").html('Resending OTP...');
+
+  $.ajax({
+    url: `${AUTH_BACKEND_URL}/api/user/resend-otp`,
+    method: "POST",
+    contentType: "application/json",
+    data: JSON.stringify({ email }),
+    success: function (res) {
+      $("#otp_placement_error").html('✅ New OTP sent to your email');
+    },
+    error: function (xhr) {
+      $("#otp_placement_error").html(`❌ ${xhr.responseJSON?.message || 'Failed to resend OTP'}`);
+    }
+  });
+});
 });

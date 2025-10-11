@@ -228,16 +228,31 @@ const verifySeller = async (reqData) => {
 
 const verifyEmailOtp = async (reqData) => {
   try {
-    let resp = {}
     const response = await userModel.verifyEmailOTP(reqData);
-    resp.message = "verified";
-    resp.data = response;
-    return successResponse(204, resp, 'verified');
+    return successResponse(200, response, 'verified');
   } catch (error) {
-    console.error('error -> ', logStruct('verifyEmailOtp', error))
     return errorResponse(400, error.message);
   }
 };
+
+
+const resendEmailOtp = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ message: "Email required" });
+
+    const otp = await userModel.resendEmailOTP(email);
+    let  username = email.split('@')[0];
+    // Send the email
+   await sendEmail(email, VerifyMail(username, otp));
+
+    return res.status(200).json({ message: "New OTP sent successfully" });
+  } catch (error) {
+    console.error("resendEmailOtp ->", error.message);
+    return res.status(400).json({ message: error.message });
+  }
+};
+
 
 
 const activateSeller = async (reqData) => {
@@ -427,6 +442,7 @@ module.exports = {
   deActivateUser,
   verifySeller,
   verifyEmailOtp,
+  resendEmailOtp,
   activateSeller,
   deActivateSeller,
   fetchAllUsers,

@@ -363,16 +363,73 @@ exports.createEmailOTP = async (data) => {
   return query;
 };
 
-exports.verifyEmailOTP = async (data) => {
-  const query = db.write('user_otps')
-    .where('otp', data)
-    .update({
-      used : 1,
-      updatedAt : moment().format('YYYY-MM-DD HH:mm:ss')
-    });
-  console.info("query -->", query.toQuery())
-  return query;
+const moment = require('moment');
+const db = require('../db'); // adjust your path
+
+exports.verifyEmailOTP = async (otp) => {
+  try {
+    // Fetch the OTP record first
+    const otpRecord = await db('user_otps')
+      .where({ otp, used: 0 })
+      .first();
+
+    if (!otpRecord) {
+      throw new Error("Invalid or already used OTP");
+    }
+
+    // Check expiry (assuming you store createdAt or expiresAt)
+    const now = moment();
+    const created = moment(otpRecord.createdAt);
+    const expiryMinutes = 5; // OTP valid for 5 minutes
+    const isExpired = now.diff(created, 'minutes') > expiryMinutes;
+
+    if (isExpired) {
+      throw new Error("OTP expired. Please request a new one.");
+    }
+
+    // Mark OTP as used
+    await db('user_otps')
+      .where({ otp })
+      .update({
+        used: 1,
+        updatedAt: now.format('YYYY-MM-DD HH:mm:ss')
+      });
+
+    return { message: "OTP verified successfully" };
+  } catch (err) {
+    console.error("verifyEmailOTP error ->", err.message);
+    throw err;
+  }
 };
+
+exports.resendEmailOTP = async (email) => {
+  try {
+    // Invalidate previous OTPs for this email
+    await db('user_otps')
+      .where({ email })
+      .update({
+        used: 1,
+        updatedAt: moment().format('YYYY-MM-DD HH:mm:ss')
+      });
+
+    // Generate a new OTP (6-digit)
+    const otp = crypto.randomInt(100000, 999999);
+
+    // Insert the new OTP
+    await db('user_otps').insert({
+      email,
+      otp,
+      used: 0,
+      createdAt: moment().format('YYYY-MM-DD HH:mm:ss')
+    });
+
+    return otp;
+  } catch (err) {
+    console.error('resendEmailOTP error ->', err.message);
+    throw err;
+  }
+};
+
 
 exports.fetchEmailOTP = async (data) => {
 const query = db.read.select('user_otps.email')
