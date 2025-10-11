@@ -68,17 +68,17 @@ $(document).ready(function () {
   const email = localStorage.getItem("tmx_gold_name"); // ensure email is available
   $("#resend_status").html('Resending OTP...');
 
-  $.ajax({
-    url: `${AUTH_BACKEND_URL}/api/user/resend-otp`,
-    method: "POST",
-    contentType: "application/json",
-    data: JSON.stringify({ email }),
-    success: function (res) {
-      $("#otp_placement_error").html('✅ New OTP sent to your email');
-    },
-    error: function (xhr) {
-      $("#otp_placement_error").html(`❌ ${xhr.responseJSON?.message || 'Failed to resend OTP'}`);
-    }
-  });
-});
+      $.ajax({
+        url: `${AUTH_BACKEND_URL}/api/user/resend-otp`,
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({ email }),
+        success: function (res) {
+          $("#otp_placement_error").html('✅ New OTP sent to your email');
+        },
+        error: function (xhr) {
+          $("#otp_placement_error").html(`❌ ${xhr.responseJSON?.message || 'Failed to resend OTP'}`);
+        }
+      });
+    });
 });
