@@ -363,8 +363,7 @@ exports.createEmailOTP = async (data) => {
   return query;
 };
 
-const moment = require('moment');
-const db = require('../db'); // adjust your path
+
 
 exports.verifyEmailOTP = async (otp) => {
   try {
