@@ -21,7 +21,7 @@ const Header = () => `
                       <tr>
                         <td style="width:250px;"><a href="https://www.tmxgoldcoin.co" target="_blank"><img
                               alt="tmxgold" height="auto"
-                              src="/assets/images/tmxg.png"
+                              src="../../public/assets/images/tmxg.png"
                               style="border:none;border-radius:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;"
                               width="250"></a></td>
                       </tr>
