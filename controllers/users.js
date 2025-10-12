@@ -1,13 +1,15 @@
 const bcrypt = require('bcryptjs');
-
+const moment = require('moment');
 const saltRounds = 10;
 
 const userModel = require('../models/users');
 const {successResponse, errorResponse} = require('../lib/response');
 const { validateUserRegister, validateUserToken, validateUserRole, validateUserPermission,   validateAuth, validateSeller } = require('../validators/users');
 const { validateId} = require('../validators/common');
-const { RegisterMail, VerifyMail, ResetPasswordMail, PasswordResetMail } = require('../mails');
+const { RegisterMail, VerifyMail, ResetPasswordMail, PasswordResetMail, AccountLockedMail } = require('../mails');
 const sendEmail = require('../helpers/sendMail');
+
+const db = require('../models/db');
 //const nodemailer = require('nodemailer');
 
 const logStruct = (func, error) => {
@@ -288,7 +290,7 @@ const fetchAllUsers = async () => {
   }
 };
 
-const loginUser = async (reqData) => {
+/** const loginUser = async (reqData) => {
   try {
     const validInput = validateAuth(reqData);
     const response = await userModel.getUserDetailsByNameOrEmail(validInput.user_name);
@@ -311,7 +313,85 @@ const loginUser = async (reqData) => {
     console.error('error -> ', logStruct('fetchUser', error))
     return errorResponse(error.status, error.message);
   }
+}; **/
+const loginUser = async (reqData) => {
+  try {
+    // ✅ Validate input
+    const validInput = validateAuth(reqData);
+
+    // ✅ Fetch user
+    const user = await userModel.getUserDetailsByNameOrEmail(validInput.user_name);
+    if (!user || user.length === 0) {
+      return errorResponse(400, 'Invalid email or username');
+    }
+    const currentUser = user[0];
+
+    // 🚫 Check if account is locked
+    if (currentUser.locked_until && moment().isBefore(currentUser.locked_until)) {
+      const minutesLeft = moment(currentUser.locked_until).diff(moment(), 'minutes');
+      return errorResponse(403, `Account locked. Try again in ${minutesLeft} minute(s).`);
+    }
+
+    // 🔐 Verify password
+    const matched = bcrypt.compareSync(String(validInput.password), currentUser.password);
+    if (!matched) {
+      const attempts = (currentUser.failed_attempts || 0) + 1;
+      let updateData = { failed_attempts: attempts };
+
+      // ⏳ Lock account after 3 failed attempts
+      if (attempts >= 3) {
+        updateData = {
+          failed_attempts: 0,
+          locked_until: moment().add(30, 'minutes').format('YYYY-MM-DD HH:mm:ss'),
+        };
+
+        //if (typeof AccountLockedMail === 'function') {
+           AccountLockedMail(currentUser.email, "https://www.tmxgoldcoin.co/support");
+       //}
+      }
+
+      await db('users').where({ id: currentUser.id }).update(updateData);
+
+      return attempts >= 3
+        ? errorResponse(403, 'Account locked for 30 minutes due to multiple failed attempts.')
+        : errorResponse(401, 'Invalid password. Please try again.');
+    }
+
+    // 🚩 Check if user is flagged
+    const isFlagged = await userModel.isUserIdFlagged(currentUser.id);
+    if (isFlagged && isFlagged[0]?.flag === 0) {
+      return errorResponse(403, 'User flagged — contact admin for assistance.');
+    }
+
+    // ✅ Reset failed_attempts & locked_until after successful login
+    await db('users')
+      .where({ id: currentUser.id })
+      .update({
+        failed_attempts: 0,
+        locked_until: null,
+        updated_at: moment().format('YYYY-MM-DD HH:mm:ss'),
+      });
+
+    // 🔄 Update verification token
+    await userModel.updateVerToken(currentUser.email);
+
+    // 🧩 Fetch roles
+    const role_response = await userModel.getUserPermission(currentUser.id);
+    const user_roles = role_response.map((el) => el.role);
+
+    // ✅ Return successful response
+    return successResponse(200, [currentUser], {
+      user_roles,
+      email: currentUser.email,
+      id: currentUser.id,
+    });
+
+  } catch (error) {
+    console.error('error -> ', logStruct('loginUser', error));
+    return errorResponse(error.status || 500, error.message || 'Login failed');
+  }
 };
+
 
 const fetchAllCustomers = async () => {
   try {

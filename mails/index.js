@@ -7,7 +7,8 @@ const ResetPasswordEmailContent = require('./mails/ResetPasswordEmail');
 const RegisterMailContent = require('./mails/RegisterEmail');
 const PasswordResetContent = require('./mails/PasswordResetEmail');
 const DepositMailContent = require('./mails/DepositEmail'); 
-const FiatTransactionMailContent = require('./mails/FiatTransactionsEmail'); 
+const FiatTransactionMailContent = require('./mails/FiatTransactionsEmail');
+const AccountLockedMailContent = require('./mails/AccountLockedEmail');
 
 const WelcomeMail = (username = '{{nickname}}', link) => ({
   id: 1,
@@ -148,6 +149,29 @@ const FiatTransactionMail = (username, ref_no, mode , fiat, amount, amount_usd) 
     )}`)(username, ref_no, mode , fiat, amount, amount_usd),
 });
 
+const AccountLockedMail = (username = '{{nickname}}', supportLink) => ({
+  id: 9,
+  name: '009 | Account Locked Notification',
+  subject: 'Your TMX GoldCoin Account Has Been Locked',
+  text: ((username) =>
+    `Hi ${username},
+
+Your TMX GoldCoin account has been temporarily locked after multiple failed login attempts.
+
+For your security, please wait 30 minutes before trying again, or contact support if this wasn’t you.
+
+Visit our support page: https://www.tmxgoldcoin.co/support
+
+— TMX Security Team`)(username),
+  html: ((username, supportLink) =>
+    `${MainLayout(
+      'Account Locked',
+      username,
+      AccountLockedMailContent(supportLink)
+    )}`)(username, supportLink),
+});
+
+
 module.exports = {
   WelcomeMail,
   RegisterMail,
@@ -157,5 +181,6 @@ module.exports = {
   ResetPasswordMail,
   PasswordResetMail,
   DepositMail,
-  FiatTransactionMail
+  FiatTransactionMail,
+  AccountLockedMail
 };

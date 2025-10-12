@@ -10,6 +10,8 @@ const url = require('url');
 const checkAdmin = require('../middleware/checkAdmin');
 const checkUser = require('../middleware/checkUser');
 const auth = require('../middleware/auth');
+const { loginLimiter } = require('../middleware/loginRateLimiter');
+const { resendOtpLimiter } = require('../middleware/otpRateLimiter');
 const jwt = require('jsonwebtoken');
 
 //const createAuthToken = require('../models/users');
@@ -73,7 +75,7 @@ router.post('/sendAuth', async (req, res) => {
   return res.status(response.status).send(response);
 })
 
-router.post('/sendReset', async (req, res) => {
+router.post('/sendReset', resendOtpLimiter, async (req, res) => {
   const response = await userController.sendResetPassword(req.body.email);
   return res.status(200).send(response);
 })
@@ -124,8 +126,10 @@ router.post('/sendReset', async (req, res) => {
   return res.status(response.status).send(response);
 })
 
-router.post('/login',  async (req, res) => {
+
+router.post('/login', loginLimiter, async (req, res) => {
   const response = await userController.loginUser(req.body);
+
   if (response.success && response.meta) {
     req.session.user = response.data[0];
     req.session.email = response.meta.email;
@@ -133,38 +137,12 @@ router.post('/login',  async (req, res) => {
     req.session.user_roles = response.meta.user_roles;
     req.session.user_id = response.data[0].id;
     req.session.user.role = response.meta.user_roles[0];
+    const key = req.body.email || req.ip;
+    loginLimiter.resetKey(key);
   }
+
+
   return res.status(response.status).send(response);
-  /** const id = req.session.user_id;
-  const user = req.session.user;
-  if (req.session.user_roles.indexOf('admin') >= 0) {
-        //res.status(resp onse.status).send(response)
-        //res.sendFile(path.join(__dirname, '../pages' , 'add_category.html'));
-        req.session.user = user;
-        req.session.user.role = "admin";
-        res.json({ redirect: `/admin/profile/${id}`, meta : response.meta, data : response.data });
-
-  }
-  else if (req.session.user_roles.indexOf('seller') >= 0) {
-        req.session.user = user;
-        req.session.user.role = "seller";
-        res.json({ redirect: `/seller/profile/${id}`, meta : response.meta, data : response.data });
-       //res.redirect(`/seller/profile/${req.session.user_id}`);
-    }
-  else if (req.session.user_roles.indexOf('customer') >= 0) {
-       req.session.user = user;
-       req.session.user.role = "customer";
-       res.json({ redirect: `/customer/profile/${id}` , meta : response.meta, data : response.data});
-      //res.redirect(`/customer/profile/${req.session.user_id}`);
-    }
-  else {
-      //res.status(401).send(response);
-      res.json({ redirect: `/` });
-      //res.redirect('/');
-    } 
-  //
-    //res.redirect('/profile/:id/') **/
-
 });
 
 router.post('/logout', authenticator, async (req, res) => {
