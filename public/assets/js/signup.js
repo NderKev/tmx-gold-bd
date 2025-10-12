@@ -176,6 +176,7 @@ input.addEventListener('keyup', reset); **/
         console.log(results.message);
         if (results.status === 201 && results.message === 'userRegistered'){
           $("#placement_error").html('user successfully registered');
+          localStorage.setItem('tmx_gold_name' , email);
           refresh();
           window.location.href = "/ui-enter-otp.html";
         }
@@ -199,3 +200,23 @@ input.addEventListener('keyup', reset); **/
 
 
 
+  document.getElementById("togglePassword").addEventListener("click", function () {
+    const input = document.getElementById("password");
+    const type = input.getAttribute("type") === "password" ? "text" : "password";
+    input.setAttribute("type", type);
+
+    // Toggle icon
+    this.classList.toggle("fa-eye");
+    this.classList.toggle("fa-eye-slash");
+  });
+
+  // Toggle Confirm Password visibility
+  document.getElementById("toggleCPassword").addEventListener("click", function () {
+    const input = document.getElementById("c_password");
+    const type = input.getAttribute("type") === "password" ? "text" : "password";
+    input.setAttribute("type", type);
+
+    // Toggle icon
+    this.classList.toggle("fa-eye");
+    this.classList.toggle("fa-eye-slash");
+  });

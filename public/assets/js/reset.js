@@ -150,3 +150,24 @@ $(document).ready(function () {
 
 
 
+
+  document.getElementById("togglePassword").addEventListener("click", function () {
+    const input = document.getElementById("password");
+    const type = input.getAttribute("type") === "password" ? "text" : "password";
+    input.setAttribute("type", type);
+
+    // Toggle icon
+    this.classList.toggle("fa-eye");
+    this.classList.toggle("fa-eye-slash");
+  });
+
+  // Toggle Confirm Password visibility
+  document.getElementById("toggleCPassword").addEventListener("click", function () {
+    const input = document.getElementById("c_password");
+    const type = input.getAttribute("type") === "password" ? "text" : "password";
+    input.setAttribute("type", type);
+
+    // Toggle icon
+    this.classList.toggle("fa-eye");
+    this.classList.toggle("fa-eye-slash");
+  });
