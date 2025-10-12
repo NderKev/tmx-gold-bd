@@ -43,7 +43,7 @@ $(document).ready(function () {
         refresh();
       },
       success: function (data) {
-        if (data && data.data.message === "sent") {
+        if (data && data.message === "sent") {
           $("#send_placement_error").html('OTP Sent Successfully');
           window.location.href = '/reset-password.html';
         }

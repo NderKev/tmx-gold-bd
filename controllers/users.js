@@ -159,7 +159,7 @@ const sendResetPassword = async (reqData) => {
 
 const sendResetPasswordSuccess = async (reqData) => {
   try {
-      let user_name = await userModel.fetchUserName(reqData);
+      let user_name = await userModel.fetchUserNameEmail(reqData);
       user_name = user_name[0].name;
       await sendEmail(reqData, PasswordResetMail(user_name));
       return successResponse(200, user_name, "sent");

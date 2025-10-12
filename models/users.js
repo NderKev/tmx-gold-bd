@@ -88,6 +88,12 @@ exports.updatePassword = async (data) => {
    return query;
  };
 
+  exports.fetchUserNameEmail = async (email) => {
+   const query = db.read.select('users.name')
+   .from('users')
+   .where('email', '=', email);;
+   return query;
+ };
 
 
 exports.updateProfile = async (data) => {
