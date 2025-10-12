@@ -350,7 +350,7 @@ const loginUser = async (reqData) => {
        //}
       }
 
-      await db('users').where({ id: currentUser.id }).update(updateData);
+      await db.write('users').where({ id: currentUser.id }).update(updateData);
 
       return attempts >= 3
         ? errorResponse(403, 'Account locked for 30 minutes due to multiple failed attempts.')
@@ -364,7 +364,7 @@ const loginUser = async (reqData) => {
     }
 
     // ✅ Reset failed_attempts & locked_until after successful login
-    await db('users')
+    await db.write('users')
       .where({ id: currentUser.id })
       .update({
         failed_attempts: 0,
