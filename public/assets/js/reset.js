@@ -26,7 +26,7 @@ $(document).ready(function () {
       statusCode: {
         200: function () {
           $("#send_placement_error").html('OTP Sent Successfully');
-          window.location.href = '/index.html';
+          window.location.href = '/reset-password.html';
         },
         400: function () {
           $("#send_placement_error").html('Error Sending OTP');

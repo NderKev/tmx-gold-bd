@@ -1,4 +1,3 @@
-const Link = require('../components/Link');
 const ContentBlock = require('../components/ContentBlock');
 const Text = require('../components/Text');
 
@@ -32,19 +31,34 @@ const ResetPasswordEmailContent = (otp) => `
           </p>`
         )}`
       )}
-      <div style="margin: 30px 0;">
-        ${Text(
-          'Enter the otp below to reset your password!',
-          otp,
-          'background:#2e7d32;color:#ffffff;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block;'
-        )}
-        
-      </div>
+      
+      ${ContentBlock(
+        `${Text(
+          `<p style="font-size:16px; line-height:1.6; color:#555;">
+            Enter the OTP below to reset your password:
+          </p>`
+        )}`
+      )}
+      
+      ${ContentBlock(
+        `<div style="
+            font-size: 28px;
+            letter-spacing: 6px;
+            background: #2e7d32;
+            color: white;
+            padding: 15px 30px;
+            display: inline-block;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: bold;
+        ">${otp}</div>`
+      )}
+      
       ${ContentBlock(
         `${Text(
           `<p style="font-size:14px; color:#777; line-height:1.6;">
             If you didn’t request this, you can safely ignore this email.  
-            This otp will expire in <b>30 minutes</b> for security purposes.
+            This OTP will expire in <b>30 minutes</b> for security purposes.
           </p>`
         )}`
       )}
@@ -53,3 +67,4 @@ const ResetPasswordEmailContent = (otp) => `
 `;
 
 module.exports = ResetPasswordEmailContent;
+
