@@ -92,7 +92,7 @@ $(document).ready(function () {
 
     $("#resetPasswordBtn").click(function (e) {
     e.preventDefault();
-    checkEmail();
+    //checkEmail();
     function refresh() {
       $("#otp").val('');
       $("#password").val('');

@@ -385,7 +385,7 @@ exports.verifyEmailOTP = async (otp) => {
     // Check expiry (assuming you store createdAt or expiresAt)
     const now = moment();
     const created = moment(otpRecord.createdAt);
-    const expiryMinutes = 5; // OTP valid for 5 minutes
+    const expiryMinutes = 30; // OTP valid for 5 minutes
     const isExpired = now.diff(created, 'minutes') > expiryMinutes;
 
     if (isExpired) {

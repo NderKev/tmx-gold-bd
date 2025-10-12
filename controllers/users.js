@@ -88,6 +88,7 @@ const updatePassword = async (reqData) => {
     } catch (error) {
       console.log(error);
     } 
+    await userModel.verifyEmailOTP(reqData.otp);
      let _data = {
       message : "passwordUpdated",
       data : reqData.email
@@ -135,7 +136,7 @@ const fetchUser = async (reqData) => {
 const sendResetPassword = async (reqData) => {
   try {
       let user_name = await userModel.fetchUserName(reqData);
-      user_name = user_name[0];
+      user_name = user_name[0].name;
       let {otp, expirationTime} = generateExpiringOTP();
       let data = {};
       data.email = reqData;
