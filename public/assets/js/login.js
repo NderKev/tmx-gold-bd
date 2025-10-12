@@ -1,123 +1,116 @@
-$("#btnLogin").click(function(e){
-  let AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
-  //let AUTH_BACKEND_URL="http://192.241.145.15:3030"
-  //let AUTH_BACKEND_URL = 'http://localhost:3030';
-  e.preventDefault()
-  function refreshLogin(){
-    $("#log_email").val('')
-    $("#log_pword").val('')
-  }
-  let email = document.getElementById('log_email').value
-  let password = document.getElementById('log_pword').value
+$("#btnLogin").click(function (e) {
+  e.preventDefault();
 
-  if(email === '') {
-    $("#login_placement_error").html('*Email is required')
-    return
+  const AUTH_BACKEND_URL = "https://tmxgoldcoin.co";
+  // const AUTH_BACKEND_URL = "http://localhost:3030";
+
+  const $btn = $("#btnLogin");
+  const $error = $("#login_placement_error");
+
+  function refreshLogin() {
+    $("#log_email").val("");
+    $("#log_pword").val("");
   }
-  if(password === '') {
-    $("#login_placement_error").html('*Password is required')
-    return
+
+  const email = $("#log_email").val().trim();
+  const password = $("#log_pword").val().trim();
+
+  if (email === "") {
+    $error.html("*Email is required");
+    return;
   }
+  if (password === "") {
+    $error.html("*Password is required");
+    return;
+  }
+
   $.ajax({
     url: `${AUTH_BACKEND_URL}/api/user/login`,
-    dataType: "JSON",
-    contentType: "application/json",
     method: "POST",
+    contentType: "application/json",
+    dataType: "json",
     data: JSON.stringify({
-      'user_name': email,
-      'password' : password
+      user_name: email,
+      password: password,
     }),
-    error: (err) => {
-      refreshLogin();
-      if(err.status === 401) {
-        //alert(err.message);
-        $("#login_placement_error").html('Wrong Password');
-      }
-      else if (err.status === 403){
-        $("#login_placement_error").html('user flagged and blacklisted contact admin for asistance');
-      }
-      else{
-        $("#login_placement_error").html('Authorization error');
+
+    success: function (results) {
+      if (results.success === true || results.status === 200 || results.status === 201) {
+        localStorage.setItem("tmx_gold_name", email);
+        localStorage.setItem("user_id", results.meta.id);
+        localStorage.setItem("role", results.meta.user_roles);
+        localStorage.setItem("token", results.data?.[0]?.token || "");
+        refreshLogin();
+
+        window.location.href = `${AUTH_BACKEND_URL}/api/${localStorage.getItem(
+          "role"
+        )}/profile/${localStorage.getItem("user_id")}`;
+      } else {
+        $error.html(results.message || "Login failed");
       }
     },
-    success: function (results) {
-      if (results.success = true   || results.status === 201  || results.status === 200){
-        localStorage.setItem('tmx_gold_name' , email);
-        localStorage.setItem('user_id', results.meta.id);
 
-        /** var sess = getSession();
-        if(sess){
-        console.log(sess);
-        alert(sess);
-        localStorage.setItem('expires', sess);
-      } **/
+    error: function (xhr) {
+      refreshLogin();
+      const res = xhr.responseJSON;
 
-        var request = {};
-        //r token = localStorage.getItem('auth_token_agroAfric');
-        var user_name = localStorage.getItem('tmx_gold_name');
-        //alert(results.meta.user_roles);
-        console.log(results.meta.user_roles);
-        var user_roles = results.meta.user_roles;
-        //alert(user_roles);
-        localStorage.setItem('role', user_roles)
-        if(typeof user_name === 'undefined' || user_name === null || !user_name){
-          localStorage.setItem('tmx_gold_name',email)
+      // 🔒 Account Lockout Handling
+      if (res && res.data && res.data.locked_until) {
+        const lockedUntil = new Date(res.data.locked_until);
+        const now = new Date();
 
-          //user_name = email;
-          localStorage.setItem('user_id', results.meta.id)
-
-          localStorage.setItem('token', results.data[0].token)
-
+        if (lockedUntil > now) {
+          startLockoutCountdown(lockedUntil, $btn, $error);
+          return;
         }
-        /** if (typeof token === 'undefined' || token === null || !token){
-          request.email = email;
-          console.log(request);
-          const refreshJWT =   updateJWT(request);
-          console.log(refreshJWT);
-        } */
-        //const role = results.data[0].
-        //alert(refreshJWT);
-        refreshLogin();
-        console.log(localStorage.getItem('token'))
-        //var usertype =
-        //window.location.href = "complete_profile.html" //"https://agro-africa.io/tmxGold/v1/user/data/profile/:id/complete_profile.html";
-        //window.location.href = 'http://localhost:8787/tmxGold/v1/user/'+localStorage.getItem('role')+'/profile/'+localStorage.getItem('user_id') + '/';
-        //window.location.href = `${AUTH_BACKEND_URL}/api/user/${localStorage.getItem('role')}/data/profile/${localStorage.getItem('user_id')}`;
-        window.location.href = `${AUTH_BACKEND_URL}/api/${localStorage.getItem('role')}/profile/${localStorage.getItem('user_id')}`;
-        
+      }
 
-        //window.location.href='/index-dashboard.html'
-       
-         /**fetch(`${AUTH_BACKEND_URL}/api/${localStorage.getItem('role')}/data/profile/${localStorage.getItem('user_id')}`, {
-            headers: {
-              // Remove 'Content-Type': 'application/json' to avoid mismatch
-              'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-          })
-          .then(res => res.text())   // 🔹 Expect HTML, not JSON
-          .then(html => {
-            console.log(html);
-            // For example: insert into a container
-            document.getElementById('content').innerHTML = html;
-          })
-          .catch(err => console.error(err)); **/
+      // ⚠️ Remaining Attempts
+      if (res && res.data && res.data.remaining_attempts !== undefined) {
+        $error.html(
+          `❌ ${res.message || "Wrong password"}<br>Remaining attempts: <b>${res.data.remaining_attempts}</b>`
+        );
+      } else if (xhr.status === 403) {
+        $error.html("⚠️ User flagged or blacklisted. Contact admin for assistance.");
+      } else if (xhr.status === 401) {
+        $error.html("❌ Wrong Password");
+      } else {
+        $error.html("⚠️ Authorization error or server issue.");
+      }
+    },
+  });
+});
 
-           //window.location.href = `${AUTH_BACKEND_URL}/api/${localStorage.getItem('role')}/data/profile/${localStorage.getItem('user_id')}`;
-      }
-      else if (results.status === 401 || results.message === 'wrongPassword'){
-        //alert("here");
-        $("#login_placement_error").html('Wrong Password');
-        refreshLogin();
-        window.location.href = "/";
-      }
-      else{
-        $("#login_placement_error").html(results.status);
-        refreshLogin();
-        window.location.href = "/";
-      }
+/**
+ * 🕒 Display live countdown and disable the login button during lockout
+ */
+function startLockoutCountdown(lockedUntil, $btn, $error) {
+  $btn.prop("disabled", true).addClass("disabled");
+  $btn.text("Locked");
+
+  function updateCountdown() {
+    const now = new Date();
+    const diffMs = lockedUntil - now;
+
+    if (diffMs <= 0) {
+      clearInterval(timer);
+      $btn.prop("disabled", false).removeClass("disabled").text("Login");
+      $error.html("✅ You can now try logging in again.");
+      return;
     }
-  })
-})
+
+    const minutes = Math.floor(diffMs / 60000);
+    const seconds = Math.floor((diffMs % 60000) / 1000)
+      .toString()
+      .padStart(2, "0");
+
+    $error.html(`⏳ Account locked. Try again in <b>${minutes}:${seconds}</b>`);
+  }
+
+  updateCountdown(); // run immediately
+  const timer = setInterval(updateCountdown, 1000);
+}
+
 
 
 

@@ -84,7 +84,7 @@ const updatePassword = async (reqData) => {
       reqData.password = bcrypt.hashSync(String(reqData.password), saltRounds);
       const response = await userModel.updatePassword(reqData);
        try {
-      await sendEmail(reqData, PasswordResetMail(reqData.email));
+      await sendEmail(_email, PasswordResetMail(userExists[0].name));
     } catch (error) {
       console.log(error);
     } 
@@ -146,7 +146,8 @@ const sendResetPassword = async (reqData) => {
       let _data =
       {
         message : "sent",
-        data : reqData
+        data : reqData,
+        locked_until : new Date(Date.now() + 30 * 60 * 1000)
       }
       await userModel.createEmailOTP(data);
       await sendEmail(reqData, ResetPasswordMail(user_name, otp));
@@ -154,7 +155,7 @@ const sendResetPassword = async (reqData) => {
       //await sendEmail(validInput.email, VerifyMail(validInput.name, otp));
     } catch (error) {
       console.log(error);
-      return errorResponse(error.status, error.message);
+      return errorResponse(error.status, error.message, {locked_until : new Date(Date.now() + 30 * 60 * 1000)});
     } 
 };
 
@@ -355,7 +356,7 @@ const loginUser = async (reqData) => {
 
       return attempts >= 3
         ? errorResponse(403, 'Account locked for 30 minutes due to multiple failed attempts.')
-        : errorResponse(401, 'Invalid password. Please try again.');
+        : errorResponse(401, `Invalid password. ${remaining} attempts remaining.`, {remaining_attempts: remaining});
     }
 
     // 🚩 Check if user is flagged
