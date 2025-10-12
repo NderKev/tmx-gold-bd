@@ -9181,3 +9181,21 @@ p {
   cursor: not-allowed;
   position: relative;
 }
+
+
+.btn-tmx {
+  background: linear-gradient(135deg, #f7931a 0%, #ffb347 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.btn-tmx:hover {
+  background: linear-gradient(135deg, #ff9f1c 0%, #ffc46b 100%);
+  transform: translateY(-2px);
+  color: #fff;
+}

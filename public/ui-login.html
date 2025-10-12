@@ -14,6 +14,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
     <link href="/assets/css/style.css" rel="stylesheet" />
     <link href="/assets/css/responsive.css" rel="stylesheet" />
+    
   </head>
 
   <body class="login_page">
@@ -44,7 +45,7 @@
                       <div class="controls">
                         <input
                           id="log_email"
-                          type="text"
+                          type="email"
                           class="form-control"
                           name="email"
                           placeholder="email"
@@ -84,7 +85,7 @@
                     <!-- Centered Buttons -->
                     <div class="text-center mt-4">
                       <a id="btnLogin" class="btn btn-primary px-4 me-2">Log In</a>
-                      <a href="ui-register.html" class="btn btn-outline-primary px-4">Sign Up</a>
+                      <a href="index.html" class="btn btn-tmx px-4">Sign Up</a>
                     </div>
                   </div>
                 </div>
@@ -104,21 +105,9 @@
     <!-- JS -->
     <script src="/assets/js/jquery-1.11.2.min.js"></script>
     <script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-
+    <script src="/assets/js/script.js"></script>
+    <script src="/assets/js/login.js"></script>
     <!-- Show/Hide Password Script -->
-    <script>
-      document.getElementById("togglePassword").addEventListener("click", function () {
-        const passwordInput = document.getElementById("log_pword");
-        const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-        passwordInput.setAttribute("type", type);
 
-        // Toggle eye and eye-slash icons
-        this.classList.toggle("fa-eye");
-        this.classList.toggle("fa-eye-slash");
-
-        // Optional: Color feedback on toggle
-        this.style.color = type === "text" ? "#007bff" : "#6c757d";
-      });
-    </script>
   </body>
 </html>
