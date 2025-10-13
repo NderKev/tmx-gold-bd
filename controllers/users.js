@@ -353,7 +353,7 @@ const loginUser = async (reqData) => {
       }
 
       await db.write('users').where({ id: currentUser.id }).update(updateData);
-
+      const remaining = 3 - failed_attempts;
       return attempts >= 3
         ? errorResponse(403, 'Account locked for 30 minutes due to multiple failed attempts.')
         : errorResponse(401, `Invalid password. ${remaining} attempts remaining.`, {remaining_attempts: remaining});
