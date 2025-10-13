@@ -38,7 +38,7 @@ $(document).ready(function () {
       success: function (data, textStatus, xhr) {
         // handle valid JSON responses (status 200)
         if (xhr.status === 200 && data) {
-          if (data.message === "verified" || data.data?.message === "verified") {
+          if (data.message === "success" || data.meta === "verified") {
             $("#otp_placement_error").html("✅ OTP Verification Successful");
             window.location.href = "/index.html";
           } else if (
