@@ -38,19 +38,22 @@ $(document).ready(function () {
       success: function (data, textStatus, xhr) {
         // handle valid JSON responses (status 200)
         if (xhr.status === 200 && data) {
-          if (data.message === "success" || data.meta === "verified") {
+          if (data.message === "success" && data.data?.message === "match" && data.data?.valid == true) {
             $("#otp_placement_error").html("✅ OTP Verification Successful");
             window.location.href = "/index.html";
           } else if (
-            data.message === "wrong_otp" ||
-            data.message === "invalid" ||
-            data.error === "invalid_otp"
+            data.data?.message === "mismatch"
           ) {
             $("#otp_placement_error").html("❌ Wrong OTP, please try again.");
             refresh();
-          } else {
+          } else if (data.data?.valid == false)   {
             $("#otp_placement_error").html("❌ OTP Expired, please reset and try again.");
-            console.log("Unexpected data:", data);
+             refresh();
+          }
+          else {
+              console.log("Unexpected data:", data);
+              $("#otp_placement_error").html("❌  " + data);
+              refresh();
           }
         }
       },

@@ -389,7 +389,8 @@ exports.verifyEmailOTP = async (otp) => {
     const isExpired = now.diff(created, 'minutes') > expiryMinutes;
 
     if (isExpired) {
-      throw new Error("OTP expired. Please request a new one.");
+      //throw new Error("OTP expired. Please request a new one.");
+      return { message: "expired" };
     }
 
     // Mark OTP as used
@@ -400,10 +401,11 @@ exports.verifyEmailOTP = async (otp) => {
         updated_at: now.format('YYYY-MM-DD HH:mm:ss')
       });
 
-    return { message: "OTP verified successfully" };
+    return { message: "verified" };
   } catch (err) {
     console.error("verifyEmailOTP error ->", err.message);
-    throw err;
+    //throw err;
+    return { message: "error" };
   }
 };
 
@@ -830,28 +832,32 @@ catch(err){
 
 function verifyOTP(providedOTP, storedOTP, expirationTime) {
         const now = Math.floor(Date.now() / 1000);
+         let resps = {};
+         resps.valid = true;
+         resps.message = "match";
+         resps.result = "verified";
         if (now > expirationTime) {
-            return false; // OTP expired
+            resps.valid = false; // OTP expired
         }
-        return providedOTP === storedOTP; // Check if OTP matches
+        if(providedOTP !== storedOTP){
+          resps.message = "mismatch"
+        }
+        return resps; // Check if OTP matches
     }
 
 exports.verifyOTPemail = async (reqData) => {
   try {
-    let resps = {};
+   
     const otp_data = await userModel.getValidEmailOTP(reqData);
     console.log("otp data : "+ otp_data[0].otp);
     let dbOtp, dbExp, currOtp;
     dbOtp = otp_data[0].otp;
     dbExp = otp_data[0].expiry;
     currOtp = reqData;
-    let resp = verifyOTP(currOtp, dbOtp, dbExp);
-    if (resp == false){
-      resps.valid = false;
-    }
-    resps.valid = true;
-    await this.verifyEmailOTP(dbOtp);
-    return resps;
+    let resp = verifyOTP(currOtp, dbOtp, dbExp); 
+    const resp_data = await this.verifyEmailOTP(dbOtp);
+    resp.result = resp_data.message;
+    return resp;
   }
   catch(err){
     return err.message
