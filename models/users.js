@@ -34,10 +34,10 @@ exports.getUserDetailsByNameOrEmail = async (input) => {
   return query;
 };
 
-exports.getValidEmailOTP = async (email) => {
+exports.getValidEmailOTP = async (otp) => {
   const query = db.read.select('*')
   .from('user_otps')
-  .where('email', '=', email)
+  .where('otp', '=', otp)
   .where('used', '=', 0);
   return query;
 };
@@ -842,7 +842,7 @@ exports.verifyEmailOTP = async (reqData) => {
     let dbOtp, dbExp, currOtp;
     dbOtp = otp_data[0].otp;
     dbExp = otp_data[0].expiry;
-    currOtp = reqData.otp;
+    currOtp = reqData;
     let resp = verifyOTP(currOtp, dbOtp, dbExp);
     if (resp == false){
       resps.valid = false;
