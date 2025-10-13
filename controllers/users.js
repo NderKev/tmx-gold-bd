@@ -393,23 +393,23 @@ const verifySeller = async (reqData) => {
 const verifyEmailOTP = async (reqData) => {
   try {
     const response = await userModel.verifyOTPemail(reqData);
-    if (response.message === "mismatch"){
-       return errorResponse(400, "mismatch", response);
+    if (response.result === "invalid"){
+       return errorResponse(400, "invalid", response);
     }
-     else if (response.valid == false){
+     else if (response.result === "expired"){
        return errorResponse(403, "expired", response);
     }
-    else if (response.message === "error"){
+    else if (response.result === "error" && response.valid == false){
        return errorResponse(404, "error", response);
     }
     else if (response.result === "verified"){
-       return successResponse(204, "error", response);
+       return successResponse(204,  response, "verified");
     }
     else{
     return successResponse(200, response, 'verified');
     }
   } catch (error) {
-    return errorResponse(400, error.message);
+    return errorResponse(404, "error", error.message);
   }
 };
 
