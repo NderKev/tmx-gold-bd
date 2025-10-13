@@ -44,7 +44,7 @@ $(affiliateTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transac
 }
 
  const userId = localStorage.getItem("user_id"); // or from JWT decode/session
-
+ const AUTH_BACKEND_URL = "https://tmxgoldcoin.co";
    const $linkField = $("#affiliateLink");
     const $message = $("#affiliateMessage");
 
