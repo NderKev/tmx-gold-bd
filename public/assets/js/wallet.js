@@ -429,7 +429,7 @@ const AVALANCHE_CHAIN_ID = "0xa86a";
     const balanceWei = document.getElementById("wallet_balance");
     const balanceUsd = document.getElementById("wallet_usd");
     //const wallet  = document.getElementById("wallet_address");
-    const connectBtn = document.getElementById("connectWalletMain");
+    //const connectBtn = document.getElementById("connectWalletMain");
 
    let provider, signer, token, decimals, symbol;
 
@@ -530,7 +530,7 @@ const AVALANCHE_CHAIN_ID = "0xa86a";
       });
     }
 
-     connectBtn.onclick = connect;
+     //connectBtn.onclick = connect;
 
   const fullAddress = "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"; // example
   const addressEl = document.getElementById("address");
@@ -583,7 +583,9 @@ const AVALANCHE_CHAIN_ID = "0xa86a";
     
   });
 
-
+  document.addEventListener("DOMContentLoaded", function () {
+    connect();
+  })
  /** document.getElementById("copy_address_1").addEventListener("click", function() {
     const address = document.getElementById("wallet_address").textContent;
     navigator.clipboard.writeText(address).then(() => {
