@@ -397,7 +397,7 @@ exports.verifyEmailOTP = async (otp) => {
       .where({ otp })
       .update({
         used: 1,
-        updatedAt: now.format('YYYY-MM-DD HH:mm:ss')
+        updated_at: now.format('YYYY-MM-DD HH:mm:ss')
       });
 
     return { message: "OTP verified successfully" };
