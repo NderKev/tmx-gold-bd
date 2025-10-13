@@ -379,7 +379,8 @@ exports.verifyEmailOTP = async (otp) => {
       .first();
 
     if (!otpRecord) {
-      throw new Error("Invalid or already used OTP");
+      //throw new Error("Invalid or already used OTP");
+      return { message: "invalid" };
     }
 
     // Check expiry (assuming you store createdAt or expiresAt)
@@ -835,7 +836,7 @@ function verifyOTP(providedOTP, storedOTP, expirationTime) {
          let resps = {};
          resps.valid = true;
          resps.message = "match";
-         resps.result = "verified";
+         resps.result = "null";
         if (now > expirationTime) {
             resps.valid = false; // OTP expired
         }
@@ -860,7 +861,11 @@ exports.verifyOTPemail = async (reqData) => {
     return resp;
   }
   catch(err){
-    return err.message
+    let res_p = {}
+    res_p.valid = false;
+    res_p.result = err.message;
+    res_p.message = "error";
+    return res_p;
   }
 }
 

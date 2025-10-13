@@ -393,7 +393,21 @@ const verifySeller = async (reqData) => {
 const verifyEmailOTP = async (reqData) => {
   try {
     const response = await userModel.verifyOTPemail(reqData);
+    if (response.message === "mismatch"){
+       return errorResponse(400, "mismatch", response);
+    }
+     else if (response.valid == false){
+       return errorResponse(403, "expired", response);
+    }
+    else if (response.message === "error"){
+       return errorResponse(404, "error", response);
+    }
+    else if (response.result === "verified"){
+       return successResponse(204, "error", response);
+    }
+    else{
     return successResponse(200, response, 'verified');
+    }
   } catch (error) {
     return errorResponse(400, error.message);
   }

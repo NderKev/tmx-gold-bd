@@ -27,11 +27,15 @@ $(document).ready(function () {
           window.location.href = "/index.html";
         },
        400: function (xhr) {
-          $("#otp_placement_error").html(xhr.responseJSON?.message || '❌ Invalid or expired OTP');
+          $("#otp_placement_error").html(xhr.responseJSON?.message || '❌ Invalid OTP');
           refresh();
         },
         403: function () {
-          $("#otp_placement_error").html("⚠️ Error verifying OTP");
+          $("#otp_placement_error").html("⚠️ Expired OTP");
+          refresh();
+        },
+         404: function () {
+          $("#otp_placement_error").html("⚠️ Error Verifying OTP");
           refresh();
         },
       },
