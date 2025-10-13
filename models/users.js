@@ -374,7 +374,7 @@ exports.createEmailOTP = async (data) => {
 exports.verifyEmailOTP = async (otp) => {
   try {
     // Fetch the OTP record first
-    const otpRecord = await db.select('user_otps')
+    const otpRecord = await db.read.select('user_otps')
       .where({ otp, used: 0 })
       .first();
 
