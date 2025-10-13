@@ -183,6 +183,7 @@ $("#btnRegister").click(function (e) {
         window.location.href = "/index.html";
       } else {
         $error.html(`⚠️ ${results.message || "Unexpected response"}`);
+        localStorage.setItem("tmx_gold_name", email);
         refresh();
       }
     },

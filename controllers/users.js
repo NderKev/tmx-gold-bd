@@ -248,7 +248,7 @@ const updatePassword = async (reqData) => {
     } catch (error) {
       console.log(error);
     } 
-    await userModel.verifyEmailOTP(reqData.otp);
+    await userModel.verifyOTPemail(reqData.otp);
      let _data = {
       message : "passwordUpdated",
       data : reqData.email
