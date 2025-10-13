@@ -500,6 +500,10 @@ const AVALANCHE_CHAIN_ID = "0xa86a";
       }
     }
 
+  document.addEventListener("DOMContentLoaded", function () {
+    connect();
+  })
+
     async function connect() {
       if (!window.ethereum) return alert("Install MetaMask!");
        
@@ -583,9 +587,7 @@ const AVALANCHE_CHAIN_ID = "0xa86a";
     
   });
 
-  document.addEventListener("DOMContentLoaded", function () {
-    connect();
-  })
+
  /** document.getElementById("copy_address_1").addEventListener("click", function() {
     const address = document.getElementById("wallet_address").textContent;
     navigator.clipboard.writeText(address).then(() => {
