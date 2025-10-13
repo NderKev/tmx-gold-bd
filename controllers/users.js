@@ -399,7 +399,7 @@ const verifyEmailOTP = async (reqData) => {
      else if (response.result === "expired"){
        return errorResponse(403, "expired", response);
     }
-    else if (response.result === "error" && response.valid == false){
+    else if (response.result === "error"){
        return errorResponse(404, "error", response);
     }
     else if (response.result === "verified"){
