@@ -7,7 +7,7 @@ async function generateUniqueReferralId() {
   // keep generating until unique
   while (exists) {
     id = Math.floor(100000000 + Math.random() * 900000000); // 9-digit number
-    const found = await db.read.select('users').where({ referral_id: id }).first();
+    const found = await db.read.select('*').from('users').where({ referral_id: id }).first();
     exists = !!found;
   }
 
