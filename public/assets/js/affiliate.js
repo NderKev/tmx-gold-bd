@@ -41,7 +41,7 @@ $(accountAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
 $(affiliateProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
 $(supportAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 $(affiliateTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transactions');
-}
+
 
  const userId = localStorage.getItem("user_id"); // or from JWT decode/session
  const AUTH_BACKEND_URL = "https://tmxgoldcoin.co";
@@ -96,7 +96,7 @@ $(affiliateTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transac
             .css("color", "red");
         });
     });
-
+}
 });
 
 setInterval(function(){
