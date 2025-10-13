@@ -19,7 +19,7 @@ async function assignReferralIdToUser(userId) {
   await db.write('users').where({ id: userId }).update({ referral_id: newId });
 
   // also create affiliate record for tracking (if not already exists)
-  const existingAffiliate = await db.read.select('affiliates')
+  const existingAffiliate = await db.read.select('*').from('affiliates')
     .where({ affiliate_id: newId })
     .first();
 
