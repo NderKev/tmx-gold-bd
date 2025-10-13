@@ -32,13 +32,20 @@ document.getElementById("verify-otp").addEventListener("click", async (e) => {
         break;
 
       case 200:
-        if (data?.result === "verified" || data?.data?.result === "verified") {
+        if (data?.message === "verified" || data?.data?.result === "verified") {
           errorField.innerHTML = "✅ OTP Verified Successfully";
           window.location.href = "/index.html";
+        } else if (data?.message === "verified" || data?.data?.result === "expired") {
+          errorField.innerHTML = "⚠️ OTP Expired, please request a new one.";
+          refresh();
+        } else if (data?.message === "verified" || data?.data?.result === "invalid") {
+          errorField.innerHTML = "❌ Invalid OTP, please try again.";
+          refresh();
         } else {
           errorField.innerHTML = "⚠️ Unexpected Response, Please Retry";
           refresh();
         }
+        
         break;
 
       case 400:
