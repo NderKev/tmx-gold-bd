@@ -41,18 +41,16 @@ $(document).ready(function () {
           if (data.message === "success" && data.data?.message === "match" && data.data?.valid == true) {
             $("#otp_placement_error").html("✅ OTP Verification Successful");
             window.location.href = "/index.html";
-          } else if (
-            data.data?.message === "mismatch"
-          ) {
+          } else if (data.message === "success" && data.data?.message === "mismatch") {
             $("#otp_placement_error").html("❌ Wrong OTP, please try again.");
             refresh();
-          } else if (data.data?.valid == false)   {
+          } else if (data.message === "success" && data.data?.valid == false)   {
             $("#otp_placement_error").html("❌ OTP Expired, please reset and try again.");
              refresh();
           }
           else {
               console.log("Unexpected data:", data);
-              $("#otp_placement_error").html("❌  " + data);
+              $("#otp_placement_error").html("❌  " + data.data);
               refresh();
           }
         }
