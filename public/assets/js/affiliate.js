@@ -43,7 +43,7 @@ $(supportAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 $(affiliateTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transactions');
 }
 
-const userId = localStorage.getItem("user_id"); // or from JWT decode/session
+ const userId = localStorage.getItem("user_id"); // or from JWT decode/session
 
    const $linkField = $("#affiliateLink");
     const $message = $("#affiliateMessage");
