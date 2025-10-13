@@ -65,8 +65,9 @@ $(document).ready(function () {
   });
 
   $("#resendOtpBtn").click(function () {
-  const email = localStorage.getItem("tmx_gold_name"); // ensure email is available
-  $("#resend_status").html('Resending OTP...');
+        const email = localStorage.getItem("tmx_gold_name"); // ensure email is available
+        console.log(email);
+        $("#resend_status").html('Resending OTP...');
 
       $.ajax({
         url: `${AUTH_BACKEND_URL}/api/user/resend-otp`,
