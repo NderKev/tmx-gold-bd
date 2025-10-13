@@ -53,30 +53,56 @@ $(affiliateTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transac
       return;
     }
 
-    try {
-      // Fetch referral link + stats
-      const res = await $.ajax({
-        url: `${AUTH_BACKEND_URL}/api/user/referral/${userId}`,
-        method: "GET",
-        dataType: "json",
-      });
-      console.log("data :" + res);
-      if (res.success && res.referral_link) {
-        // Set referral link
-        $linkField.val(res.referral_link);
+    (async function loadAffiliateInfoFetch() {
+  const userId = localStorage.getItem("user_id");
+  const AUTH_BACKEND_URL = "https://tmxgoldcoin.co";
+  const $linkField = $("#affiliateLink");
+  const $message = $("#affiliateMessage");
 
-        // ✅ Update stats
-        $("#statClicks").text(res.stats?.total_clicks || 0);
-        $("#statSignups").text(res.stats?.total_signups || 0);
-        $("#statConversions").text(res.stats?.total_conversions || 0);
-        $("#statCommission").text(res.stats?.total_commission?.toFixed(2) || "0.00");
-      } else {
-        $linkField.val("Error fetching referral data.");
-      }
-    } catch (err) {
-      console.error(err);
-      $linkField.val("⚠️ Could not load affiliate info.");
+  if (!userId) {
+    $linkField.val("⚠️ Please log in to view your referral info.");
+    return;
+  }
+
+  try {
+    const resp = await fetch(`${AUTH_BACKEND_URL}/api/user/referral/${encodeURIComponent(userId)}`, {
+      method: "GET",
+      headers: {
+        "Accept": "application/json",
+      },
+      credentials: "include", // if you rely on cookies; remove if not needed
+    });
+
+    if (!resp.ok) {
+      console.error("HTTP error fetching referral:", resp.status, resp.statusText);
+      $linkField.val("Error fetching referral data.");
+      return;
     }
+
+    const res = await resp.json().catch(() => ({}));
+    console.log("Referral response (fetch):", res);
+
+    if (res && res.success && res.referral_link) {
+      $linkField.val(res.referral_link);
+
+      const clicks = Number(res.stats?.total_clicks) || 0;
+      const signups = Number(res.stats?.total_signups) || 0;
+      const conversions = Number(res.stats?.total_conversions) || 0;
+      const commission = Number(res.stats?.total_commission) || 0;
+
+      $("#statClicks").text(clicks);
+      $("#statSignups").text(signups);
+      $("#statConversions").text(conversions);
+      $("#statCommission").text(commission.toFixed(2));
+    } else {
+      $linkField.val("Error fetching referral data.");
+    }
+  } catch (err) {
+    console.error("Network error fetching referral:", err);
+    $linkField.val("⚠️ Could not load affiliate info.");
+    if ($message.length) $message.text("Network or server error. Try again later.");
+  }
+})();
 
     // 📋 Copy button
     $("#copyAffiliateLink").click(function (e) {
