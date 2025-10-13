@@ -2,7 +2,7 @@ const db = require('../models/db');
 const { generateUniqueReferralId } = require('../utils/referral');
 
 async function assignReferralIdToUser(userId) {
-  const user = await db.read('users').where({ id: userId }).first();
+  const user = await db.read.select('users').where({ id: userId }).first();
   if (!user) throw new Error('User not found');
 
   // if already has referral_id
@@ -19,7 +19,7 @@ async function assignReferralIdToUser(userId) {
   await db.write('users').where({ id: userId }).update({ referral_id: newId });
 
   // also create affiliate record for tracking (if not already exists)
-  const existingAffiliate = await db.read('affiliates')
+  const existingAffiliate = await db.read.select('affiliates')
     .where({ affiliate_id: newId })
     .first();
 

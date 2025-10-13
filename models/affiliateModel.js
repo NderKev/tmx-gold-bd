@@ -29,7 +29,7 @@ const createAffiliate = async ({ owner_user_id = null, name = null, source = nul
 };
 
 const getAffiliateByAffiliateId = async (affiliateId) => {
-  return db('affiliates').where({ affiliate_id: affiliateId, active: true }).first();
+  return db.read.select('*').from('affiliates').where({ affiliate_id: affiliateId, active: true }).first();
 };
 
 const incrementClick = async (affiliateId, clickData = {}) => {
@@ -71,11 +71,11 @@ const getAllConversions = async () => {
 };
 
 const getAffiliateStats = async (affiliateId) => {
-  const totalConversions = await db.read.select("affiliate_conversions")
+  const totalConversions = await db.read.select("*").from("affiliate_conversions")
     .where("affiliate_id", affiliateId)
     .count("id as total");
 
-  const signups = await db.read.select("affiliate_conversions")
+  const signups = await db.read.select('*').from("affiliate_conversions")
     .where("affiliate_id", affiliateId)
     .andWhere("type", "signup")
     .count("id as total");
@@ -88,8 +88,8 @@ const getAffiliateStats = async (affiliateId) => {
 };
 
 const getTopAffiliates = async (limit = 10) => {
-  return db.read("affiliate_conversions")
-    .select("affiliate_id")
+  return db.read.select("affiliate_conversions.affiliate_id")
+    .from("affiliate_conversions")
     .count("id as total")
     .groupBy("affiliate_id")
     .orderBy("total", "desc")
