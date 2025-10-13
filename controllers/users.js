@@ -673,7 +673,7 @@ const getReferralLink = async (req, res) => {
   try {
     const { userId } = req.params;
 
-    const user = await db.read('users').where({ id: userId }).first();
+    const user = await db.read.select('users').where({ id: userId }).first();
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found' });
     }
