@@ -68,7 +68,7 @@ const logStruct = (func, error) => {
     console.error('error -> ', logStruct('createUser', error))
     return errorResponse(error.status, error.message);
   }
-}; 
+}; **/
 
 const createUser = async (reqData, req, res) => {
   try {
@@ -139,9 +139,9 @@ const createUser = async (reqData, req, res) => {
     console.error('error -> ', logStruct('createUser', error));
     return errorResponse(error.status, error.message);
   }
-}; **/
+}; 
 
-const createUser = async (reqData, req) => {
+/**const createUser = async (reqData, req) => {
   try {
     const validInput = validateUserRegister(reqData);
 
@@ -225,7 +225,7 @@ const createUser = async (reqData, req) => {
     console.error('error -> ', logStruct('createUser', error));
     return errorResponse(error.status || 500, error.message || 'Server Error');
   }
-};
+}; **/
 
 
 const updatePassword = async (reqData) => {
