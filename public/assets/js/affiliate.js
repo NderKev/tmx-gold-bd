@@ -46,7 +46,7 @@ $(affiliateTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transac
  const userId = localStorage.getItem("user_id"); // or from JWT decode/session
  const AUTH_BACKEND_URL = "https://tmxgoldcoin.co";
    const $linkField = $("#affiliateLink");
-    const $message = $("#affiliateMessage");
+   const $message = $("#affiliateMessage");
 
     if (!userId) {
       $linkField.val("⚠️ Please log in to view your referral info.");
@@ -60,7 +60,7 @@ $(affiliateTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transac
         method: "GET",
         dataType: "json",
       });
-
+      console.log("data :" + res);
       if (res.success && res.referral_link) {
         // Set referral link
         $linkField.val(res.referral_link);
