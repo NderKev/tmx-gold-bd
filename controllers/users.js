@@ -390,9 +390,9 @@ const verifySeller = async (reqData) => {
 
 
 
-const verifyEmailOtp = async (reqData) => {
+const verifyEmailOTP = async (reqData) => {
   try {
-    const response = await userModel.verifyEmailOTP(reqData);
+    const response = await userModel.verifyOTPemail(reqData);
     return successResponse(200, response, 'verified');
   } catch (error) {
     return errorResponse(400, error.message);
@@ -713,7 +713,7 @@ module.exports = {
   activateUser,
   deActivateUser,
   verifySeller,
-  verifyEmailOtp,
+  verifyEmailOTP,
   resendEmailOtp,
   activateSeller,
   deActivateSeller,

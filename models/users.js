@@ -835,7 +835,7 @@ function verifyOTP(providedOTP, storedOTP, expirationTime) {
         return providedOTP === storedOTP; // Check if OTP matches
     }
 
-exports.verifyEmailOTP = async (reqData) => {
+exports.verifyOTPemail = async (reqData) => {
   try {
     let resps = {};
     const otp_data = await userModel.getValidEmailOTP(reqData);

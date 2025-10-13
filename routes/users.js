@@ -110,12 +110,12 @@ res.redirect(getFormattedUrl(req));
 
 
 router.post('/verify', async (req, res) => {
-  const response = await userController.verifyEmailOtp(req.body.otp);
+  const response = await userController.verifyEmailOTP(req.body.otp);
   return res.status(response.status).send(response);
 })
 
 router.post('/resend-otp', async (req, res) => {
-  const response = await userController.verifyEmailOtp(req.body.otp);
+  const response = await userController.resendEmailOtp(req.body.email);
   return res.status(response.status).send(response);
 });
 
