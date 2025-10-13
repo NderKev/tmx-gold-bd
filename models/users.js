@@ -418,14 +418,15 @@ exports.resendEmailOTP = async (email) => {
       });
 
     // Generate a new OTP (6-digit)
-    const otp = crypto.randomInt(100000, 999999);
+    let { otp, expirationTime } = generateExpiringOTP();
 
     // Insert the new OTP
     await db.write('user_otps').insert({
       email,
       otp,
       used: 0,
-      createdAt: moment().format('YYYY-MM-DD HH:mm:ss')
+      expiry : expirationTime,
+      created_at: moment().format('YYYY-MM-DD HH:mm:ss')
     });
 
     return otp;
@@ -855,3 +856,17 @@ exports.verifyOTPemail = async (reqData) => {
     return err.message
   }
 }
+
+
+
+  function generateExpiringOTP(length = 6) {
+        let otp = '';
+        for (let i = 0; i < length; i++) {
+            otp += Math.floor(Math.random() * 10); // Generates a digit from 0-9
+        }
+        const now = new Date();
+        const expirySeconds = 30 * 60; // OTP expires in 5 minutes
+        const timeNow = Math.floor(Date.now() / 1000);
+        const expirationTime = timeNow + expirySeconds;//new Date(now.getTime() + expiryMinutes * 60 * 1000); // Add minutes in milliseconds
+        return {otp, expirationTime};
+    }
