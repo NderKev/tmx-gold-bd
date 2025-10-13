@@ -912,16 +912,72 @@
                         </header>
                         <div class="content-body">
                             <div class="row">
-                                <div class="col-xs-12">
-                                    <h4 class="bold no-mt"> Affilite Program</h4>
-                                    <h4><small>Welcome to our affiliate program, Read our affiliate program terms and conditions <a href="#" class="color-primary">here</a></small></h4>
-                                    <h5 class="mt-20 bold mb-20">Your Affiliate Link is</h5>
-                                    <div class="form-group has-focus">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control bg-white" id="field-12" value="https://www..com/?affiliate-id=172462989">
-                                            <a href="#" class="input-group-addon"  data-color-class="primary" data-animate=" animated fadeIn" data-toggle="tooltip" data-original-title="copy" data-placement="top"><i class="fa fa-copy text-dark"></i></a>
-                                        </div>
+                            <div class="col-xs-12">
+                            <h4 class="bold no-mt">Affiliate Program</h4>
+                            <h4>
+                                <small>
+                                Welcome to our affiliate program. Read our affiliate program terms and
+                                conditions
+                                <a href="#" class="color-primary">here</a>.
+                                </small>
+                            </h4>
+
+                            <h5 class="mt-20 bold mb-20">Your Affiliate Link</h5>
+                            <div class="form-group has-focus">
+                                <div class="input-group">
+                                <input
+                                    type="text"
+                                    class="form-control bg-white"
+                                    id="affiliateLink"
+                                    readonly
+                                    value="Loading your referral link..."
+                                />
+                                <a
+                                    href="#"
+                                    id="copyAffiliateLink"
+                                    class="input-group-addon"
+                                    data-toggle="tooltip"
+                                    data-original-title="Copy"
+                                    data-placement="top"
+                                >
+                                    <i class="fa fa-copy text-dark"></i>
+                                </a>
+                                </div>
+                            </div>
+
+                            <div id="affiliateMessage" class="mt-2 text-success"></div>
+
+                            <!-- 📊 Affiliate Stats Section -->
+                            <div class="mt-30">
+                                <h5 class="bold">Your Affiliate Stats</h5>
+                                <div id="affiliateStats" class="row mt-10">
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="card text-center p-2 border">
+                                    <h6 class="text-muted">Total Clicks</h6>
+                                    <h4 id="statClicks">0</h4>
                                     </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="card text-center p-2 border">
+                                    <h6 class="text-muted">Total Signups</h6>
+                                    <h4 id="statSignups">0</h4>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="card text-center p-2 border">
+                                    <h6 class="text-muted">Conversions</h6>
+                                    <h4 id="statConversions">0</h4>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="card text-center p-2 border">
+                                    <h6 class="text-muted">Commission (USD)</h6>
+                                    <h4 id="statCommission">0.00</h4>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
                                     <!-- Bootstrap FAQ - START -->
                                     <div class="panel-group no-mb faq-panels" id="accordion">
                                         <div class="panel panel-default">

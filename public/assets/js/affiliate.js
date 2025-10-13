@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(async function() {
 let affiliateIndex = document.getElementById("affiliateIndex");
 let affiliateTrading = document.getElementById("affiliateTrade")
 let affiliateICO = document.getElementById("affiliateICO")
@@ -43,7 +43,59 @@ $(supportAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 $(affiliateTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transactions');
 }
 
+const userId = localStorage.getItem("user_id"); // or from JWT decode/session
 
+   const $linkField = $("#affiliateLink");
+    const $message = $("#affiliateMessage");
+
+    if (!userId) {
+      $linkField.val("⚠️ Please log in to view your referral info.");
+      return;
+    }
+
+    try {
+      // Fetch referral link + stats
+      const res = await $.ajax({
+        url: `${AUTH_BACKEND_URL}/api/user/referral/${userId}`,
+        method: "GET",
+        dataType: "json",
+      });
+
+      if (res.success && res.referral_link) {
+        // Set referral link
+        $linkField.val(res.referral_link);
+
+        // ✅ Update stats
+        $("#statClicks").text(res.stats?.total_clicks || 0);
+        $("#statSignups").text(res.stats?.total_signups || 0);
+        $("#statConversions").text(res.stats?.total_conversions || 0);
+        $("#statCommission").text(res.stats?.total_commission?.toFixed(2) || "0.00");
+      } else {
+        $linkField.val("Error fetching referral data.");
+      }
+    } catch (err) {
+      console.error(err);
+      $linkField.val("⚠️ Could not load affiliate info.");
+    }
+
+    // 📋 Copy button
+    $("#copyAffiliateLink").click(function (e) {
+      e.preventDefault();
+      const link = $("#affiliateLink").val();
+      navigator.clipboard
+        .writeText(link)
+        .then(() => {
+          $("#affiliateMessage")
+            .html("✅ Copied to clipboard!")
+            .css("color", "green");
+          setTimeout(() => $("#affiliateMessage").html(""), 2000);
+        })
+        .catch(() => {
+          $("#affiliateMessage")
+            .html("⚠️ Unable to copy")
+            .css("color", "red");
+        });
+    });
 
 });
 

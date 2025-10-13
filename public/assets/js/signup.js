@@ -121,79 +121,85 @@ input.addEventListener('keyup', reset); **/
   }
 } 
 
-  $("#btnRegister").click(function(e){
-    e.preventDefault()
-    //checkEmail()
-   var iti = window.intlTelInputGlobals.getInstance(
-          document.querySelector("#phone")
-    );
-   var fullNumber = iti.getNumber(); // e.g. +254721356245
-   //one_nmuber = fullNumber;
-    console.log("User phone:", fullNumber);
-    //alert("phone number :" + fullNumber);
-    let email = document.getElementById('email').value
-    //et name = document.getElementById('username').value
-    //let phone = fullNumber;
-    let password = document.getElementById('password').value
-    //let role = document.getElementById('role').value
-    let role_id = 2;
-    let  username = email.split('@')[0];
-    if(email === '') {
-      $("#placement_error").html('*Email is required')
-      return
-    }
-    $.ajax({
-      url: `${AUTH_BACKEND_URL}/api/user/register`,
-      dataType: "JSON",
-      contentType: "application/json",
-      method: "POST",
-      cache : false,
-      data: JSON.stringify({
-        'email': email,
-        'name': username,
-        'phone' : fullNumber,
-        'password' : password,
-        "role_id": role_id
-      }),
-      error: (err) => {
-        //unLoadingAnimation()
+$("#btnRegister").click(function (e) {
+  e.preventDefault();
+
+  const AUTH_BACKEND_URL = "https://tmxgoldcoin.co"; // or your local URL
+  const $error = $("#placement_error");
+
+  function refresh() {
+    $("#email").val("");
+    $("#password").val("");
+    $("#phone").val("");
+  }
+
+  // 🌍 Get phone number from intlTelInput
+  const iti = window.intlTelInputGlobals.getInstance(document.querySelector("#phone"));
+  const fullNumber = iti.getNumber(); // e.g. +254721356245
+
+  // 🧠 Collect form data
+  const email = $("#email").val().trim();
+  const password = $("#password").val().trim();
+  const username = email ? email.split("@")[0] : "";
+  const role_id = 2;
+
+  if (email === "") {
+    $error.html("*Email is required");
+    return;
+  }
+
+  // 🍪 Get affiliate ID from cookie (if any)
+  const affiliateId = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("affiliate_id="))
+    ?.split("=")[1];
+
+  // 📡 Send signup request — only ONE AJAX call
+  $.ajax({
+    url: `${AUTH_BACKEND_URL}/api/user/register${affiliateId ? `?affiliate-id=${affiliateId}` : ""}`,
+    method: "POST",
+    contentType: "application/json",
+    dataType: "json",
+    cache: false,
+    data: JSON.stringify({
+      email: email,
+      name: username,
+      phone: fullNumber,
+      password: password,
+      role_id: role_id,
+    }),
+
+    success: function (results) {
+      $error.html(""); // clear previous messages
+
+      if (results.status === 201 && results.message === "userRegistered") {
+        $error.html("✅ User successfully registered");
+        localStorage.setItem("tmx_gold_name", email);
         refresh();
-        if(err.status === 401) {
-          //alert("Error encountered, Kindly Try Again");
-          $("#placement_error").html('Error encountered, Kindly Try Again');
-        }
-        else if (err.status === 403){
-          refresh();
-          $("#placement_error").html('user exists');
-        }
-        else {
-          $("#placement_error").html(err.message);
-        }
-      },
-      success: function (results){
-        if (results.data.length>0){
-        $("#placement_error").html('');
-        console.log(results.message);
-        if (results.status === 201 && results.message === 'userRegistered'){
-          $("#placement_error").html('user successfully registered');
-          localStorage.setItem('tmx_gold_name' , email);
-          refresh();
-          window.location.href = "/ui-enter-otp.html";
-        }
-        else if (results.status === 403 && results.message === 'userExists'){
-          $("#placement_error").html('user exists');
-          refresh();
-          window.location.href = "/index.html";
-        }
-        else{
-          $("#placement_error").html(results.message);
-          refresh();
-          window.location.href = "/ui-register.html";
-        }
+        window.location.href = "/ui-enter-otp.html";
+      } else if (results.status === 403 && results.message === "userExists") {
+        $error.html("⚠️ User already exists");
+        refresh();
+        window.location.href = "/index.html";
+      } else {
+        $error.html(`⚠️ ${results.message || "Unexpected response"}`);
+        refresh();
       }
-    }
-    })
-  })
+    },
+
+    error: function (err) {
+      refresh();
+      if (err.status === 401) {
+        $error.html("❌ Error encountered, kindly try again.");
+      } else if (err.status === 403) {
+        $error.html("⚠️ User already exists.");
+      } else {
+        $error.html(`⚠️ ${err.responseJSON?.message || err.message || "Server error"}`);
+      }
+    },
+  });
+});
+
 
 });
 
@@ -220,3 +226,32 @@ input.addEventListener('keyup', reset); **/
     this.classList.toggle("fa-eye");
     this.classList.toggle("fa-eye-slash");
   });
+
+
+   (function() {
+    // Parse URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const affiliateId = urlParams.get("affiliate-id");
+
+    if (affiliateId) {
+      // Set cookie to last 30 days
+      const expiryDate = new Date();
+      expiryDate.setDate(expiryDate.getDate() + 30);
+
+      document.cookie = `affiliate_id=${affiliateId}; expires=${expiryDate.toUTCString()}; path=/; secure; samesite=Lax`;
+
+      console.log("✅ Affiliate ID saved:", affiliateId);
+    } else {
+      // Optional: check if already stored
+      const savedAffiliate = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("affiliate_id="))
+        ?.split("=")[1];
+
+      if (savedAffiliate) {
+        console.log("ℹ️ Affiliate cookie already set:", savedAffiliate);
+      }
+    }
+  })();
+
+

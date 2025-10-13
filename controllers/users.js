@@ -3,11 +3,13 @@ const moment = require('moment');
 const saltRounds = 10;
 
 const userModel = require('../models/users');
+const affiliateModel = require('../models/affiliateModel');
 const {successResponse, errorResponse} = require('../lib/response');
 const { validateUserRegister, validateUserToken, validateUserRole, validateUserPermission,   validateAuth, validateSeller } = require('../validators/users');
 const { validateId} = require('../validators/common');
 const { RegisterMail, VerifyMail, ResetPasswordMail, PasswordResetMail, AccountLockedMail } = require('../mails');
 const sendEmail = require('../helpers/sendMail');
+const { assignReferralIdToUser } = require('../services/affiliateService');
 
 const db = require('../models/db');
 //const nodemailer = require('nodemailer');
@@ -30,7 +32,7 @@ const logStruct = (func, error) => {
         return {otp, expirationTime};
     }
 
-const createUser = async (reqData) => {
+/** const createUser = async (reqData) => {
   try {
     const validInput = validateUserRegister(reqData);
     const userExists = await userModel.getUserDetailsByEmail(validInput.email);
@@ -66,7 +68,165 @@ const createUser = async (reqData) => {
     console.error('error -> ', logStruct('createUser', error))
     return errorResponse(error.status, error.message);
   }
+}; 
+
+const createUser = async (reqData, req, res) => {
+  try {
+    const validInput = validateUserRegister(reqData);
+    const userExists = await userModel.getUserDetailsByEmail(validInput.email);
+    if (userExists && userExists.length) {
+      return errorResponse(403, 'userExists');
+    }
+
+    validInput.password = bcrypt.hashSync(String(validInput.password), saltRounds);
+
+    // ✅ Create user
+    const resp = await userModel.createUser(validInput);
+    const newUserId = resp[0];
+
+    // ✅ Assign role/permission
+    await userModel.createPermission({ user_id: newUserId, role_id: reqData.role_id });
+
+    // ✅ Fetch username
+    const response = await userModel.fetchUserName(newUserId);
+
+    // ✅ Token generation
+    let token_data = {};
+    token_data.user_name = validInput.email;
+    token_data.password = newUserId;
+    let eml = token_data.user_name;
+
+    const new_token = await userModel.genToken(token_data);
+    await userModel.createUserToken(new_token);
+
+    // ✅ Create verification link and OTP
+    let link = `https://www.tmxgoldcoin.co/api/user/verify/${eml}/${new_token.token}`;
+    let { otp, expirationTime } = generateExpiringOTP();
+
+    let data = {
+      email: validInput.email,
+      otp,
+      expiry: expirationTime,
+      used: 0
+    };
+    await userModel.createEmailOTP(data);
+
+    // ✅ Send verification email
+    try {
+      await sendEmail(validInput.email, VerifyMail(validInput.name, otp));
+    } catch (error) {
+      console.log(error);
+    }
+
+    // ✅ AFFILIATE TRACKING: handle referral link or cookie
+    const affiliateIdFromCookie = req.cookies?.affiliate_id || null;
+    const affiliateParam = Number(req.query['affiliate-id']) || null;
+    const affiliateId = affiliateParam || (affiliateIdFromCookie ? Number(affiliateIdFromCookie) : null);
+
+    if (affiliateId) {
+      try {
+        await affiliateModel.registerConversion(affiliateId, { user_id: newUserId, type: 'signup' });
+        console.log(`Affiliate conversion recorded for affiliateId=${affiliateId}, user=${newUserId}`);
+      } catch (err) {
+        console.error('Affiliate tracking error:', err);
+      }
+    }
+     const affiliateData = await affiliateModel.createAffiliate(newUserId);
+     console.log('Affiliate link generated for new user:', affiliateData.link);
+    // ✅ Final response
+    return successResponse(201, response, { user_roles: ['customer'], email: validInput.email, affiliate_link: affiliateData.link }, 'userRegistered');
+  } catch (error) {
+    console.error('error -> ', logStruct('createUser', error));
+    return errorResponse(error.status, error.message);
+  }
+}; **/
+
+const createUser = async (reqData, req) => {
+  try {
+    const validInput = validateUserRegister(reqData);
+
+    // Start a database transaction
+    return await db.write.transaction(async (trx) => {
+
+      // 🔍 1. Check if user already exists
+      const userExists = await trx('users')
+        .where({ email: validInput.email })
+        .first();
+
+      if (userExists) {
+        throw errorResponse(403, 'userExists');
+      }
+
+      // 🔐 2. Hash password
+      validInput.password = bcrypt.hashSync(String(validInput.password), saltRounds);
+
+      // 👤 3. Create user
+      const [newUserId] = await trx('users')
+        .insert(validInput)
+        .returning('id');
+
+      // 🧩 4. Create default permission
+      await trx('permissions').insert({
+        user_id: newUserId,
+        role_id: reqData.role_id || 2
+      });
+
+      // 📧 5. Generate token and email OTP
+      const tokenData = {
+        user_name: validInput.email,
+        password: newUserId,
+      };
+
+      const newToken = await userModel.genToken(tokenData);
+      await trx('user_tokens').insert(newToken);
+
+      const { otp, expirationTime } = generateExpiringOTP();
+
+      await trx('email_otps').insert({
+        email: validInput.email,
+        otp: otp,
+        expiry: expirationTime,
+        used: 0,
+      });
+
+      // 🌐 6. Handle affiliate if applicable
+      const affiliateIdFromCookie = req.cookies?.affiliate_id || null;
+      const affiliateParam = Number(req.query['affiliate-id']) || null;
+      const affiliateId =
+        affiliateParam || (affiliateIdFromCookie ? Number(affiliateIdFromCookie) : null);
+
+      if (affiliateId) {
+        await affiliateModel.registerConversion(
+          affiliateId,
+          { user_id: newUserId, type: 'signup' },
+          trx // ✅ use same transaction
+        );
+      }
+
+      // 📤 7. Send verification email (non-blocking, outside of transaction)
+      const verifyLink = `https://www.tmxgoldcoin.co/api/user/verify/${validInput.email}/${newToken.token}`;
+      try {
+        await sendEmail(validInput.email, VerifyMail(validInput.name, otp));
+      } catch (err) {
+        console.error('Email send error:', err);
+      }
+
+      // ✅ 8. Commit and return success
+      const response = await userModel.fetchUserName(newUserId);
+      return successResponse(
+        201,
+        response,
+        { user_roles: ['customer'], email: validInput.email },
+        'userRegistered'
+      );
+    });
+
+  } catch (error) {
+    console.error('error -> ', logStruct('createUser', error));
+    return errorResponse(error.status || 500, error.message || 'Server Error');
+  }
 };
+
 
 const updatePassword = async (reqData) => {
   try {
@@ -509,6 +669,36 @@ const updateToken = async(reqData) => {
 };
 
 
+const getReferralLink = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = await db.read('users').where({ id: userId }).first();
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    // If the user doesn’t have a referral ID yet, generate one.
+    let referral_id = user.referral_id;
+    if (!referral_id) {
+      const assigned = await assignReferralIdToUser(user.id);
+      referral_id = assigned.referral_id;
+    }
+
+    const referral_link = `https://www.goldcoin.co/?affiliate-id=${referral_id}`;
+
+    return res.status(200).json({
+      success: true,
+      user_id: user.id,
+      referral_id,
+      referral_link,
+    });
+  } catch (error) {
+    console.error('Error fetching referral link:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
+
 
 
 module.exports = {
@@ -535,5 +725,6 @@ module.exports = {
   fetchSeller,
   fetchAllSellers,
   createToken,
-  updateToken
+  updateToken,
+  getReferralLink
 }

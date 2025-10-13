@@ -374,7 +374,7 @@ exports.createEmailOTP = async (data) => {
 exports.verifyEmailOTP = async (otp) => {
   try {
     // Fetch the OTP record first
-    const otpRecord = await db('user_otps')
+    const otpRecord = await db.select('user_otps')
       .where({ otp, used: 0 })
       .first();
 
@@ -393,7 +393,7 @@ exports.verifyEmailOTP = async (otp) => {
     }
 
     // Mark OTP as used
-    await db('user_otps')
+    await db.write('user_otps')
       .where({ otp })
       .update({
         used: 1,
@@ -410,7 +410,7 @@ exports.verifyEmailOTP = async (otp) => {
 exports.resendEmailOTP = async (email) => {
   try {
     // Invalidate previous OTPs for this email
-    await db('user_otps')
+    await db.write('user_otps')
       .where({ email })
       .update({
         used: 1,
@@ -421,7 +421,7 @@ exports.resendEmailOTP = async (email) => {
     const otp = crypto.randomInt(100000, 999999);
 
     // Insert the new OTP
-    await db('user_otps').insert({
+    await db.write('user_otps').insert({
       email,
       otp,
       used: 0,

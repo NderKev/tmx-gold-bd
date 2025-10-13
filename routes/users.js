@@ -17,7 +17,7 @@ const jwt = require('jsonwebtoken');
 //const createAuthToken = require('../models/users');
 // CRUD user
 router.post('/register',  async (req, res) => {
-  const response = await userController.createUser(req.body);
+  const response = await userController.createUser(req.body, req);
   
   if (response.success && response.meta) {
     req.session.email = response.meta.email;
@@ -272,7 +272,7 @@ router.get('/public/payment-gateways.html', auth, checkAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, "../public/payment-gateways.html"));
 }); **/
 
-
+router.get('/referral/:userId', authenticator, userController.getReferralLink);
 
 
 

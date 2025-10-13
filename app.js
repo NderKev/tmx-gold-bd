@@ -7,6 +7,7 @@ const path = require('path');
 //app.use(express.static(__dirname + '/public'))
 require('dotenv').config();
 const cookieParser = require('cookie-parser');
+const affiliateMiddleware = require("./middleware/affiliate");
 
 const SESS_LIFETIME = parseInt(process.env.SESS_LIFETIME) || 1000 * 60 * 60 * 48;
 // const SESS_LIFETIME = 1000 * 60 * 5;
@@ -65,6 +66,9 @@ app.use(
   })
 );
 
+// affiliate middleware
+app.use(affiliateMiddleware);
+
 //app.use(fileupload());
 // routes
 const indexRoutes = require('./routes/index')
@@ -77,6 +81,7 @@ const adminRoutes = require('./routes/admin')
 app.use('/tmxGold/v1/admin', adminRoutes);
 const txRoutes = require('./routes/transactions')
 app.use('/tmxGold/v1/tx', txRoutes);
+app.use('/affiliate', require('./routes/affiliate'));
 //const btcRoutes = require('./routes/btc');
 //app.use('/tmxGold/v1/btc', btcRoutes);
 /** const productRoutes = require('./routes/products')
