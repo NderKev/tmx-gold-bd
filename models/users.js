@@ -840,6 +840,7 @@ exports.verifyOTPemail = async (reqData) => {
   try {
     let resps = {};
     const otp_data = await userModel.getValidEmailOTP(reqData);
+    console.log("otp data : "+ otp_data[0].otp);
     let dbOtp, dbExp, currOtp;
     dbOtp = otp_data[0].otp;
     dbExp = otp_data[0].expiry;
