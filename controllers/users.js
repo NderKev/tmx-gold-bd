@@ -166,7 +166,7 @@ const createUser = async (reqData, req) => {
         .returning('id');
 
       // 🧩 4. Create default permission
-      await trx('user_permissions').insert({
+      await trx('user_permission').insert({
         user_id: newUserId,
         role_id: reqData.role_id || 2
       });
