@@ -848,7 +848,7 @@ exports.verifyOTPemail = async (reqData) => {
       resps.valid = false;
     }
     resps.valid = true;
-    await verifyEmailOTP(dbOtp);
+    await this.verifyEmailOTP(dbOtp);
     return resps;
   }
   catch(err){
