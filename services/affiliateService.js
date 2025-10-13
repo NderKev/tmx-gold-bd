@@ -2,7 +2,7 @@ const db = require('../models/db');
 const { generateUniqueReferralId } = require('../utils/referral');
 
 async function assignReferralIdToUser(userId) {
-  const user = await db.read.select('users').where({ id: userId }).first();
+  const user = await db.read.select('*').from('users').where({ id: userId }).first();
   if (!user) throw new Error('User not found');
 
   // if already has referral_id
