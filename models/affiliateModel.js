@@ -6,7 +6,7 @@ const generateNumericAffiliateId = async () => {
   // 9-digit numeric (100000000..999999999)
   for (let i = 0; i < 6; i++) { // retry up to 6 times
     const id = Math.floor(100000000 + Math.random() * 900000000);
-    const exists = await db('affiliates').where({ affiliate_id: id }).first();
+    const exists = await db.read.select('*').from('affiliates').where({ affiliate_id: id }).first();
     if (!exists) return id;
   }
   // fallback to timestamp-based

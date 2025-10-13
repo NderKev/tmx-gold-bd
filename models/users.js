@@ -36,7 +36,7 @@ exports.getUserDetailsByNameOrEmail = async (input) => {
 
 exports.getValidEmailOTP = async (email) => {
   const query = db.read.select('*')
-  .from('user_otp')
+  .from('user_otps')
   .where('email', '=', email)
   .where('used', '=', 0);
   return query;
