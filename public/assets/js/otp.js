@@ -72,7 +72,7 @@ $(document).ready(function () {
         url: `${AUTH_BACKEND_URL}/api/user/resend-otp`,
         method: "POST",
         contentType: "application/json",
-        data: JSON.stringify({ email }),
+        data: JSON.stringify({ email : email}),
         success: function (res) {
           $("#otp_placement_error").html('✅ New OTP sent to your email');
         },
