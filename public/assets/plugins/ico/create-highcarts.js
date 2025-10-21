@@ -44,14 +44,14 @@ Highcharts.chart('container', {
         }
     },                   
     series: [{
-        name: 'Brands',
+        name: 'Tokenomics',
         data: [
-            { name: '0.7 $', y: 12 },
-            { name: '0.9 $', y: 15 },
-            { name: '0.95 $', y: 16 },
-            { name: '1.05 $', y: 17 },
-            { name: '1.10 $', y: 19 },
-            { name: '1.20 $', y: 21 }
+            { name: 'AirDrop', y: 5 },
+            { name: 'Public Sale', y: 25 },
+            { name: 'Private Sale', y: 25 },
+            { name: 'Staking', y: 20 },
+            { name: 'Team', y: 10 },
+            { name: 'Reserve', y: 15 }
             
         ]
     }]
