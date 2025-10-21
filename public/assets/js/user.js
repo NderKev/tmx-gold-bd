@@ -16,6 +16,9 @@ let accountUser = document.getElementById("accountUser")
 let userProfile = document.getElementById("userProfile")
 let supportUser = document.getElementById("supportUser")
 let userTransactions = document.getElementById("userTransactions")
+let BecomeAffiiliate = document.getElementById("BecomeAffiiliate");
+let BuyandSell = document.getElementById("BuyandSell");
+
 
 var role = localStorage.getItem("role");
 var id =  localStorage.getItem("user_id");
@@ -41,6 +44,8 @@ $(accountUser).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
 $(userProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
 $(supportUser).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 $(userTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transactions');
+$(BecomeAffiiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/affiliate');
+$(BuyandSell).attr("href", '/api/'+ role +'/profile/'+ id + '/buy');
 }
 
 

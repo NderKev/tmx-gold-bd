@@ -51,7 +51,7 @@ $.ajax({
   		contentType: "application/json",
   		method: "GET",
   		error: (err) => {
-  			alert("no crypto data exists");
+  			console.log("no crypto data exists");
   		},
   		success: function(results) {
   			if (results.data.length>0){
@@ -93,7 +93,7 @@ $.ajax({
   		contentType: "application/json",
   		method: "GET",
   		error: (err) => {
-  			alert("no fiat data exists");
+  			console.log("no fiat data exists");
   		},
   		success: function(results) {
   			if (results.data.length>0){
@@ -116,7 +116,7 @@ $.ajax({
   		contentType: "application/json",
   		method: "GET",
   		error: (err) => {
-  			alert("no token data exists");
+  			console.log("no token data exists");
   		},
   		success: function(results) {
   			if (results.data.length>0){
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   console.log("address :" + addr);
   addr = addr.toLowerCase();
   if (!addr) {
-    alert('Please enter an address');
+    console.log('Please enter an address');
     return;
   }
   //const txs = await fetchTransactions(addr);
