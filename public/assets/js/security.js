@@ -16,6 +16,8 @@ let accountSecurity = document.getElementById("accountSecurity")
 let securityProfile = document.getElementById("securityProfile")
 let supportSecurity = document.getElementById("supportSecurity")
 let securityTransactions = document.getElementById("securityTransactions")
+let BuyandSell1 = document.getElementById("BuyandSell1")
+let BuyandSell2 = document.getElementById("BuyandSell2")
 
 var role = localStorage.getItem("role");
 var id =  localStorage.getItem("user_id");
@@ -41,6 +43,8 @@ $(accountSecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
 $(securityProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
 $(supportSecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 $(securityTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transactions');
+$(BuyandSell1).attr("href", '/api/'+ role +'/profile/'+ id + '/buy');
+$(BuyandSell2).attr("href", '/api/'+ role +'/profile/'+ id + '/buy');
 }
 
 

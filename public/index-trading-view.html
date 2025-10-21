@@ -44,6 +44,16 @@
     <link href="/assets/css/responsive.css" rel="stylesheet" type="text/css" />
     <!-- CORE CSS TEMPLATE - END -->
 
+       <!-- jQuery (latest 3.x) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- Raphael (required by Morris.js) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
+
+    <!-- Morris.js (latest stable release) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.6.0/morris.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.6.0/morris.css" />
+
 </head>
 <!-- END HEAD -->
 
@@ -882,7 +892,7 @@
                                         <div class="col-xs-12">
 
                                             <div class="r1_graph2 db_box db_box_large">
-                                                <span class='bold'>254.89 $</span>
+                                                <span class='bold'>93.59 $</span>
                                                 <span class='pull-right'><small>LTC Exchange rates</small></span>
                                                 <div class="clearfix"></div>
                                                 <span class="db_linesparkline">Loading...</span>
@@ -894,10 +904,12 @@
 
                                 <div class="col-md-7 col-sm-12 col-xs-12">
                                     <div class="r1_maingraph db_box">
-                                        <span class='pull-left'>
-                                            <i class='icon-purple fa fa-square icon-xs'></i>&nbsp;<small>BTC Earning Chart</small>&nbsp; &nbsp;<i class='fa fa-square icon-xs icon-primary'></i>&nbsp;<small>DUSH Exchange Rate</small>
+                                        <span class="pull-left">
+                                        <i class="icon-purple fa fa-square icon-xs"></i>&nbsp;<small>BTC Earning Chart</small>
+                                        &nbsp;&nbsp;
+                                        <i class="fa fa-square icon-xs icon-primary"></i>&nbsp;<small>DUSH Exchange Rate</small>
                                         </span>
-                                        <div id="db_morris_area_graph" style="height:auto;width:100%;"></div>
+                                        <div id="db_morris_area_graph" style="height: 300px; width: 100%;"></div>
                                     </div>
                                 </div>
 
@@ -1351,6 +1363,9 @@
     <script src="/assets/plugins/morris-chart/js/morris.min.js"></script>
     <script src="/assets/js/trade-view-dashboard.js"></script>
     <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
+
+ 
+
 
     <!-- CORE TEMPLATE JS - START -->
     <script src="/assets/js/script.js"></script>

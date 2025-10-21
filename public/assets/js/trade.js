@@ -41,6 +41,32 @@ $(accountTrade).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
 $(tradeProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
 $(supportTrade).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
 $(tradeTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transactions');
+
+  const data = [
+    { y: '2024-10', btc: 1000, dush: 900 },
+    { y: '2024-11', btc: 1170, dush: 970 },
+    { y: '2024-12', btc: 1250, dush: 980 },
+    { y: '2025-01', btc: 1300, dush: 1010 },
+    { y: '2025-02', btc: 1450, dush: 1025 },
+    { y: '2025-03', btc: 1600, dush: 1080 },
+    { y: '2025-04', btc: 1750, dush: 1120 }
+  ];
+
+  // Render Chart
+  Morris.Area({
+    element: 'db_morris_area_graph',
+    data: data,
+    xkey: 'y',
+    ykeys: ['btc', 'dush'],
+    labels: ['BTC Earning', 'DUSH Rate'],
+    lineColors: ['#7a6fbe', '#28bbe3'],
+    pointSize: 3,
+    fillOpacity: 0.5,
+    behaveLikeLine: true,
+    gridLineColor: '#eef0f2',
+    hideHover: 'auto',
+    resize: true
+  });
 }
 
 
@@ -82,3 +108,5 @@ document.addEventListener('DOMContentLoaded', function () {
     // document.getElementById('icoMenu').style.display = 'none';
   }
 });
+
+
