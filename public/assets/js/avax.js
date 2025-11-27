@@ -269,14 +269,13 @@ const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
       cryptoTo.innerText = "USD";
       cryptoOutput.value = usd;
     }
-    else {
+    else if (option === "BTC"){
       cryptoTo.innerText = option.toString();
-      if (option === 'BTC'){
-     result = result.toFixed(6)
+      result = result.toFixed(6)
     }
     else{
+    cryptoTo.innerText = option.toString();
     result = result.toFixed(5);
-    }
     }
     
   }
