@@ -245,12 +245,7 @@ const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
       result_kes = usd / parseFloat(prices.Paystack);
     }
     //result = parseFloat(result);
-    if (option === 'BTC'){
-     result = result.toFixed(6)
-    }
-    else{
-    result = result.toFixed(5);
-    }
+  
 
     cryptoOutput.value = result.toString();
     
@@ -276,6 +271,12 @@ const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
     }
     else {
       cryptoTo.innerText = option.toString();
+      if (option === 'BTC'){
+     result = result.toFixed(6)
+    }
+    else{
+    result = result.toFixed(5);
+    }
     }
     
   }
