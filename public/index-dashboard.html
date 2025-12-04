@@ -98,6 +98,8 @@
       media="screen"
     />
 
+    
+
     <!-- HEADER SCRIPTS INCLUDED ON THIS PAGE - END -->
 
     <!-- CORE CSS TEMPLATE - START -->
@@ -152,6 +154,9 @@
   } 
 </style>
     <script src="https://cdn.jsdelivr.net/npm/ethers@6.11.1/dist/ethers.umd.min.js"></script>
+    <script src="https://unpkg.com/@walletconnect/sign-client/dist/umd/index.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.9.0/ethers.umd.min.js"></script>
+
     <!-- <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script> -->
     <!-- CORE CSS TEMPLATE - END -->
   </head>
@@ -1036,11 +1041,13 @@
 
           <div class='pull-right'>
           <ul class="info-menu right-links list-inline list-unstyled"> 
-                <span id="connectWalletMain" 
+                <!-- <span id="connectWalletMain" 
                       style="display:inline-block; background-color:#673ab7; color:white; padding:2px 15px; border-radius:12px; font-size:11px; margin-top:4px;margin:4px 20px 0 0; cursor:pointer;">
                     Connect Wallet
-                </span>
-                
+                </span> -->
+                <button id="wcConnect">Connect Wallet</button>
+                <div id="wcAddress"></div>
+                <div id="wcQR"></div>
                 <small id="walletAddress"></small>
           </ul>
         </div>
@@ -1873,7 +1880,7 @@
     <script src="/assets/plugins/morris-chart/js/morris.min.js"></script>
     <script src="/assets/js/chart-morris.js"></script>
     <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
-
+    
     <!-- CORE TEMPLATE JS - START -->
     <script src="/assets/js/script.js"></script>
     <script src="/assets/js/session.js"></script>
@@ -1882,6 +1889,9 @@
     <!-- MetaMask JS -->
     <script src="/assets/js/balance.js"></script>
     <script src="/assets/js/dashboard.js"></script>
+
+    <!--Wallet Connect JS-->
+    <script src="/assets/js/walletconnect.js"></script>
 
   </body>
 </html>

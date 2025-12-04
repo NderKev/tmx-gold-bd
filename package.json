@@ -10,6 +10,9 @@
   "author": "Kelvin Ngendo",
   "license": "MIT",
   "dependencies": {
+    "@reown/walletkit": "^1.4.1",
+    "@walletconnect/core": "^2.23.0",
+    "@walletconnect/utils": "^2.23.0",
     "axios": "^1.12.2",
     "bcryptjs": "^2.4.3",
     "bluebird": "^3.7.2",
