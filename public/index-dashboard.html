@@ -157,7 +157,8 @@
     <script src="https://cdn.jsdelivr.net/npm/ethers@6.11.1/dist/ethers.umd.min.js"></script>
     <script src="https://unpkg.com/@walletconnect/sign-client/dist/umd/index.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.9.0/ethers.umd.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="https://esm.sh/@walletconnect/sign-client@2.10.6"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script> -->
     <!-- CORE CSS TEMPLATE - END -->
   </head>
@@ -1896,24 +1897,5 @@
     <script src="/assets/js/balance.js"></script> 
     <script src="/assets/js/dashboard.js"></script>
     <script  src="/assets/js/wallets.js"></script>
-    <!--Wallet Connect JS
-    <script type="module" src="/assets/js/wallets.js"></script>
-    <!-- in your HTML page, near bottom before closing body
-    <script type="module">
-      import Wallets from "/assets/js/wallets.js";
-
-      // initialize (set WalletConnect project id, optional token address)
-      Wallets.init({ projectId: "64fdb4c3db7b60fe08d35ff66de0af9e", tokenAddress: "0xE88a92EcbAeeC20241D43A3e2512A4E705A847b8" })
-        .then(() => console.log("Wallets module ready"))
-        .catch(console.error);
-
-      // Optionally use functions directly
-      // document.getElementById('someButton').onclick = async () => {
-      //   await Wallets.connectMetaMask();
-      //   const provider = Wallets.getActiveProvider();
-      //   const bal = await Wallets.loadTMXBalance(provider, "0xYourAddressHere");
-      //   console.log(bal);
-      // }
-    </script> -->
   </body>
 </html>
