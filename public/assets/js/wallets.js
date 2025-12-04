@@ -3,9 +3,9 @@
 
 // External module imports (CDN). These work inside browser modules.
 import WalletConnectSignClient from "https://esm.sh/@walletconnect/sign-client@2.10.6";
-import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6.9.0/dist/ethers.esm.min.js";
+import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6.9.0/dist/ethers.min.js";
 import QRCode from "https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js";
-
+//https://cdn.jsdelivr.net/npm/ethers@6.9.0/dist/ethers.min.js
 /**
  * Exported API:
  *  - initWalletModule(options)
