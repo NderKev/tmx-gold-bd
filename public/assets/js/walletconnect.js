@@ -1,7 +1,7 @@
 
 let signClient;
 let session;
-let provider;
+let provi_der;
 
 const projectId = "f0b82f05-754a-490f-9af6-b55fd0663c93";  // REQUIRED
 
@@ -42,7 +42,7 @@ async function connectWallet() {
 
   // Wait for approval
   session = await approval();
-  provider = createEvmProvider(session);
+  provi_der = createEvmProvider(session);
 
   // Show connected wallet
   const address = session.namespaces.eip155.accounts[0].split(":")[2];
