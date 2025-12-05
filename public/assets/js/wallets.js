@@ -1,5 +1,6 @@
 (function () {
-  // --------------------------- Config ---------------------------
+
+  /* --------------------------- Config --------------------------- */
   var config = {
     projectId: "64fdb4c3db7b60fe08d35ff66de0af9e",
     tokenAddress: "0xE88a92EcbAeeC20241D43A3e2512A4E705A847b8",
@@ -24,48 +25,50 @@
   ];
 
   function $(id) { return document.getElementById(id); }
-  function safeLog() { if (window.console) console.log.apply(console, arguments); }
+  function safeLog() { if (console) console.log.apply(console, arguments); }
 
-  // --------------------------- Mobile detection ---------------------------
+  /* --------------------------- Detect Mobile --------------------------- */
   function isMobile() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   }
 
-  // --------------------------- WalletConnect Signer ---------------------------
+  /* ---------------- WalletConnect Custom Signer Wrapper ---------------- */
   function WalletConnectSigner(wcClient, session) {
-    this.wcClient = wcClient;
+    this.client = wcClient;
     this.session = session;
     this.address = session.namespaces.eip155.accounts[0].split(":")[2];
     this.chainId = session.namespaces.eip155.chains[0];
   }
 
-  WalletConnectSigner.prototype.getAddress = async function () { return this.address; }
+  WalletConnectSigner.prototype.getAddress = async function () {
+    return this.address;
+  };
 
   WalletConnectSigner.prototype.sendTransaction = async function (tx) {
-    return await this.wcClient.request({
+    return await this.client.request({
       topic: this.session.topic,
       chainId: this.chainId,
       request: { method: "eth_sendTransaction", params: [tx] }
     });
-  }
+  };
 
   WalletConnectSigner.prototype.signMessage = async function (message) {
-    return await this.wcClient.request({
+    return await this.client.request({
       topic: this.session.topic,
       chainId: this.chainId,
       request: { method: "personal_sign", params: [message, this.address] }
     });
-  }
+  };
 
   WalletConnectSigner.prototype.signTypedData = async function (domain, types, value) {
-    return await this.wcClient.request({
+    return await this.client.request({
       topic: this.session.topic,
       chainId: this.chainId,
       request: { method: "eth_signTypedData", params: [this.address, { domain, types, message: value }] }
     });
-  }
+  };
 
-  // --------------------------- Switch MetaMask to Avalanche ---------------------------
+  /* -------------------- MetaMask Chain Switch -------------------- */
   async function switchMetaMaskToAvalanche() {
     if (!window.ethereum) return;
 
@@ -74,9 +77,8 @@
         method: "wallet_switchEthereumChain",
         params: [{ chainId: config.avalancheChainHex }]
       });
-      safeLog("Switched MetaMask to Avalanche");
-    } catch (switchError) {
-      if (switchError.code === 4902) {
+    } catch (err) {
+      if (err.code === 4902) {
         await window.ethereum.request({
           method: "wallet_addEthereumChain",
           params: [{
@@ -88,13 +90,15 @@
           }]
         });
       } else {
-        console.error("Error switching MetaMask chain:", switchError);
+        console.error(err);
       }
     }
   }
 
-  // --------------------------- Connect WalletConnect ---------------------------
+  /* --------------------------- Connect WalletConnect --------------------------- */
   async function connectWalletConnect() {
+
+    // FIXED: this is the correct class exposed by the WC browser bundle
     if (!wcClient) {
       wcClient = await window.WalletConnectSign.init({
         projectId: config.projectId,
@@ -120,23 +124,27 @@
     var uri = connectResult.uri;
     var approval = connectResult.approval;
 
+    // Show QR (desktop) or redirect (mobile)
     if (uri) {
       if (isMobile()) {
-        window.location.href = uri;
+        window.location = uri;
       } else {
         var qrDiv = $("wcQR");
-        if (qrDiv) { qrDiv.innerHTML = ""; new QRCode(qrDiv, uri); }
+        if (qrDiv) {
+          qrDiv.innerHTML = "";
+          new QRCode(qrDiv, uri);
+        }
       }
     }
 
     wcSession = await approval();
 
+    // Provider wrapper
     wcProvider = new ethers.BrowserProvider({
       request: async function ({ method, params }) {
-        var sessionChain = wcSession.namespaces.eip155.chains[0];
         return await wcClient.request({
           topic: wcSession.topic,
-          chainId: sessionChain,
+          chainId: wcSession.namespaces.eip155.chains[0],
           request: { method, params }
         });
       }
@@ -144,15 +152,14 @@
 
     wcSigner = new WalletConnectSigner(wcClient, wcSession);
 
-    var addrEl = $("wcAddress");
-    if (addrEl) addrEl.innerText = "Connected: " + wcSigner.address;
+    // Update UI
+    updateAddressDisplays(wcSigner.address);
 
-    safeLog("WalletConnect connected:", wcSigner.address);
-
+    safeLog("WC connected:", wcSigner.address);
     return wcSession;
   }
 
-  // --------------------------- Connect MetaMask ---------------------------
+  /* --------------------------- Connect MetaMask --------------------------- */
   async function connectMetaMask() {
     if (!window.ethereum) throw new Error("MetaMask not available");
 
@@ -160,79 +167,66 @@
 
     mmProvider = new ethers.BrowserProvider(window.ethereum);
     await mmProvider.send("eth_requestAccounts", []);
-    mmSigner = await mmProvider.getSigner();
 
-    var addrEl = $("walletAddress");
-    if (addrEl) addrEl.innerText = "Connected: " + mmSigner.address;
+    mmSigner = await mmProvider.getSigner();
+    updateAddressDisplays(mmSigner.address);
 
     safeLog("MetaMask connected:", mmSigner.address);
     return mmSigner;
   }
 
-  // --------------------------- Helpers ---------------------------
-  function getActiveProvider() { return wcProvider || mmProvider || null; }
-  function getActiveSigner() { return mmSigner || wcSigner || null; }
+  /* --------------------------- Address Display Helper --------------------------- */
+  function updateAddressDisplays(address) {
+    if ($("wcAddress")) $("wcAddress").innerText = address;
+    if ($("walletAddress")) $("walletAddress").innerText = address;
+    if ($("address")) $("address").innerText = address.substring(0, 6) + "..." + address.slice(-4);
+  }
+
+  /* --------------------------- Public Helpers --------------------------- */
+  function getActiveProvider() { return wcProvider || mmProvider; }
+  function getActiveSigner() { return mmSigner || wcSigner; }
 
   async function loadTMXBalance(provider, address) {
     var token = new ethers.Contract(config.tokenAddress, ERC20_MIN_ABI, provider);
     var decimals = await token.decimals();
     var raw = await token.balanceOf(address);
-    var formatted = ethers.formatUnits(raw, decimals);
-    return { raw, formatted };
+    return { raw, formatted: ethers.formatUnits(raw, decimals) };
   }
 
-  async function sendTMXToken(signerOrProvider, toAddress, amountDecimalString) {
-    var signer = signerOrProvider;
-
-    if (!("sendTransaction" in signerOrProvider) || !signerOrProvider.getAddress) {
-      signer = signerOrProvider.getSigner ? await signerOrProvider.getSigner() : null;
-    }
-
-    if (!signer) throw new Error("Unable to resolve signer");
-
+  async function sendTMXToken(signerOrProvider, to, amount) {
+    var signer = signerOrProvider.getAddress ? signerOrProvider : await signerOrProvider.getSigner();
     var token = new ethers.Contract(config.tokenAddress, ERC20_MIN_ABI, signer);
     var decimals = await token.decimals();
-    var amountUnits = ethers.parseUnits(amountDecimalString.toString(), decimals);
+    var units = ethers.parseUnits(amount.toString(), decimals);
 
-    var tx = await token.transfer(toAddress, amountUnits);
-    safeLog("Submitted transfer tx:", tx.hash);
+    var tx = await token.transfer(to, units);
     await tx.wait();
-    safeLog("Transfer confirmed:", tx.hash);
-
     return tx;
   }
 
-  // --------------------------- Auto bind UI ---------------------------
+  /* --------------------------- Bind UI Clicks --------------------------- */
   document.addEventListener("DOMContentLoaded", function () {
+
+    // WC Button
     var wcBtn = $("wcConnect");
     if (wcBtn) {
-      wcBtn.addEventListener("click", async function () {
-        try {
-          if (!config.projectId) {
-            alert("Set your WalletConnect Project ID first!");
-            return;
-          }
-          await connectWalletConnect();
-        } catch (err) {
-          console.error("WC connect error:", err);
-          alert(err.message || "WalletConnect failed");
-        }
-      });
+      wcBtn.onclick = async function () {
+        try { await connectWalletConnect(); }
+        catch (err) { alert(err.message || "WalletConnect failed"); }
+      };
     }
 
+    // MetaMask Button
     var mmBtn = $("connectWalletMain");
     if (mmBtn) {
-      mmBtn.addEventListener("click", async function () {
+      mmBtn.onclick = async function () {
         try { await connectMetaMask(); }
-        catch (err) {
-          console.error("MetaMask connect error:", err);
-          alert(err.message || "MetaMask failed");
-        }
-      });
+        catch (err) { alert(err.message || "MetaMask failed"); }
+      };
     }
   });
 
-  // --------------------------- Expose API globally ---------------------------
+  /* --------------------------- Expose API --------------------------- */
   window.TMXWallet = {
     connectWalletConnect,
     connectMetaMask,
@@ -240,6 +234,7 @@
     getActiveSigner,
     loadTMXBalance,
     sendTMXToken,
-    config: config
+    config
   };
+
 })();
