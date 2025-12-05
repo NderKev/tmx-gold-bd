@@ -2,7 +2,7 @@
 (function(){
   // --------------------------- Config ---------------------------
   var config = {
-    projectId: "", // <-- Set your WalletConnect Project ID here
+    projectId: "64fdb4c3db7b60fe08d35ff66de0af9e", // <-- Set your WalletConnect Project ID here
     tokenAddress: "0xE88a92EcbAeeC20241D43A3e2512A4E705A847b8",
     avalancheChainId: 43114, // Decimal chain ID
     avalancheChainHex: "0xa86a", // Hex chain ID for MetaMask
