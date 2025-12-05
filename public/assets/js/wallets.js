@@ -217,14 +217,14 @@
     }
 
     // MetaMask Button
-    var mmBtn = $("connectWalletMain");
+    /** var mmBtn = $("connectWalletMain");
     if (mmBtn) {
       mmBtn.onclick = async function () {
         try { await connectMetaMask(); }
         catch (err) { alert(err.message || "MetaMask failed"); }
       };
-    }
-  });
+    } **/
+  }); 
 
   /* --------------------------- Expose API --------------------------- */
   window.TMXWallet = {
