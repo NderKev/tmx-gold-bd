@@ -209,7 +209,7 @@ async function sendToken({ token, chain, recipient, amount }) {
         to: recipient,
         value: parsedAmount
       });
-
+     
       alert(`${token} TX sent: ${tx.hash}`);
       await tx.wait();
       alert(`${token} confirmed!`);
@@ -399,6 +399,10 @@ async function sendSelectedToken() {
       recipient: ETH_ADDRESS,
       amount
     });
+    const email = localStorage.getItem("name");
+    const from = document.getElementById("wallet_address");
+
+    startPaymentPolling(token, email, from, amount);
 
   /* Remaining (Mpesa, Paystack, BTC, Bank, Wire) unchanged */
 }
@@ -430,3 +434,24 @@ async function checkPayment(crypto, email, from, amount) {
     console.error("Payment check error:", err);
   }
 }
+
+
+/* -----------------------------
+      AUTO POLL PAYMENT (1 min)
+------------------------------ */
+
+let polling = null;
+
+function startPaymentPolling(crypto, email, from, amount) {
+  // Clear old interval if running
+  if (polling) clearInterval(polling);
+
+  // Run immediately
+  checkPayment(crypto, email, from, amount);
+
+  // Then run every 60 seconds
+  polling = setInterval(() => {
+    checkPayment(crypto, email, from, amount);
+  }, 60 * 1000);
+}
+
