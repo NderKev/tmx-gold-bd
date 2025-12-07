@@ -77,6 +77,7 @@ async function getPrices() {
   const ids = [
     "bitcoin",
     "ethereum",
+    "base-2",
     "binancecoin",
     "tether",
     "usd-coin",
@@ -92,6 +93,7 @@ async function getPrices() {
     return {
       BTC: data.bitcoin.usd,
       ETH: data.ethereum.usd,
+      BASE: data["base-2"].usd,
       BNB: data.binancecoin.usd,
       USDT: data.tether.usd,
       USDC: data["usd-coin"].usd,
@@ -154,7 +156,7 @@ async function sendToken({ token, chain, recipient, amount }) {
   let parsedAmount;
 
   /* Native tokens */
-  if (["ETH", "BNB"].includes(token)) {
+  if (["ETH", "BNB", "BASE"].includes(token)) {
     parsedAmount = ethers.parseEther(amount.toString());
     if (parsedAmount < minAmount[token]) {
       return alert(`Min ${token} is ${ethers.formatEther(minAmount[token])}`);
@@ -281,6 +283,15 @@ async function sendSelectedToken() {
       amount
     });
 
+     if (option === "ETH")
+    return sendToken({
+      token: "BASE",
+      chain: "base",
+      recipient: ETH_ADDRESS,
+      amount
+    });
+    
+
   if (option === "USDC")
     return sendToken({
       token: "USDC",
@@ -296,6 +307,7 @@ async function sendSelectedToken() {
       recipient: ETH_ADDRESS,
       amount
     });
+   
 
   /* BASE MAINNET USDT / USDC */
   if (option === "USDC_BASE")
