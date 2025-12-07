@@ -1,5 +1,5 @@
-const AVALANCHE_RPC = "https://api.avax.network/ext/bc/C/rpc";
-const AVALANCHE_CHAIN_ID = "0xa86a";
+const BASE_RPC = "https://mainnet.base.org";
+const BASE_CHAIN_ID = "0x2105";
 
     // Example ERC20 token (USDC.e on Avalanche)
  const TOKEN_ADDRESS = "0xE88a92EcbAeeC20241D43A3e2512A4E705A847b8";
