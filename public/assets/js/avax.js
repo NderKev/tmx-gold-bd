@@ -4,7 +4,8 @@
 ============================================================ */
 
 const ERC20_ABI = [
-  "function transfer(address to, uint amount) returns (bool)"
+  "function transfer(address to, uint amount) returns (bool)",
+  "function decimals() view returns (uint8)"
 ];
 
 const TOKEN_ADDRESSES = {
@@ -35,6 +36,7 @@ const CHAINS = {
   base: {
     chainId: "0x2105",
     chainName: "Base Mainnet",
+    // Base native token is commonly shown as ETH (same unit), but we support "BASE" symbol in UI.
     nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
     rpcUrls: ["https://mainnet.base.org"],
     blockExplorerUrls: ["https://basescan.org/"]
@@ -53,13 +55,15 @@ const CHAINS = {
        Network Switching
 ------------------------------ */
 async function switchChain(chain) {
+  if (!window.ethereum) throw new Error("No injected wallet found");
   try {
     await window.ethereum.request({
       method: "wallet_switchEthereumChain",
       params: [{ chainId: CHAINS[chain].chainId }]
     });
   } catch (err) {
-    if (err.code === 4902) {
+    // 4902 means chain not added to wallet — attempt to add it
+    if (err && err.code === 4902) {
       await window.ethereum.request({
         method: "wallet_addEthereumChain",
         params: [CHAINS[chain]]
@@ -84,21 +88,24 @@ async function getPrices() {
     "celo-kenyan-shilling"
   ];
 
-  const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids.join(",")}&vs_currencies=usd`;
+  // If you also need KES values for Paystack, include kes in vs_currencies when calling.
+  const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids.join(
+    ","
+  )}&vs_currencies=usd`;
 
   try {
     const res = await fetch(url);
     const data = await res.json();
 
     return {
-      BTC: data.bitcoin.usd,
-      ETH: data.ethereum.usd,
-      BASE: data["base-2"].usd,
-      BNB: data.binancecoin.usd,
-      USDT: data.tether.usd,
-      USDC: data["usd-coin"].usd,
-      Mpesa: data["celo-kenyan-shilling"].usd,
-      Paystack: data["celo-kenyan-shilling"].kes
+      BTC: data.bitcoin?.usd,
+      ETH: data.ethereum?.usd,
+      BASE: data["base-2"]?.usd,
+      BNB: data.binancecoin?.usd,
+      USDT: data.tether?.usd,
+      USDC: data["usd-coin"]?.usd,
+      Mpesa: data["celo-kenyan-shilling"]?.usd
+      // Paystack/KES omitted here because this endpoint requests only usd.
     };
   } catch (err) {
     console.error("Price fetch error:", err);
@@ -115,18 +122,20 @@ async function getCKESPrice() {
     const response = await fetch(CKES_URL);
     const data = await response.json();
     return {
-      usd: data["celo-kenyan-shilling"].usd,
-      kes: data["celo-kenyan-shilling"].kes
+      usd: data["celo-kenyan-shilling"]?.usd,
+      kes: data["celo-kenyan-shilling"]?.kes
     };
   } catch (e) {
     console.error("CKES price error:", e);
+    return null;
   }
 }
 
 const AUTH_BACKEND_URL = "https://tmxgoldcoin.co";
 
 /* Preload Prices */
-let prices, kes_prices;
+let prices = null,
+  kes_prices = null;
 (async () => {
   prices = await getPrices();
   kes_prices = await getCKESPrice();
@@ -138,63 +147,122 @@ let prices, kes_prices;
 async function sendToken({ token, chain, recipient, amount }) {
   if (!window.ethereum) return alert("MetaMask not found!");
 
-  await switchChain(chain);
+  if (!prices) {
+    // try to refresh prices if they weren't loaded
+    prices = await getPrices();
+    if (!prices) return alert("Unable to fetch prices. Try again later.");
+  }
+
+  try {
+    await switchChain(chain);
+  } catch (e) {
+    console.error("Chain switch error:", e);
+    return alert("Unable to switch wallet network: " + e.message);
+  }
 
   const provider = new ethers.BrowserProvider(window.ethereum);
   const signer = await provider.getSigner();
 
-  const min_eth = (10 / prices.ETH).toFixed(4);
-  const min_btc = (10 / prices.BTC).toFixed(8);
-  const min_bnb = (10 / prices.BNB).toFixed(4);
+  // Minimum USD threshold for native tokens (e.g. require at least $10 worth)
+  const MIN_USD = 10;
 
+  // Compute native minimum amounts in wei (BigInt) using current prices.
+  // Note: ethers.parseEther expects a decimal string.
   const minAmount = {
-    ETH: min_eth,
-    BNB: min_bnb,
+    ETH:
+      typeof prices.ETH === "number"
+        ? ethers.parseEther((MIN_USD / prices.ETH).toString())
+        : ethers.parseEther("0"),
+    BASE:
+      typeof prices.BASE === "number"
+        ? ethers.parseEther((MIN_USD / prices.BASE).toString())
+        : ethers.parseEther("0"),
+    BNB:
+      typeof prices.BNB === "number"
+        ? ethers.parseEther((MIN_USD / prices.BNB).toString())
+        : ethers.parseEther("0"),
+    // ERC20 min amount (10 units) in token subunits — default using 6 decimals (will be overridden by actual token decimals)
     ERC20: ethers.parseUnits("10", 6)
   };
 
   let parsedAmount;
 
-  /* Native tokens */
+  /* Native tokens: ETH, BNB, BASE */
   if (["ETH", "BNB", "BASE"].includes(token)) {
-    parsedAmount = ethers.parseEther(amount.toString());
-    if (parsedAmount < minAmount[token]) {
-      return alert(`Min ${token} is ${ethers.formatEther(minAmount[token])}`);
+    // parseEther works for 18-decimal native tokens (ETH/BASE/BNB)
+    try {
+      parsedAmount = ethers.parseEther(amount.toString());
+    } catch (e) {
+      return alert("Invalid amount format for native token.");
     }
 
-    const tx = await signer.sendTransaction({
-      to: recipient,
-      value: parsedAmount
-    });
+    // ensure we compare BigInts
+    const tokenMin = minAmount[token];
+    if (tokenMin && parsedAmount < tokenMin) {
+      // format min back to human-readable amount
+      const humanMin = ethers.formatEther(tokenMin);
+      return alert(`Min ${token} is ${humanMin}`);
+    }
 
-    alert(`${token} TX sent: ${tx.hash}`);
-    await tx.wait();
-    alert(`${token} confirmed!`);
+    try {
+      const tx = await signer.sendTransaction({
+        to: recipient,
+        value: parsedAmount
+      });
+
+      alert(`${token} TX sent: ${tx.hash}`);
+      await tx.wait();
+      alert(`${token} confirmed!`);
+    } catch (err) {
+      console.error(`${token} send error:`, err);
+      return alert("Transaction failed: " + (err.message || err));
+    }
   }
 
-  /* ERC20 on ETH or BASE */
+  /* ERC20 on ETH or BASE or BSC */
   else {
-    const tokenAddress = TOKEN_ADDRESSES[token][chain];
+    const tokenAddress = TOKEN_ADDRESSES[token]?.[chain];
     if (!tokenAddress)
-      throw new Error(`${token} not supported on ${chain}`);
+      return alert(`${token} is not supported on ${chain}`);
 
-    parsedAmount = ethers.parseUnits(amount.toString(), 6);
+    // create contract connected to signer
+    const contract = new ethers.Contract(tokenAddress, ERC20_ABI, signer);
 
-    if (parsedAmount < minAmount.ERC20) {
+    // get decimals from contract (fallback to 6 if the call fails)
+    let decimals = 6;
+    try {
+      decimals = Number(await contract.decimals());
+    } catch (e) {
+      console.warn("Could not read token decimals, defaulting to 6:", e);
+    }
+
+    try {
+      parsedAmount = ethers.parseUnits(amount.toString(), decimals);
+    } catch (e) {
+      return alert("Invalid amount format for ERC20 token.");
+    }
+
+    // compute correct minimum for ERC20 using the token's decimals if needed
+    const minERC20 = ethers.parseUnits("10", decimals);
+    if (parsedAmount < minERC20) {
       return alert(
         `Amount too low. Min for ${token} is ${ethers.formatUnits(
-          minAmount.ERC20,
-          6
+          minERC20,
+          decimals
         )}`
       );
     }
 
-    const contract = new ethers.Contract(tokenAddress, ERC20_ABI, signer);
-    const tx = await contract.transfer(recipient, parsedAmount);
-
-    alert(`${token} TX sent: ${tx.hash}`);
-    await tx.wait();
-    alert(`${token} confirmed!`);
+    try {
+      const tx = await contract.transfer(recipient, parsedAmount);
+      // contract.transfer returns a transaction response object
+      alert(`${token} TX sent: ${tx.hash}`);
+      await tx.wait();
+      alert(`${token} confirmed!`);
+    } catch (err) {
+      console.error(`${token} ERC20 transfer error:`, err);
+      return alert("Token transfer failed: " + (err.message || err));
+    }
   }
 }
 
@@ -222,12 +290,12 @@ async function convertUsdToCrypto() {
   }
 
   let result, result_kes;
-  if (prices[option]) {
+  if (prices && prices[option]) {
     result = usd / prices[option];
     result_kes = usd / prices[option];
   } else {
-    result = usd / prices.BTC;
-    result_kes = usd / prices.Paystack;
+    result = usd / (prices?.BTC || 1);
+    result_kes = usd / (prices?.Mpesa || 1);
   }
 
   cryptoOutput.value = result.toString();
@@ -283,14 +351,13 @@ async function sendSelectedToken() {
       amount
     });
 
-     if (option === "ETH")
+  if (option === "BASE")
     return sendToken({
       token: "BASE",
       chain: "base",
       recipient: ETH_ADDRESS,
       amount
     });
-    
 
   if (option === "USDC")
     return sendToken({
@@ -307,7 +374,6 @@ async function sendSelectedToken() {
       recipient: ETH_ADDRESS,
       amount
     });
-   
 
   /* BASE MAINNET USDT / USDC */
   if (option === "USDC_BASE")
