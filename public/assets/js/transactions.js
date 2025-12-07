@@ -69,7 +69,7 @@ $.ajax({
          }
         else if (crypo_items.mode === 'avax')
          {
-           trHTML += '<tr><td>' + crypo_items.address + '</td><td> <a href="https://snowtrace.io/tx/' + crypo_items.tx_hash + '">'+crypo_items.tx_hash+'</a></td><td>'+crypo_items.mode+'</a></td><td>' + crypo_items.type + '</td><td>$' + crypo_items.status + '</td><td>' + crypo_items.value+ '</td><td>' + crypo_items.usd  +  '</td></tr>';
+           trHTML += '<tr><td>' + crypo_items.address + '</td><td> <a href="https://basescan.org/tx/' + crypo_items.tx_hash + '">'+crypo_items.tx_hash+'</a></td><td>'+crypo_items.mode+'</a></td><td>' + crypo_items.type + '</td><td>$' + crypo_items.status + '</td><td>' + crypo_items.value+ '</td><td>' + crypo_items.usd  +  '</td></tr>';
          }
           else if (crypo_items.mode === 'bnb')
          {
@@ -124,7 +124,7 @@ $.ajax({
   			var trHTML = '';
       $.each(results.data, function (i, tmx_items) {
           //let  tmx_items = results.data[tmx_count];
-           trHTML += '<tr><td>' + tmx_items.address + '</td><td> <a href="https://snowtrace.io/tx/' + tmx_items.tx_hash + '">'+tmx_items.tx_hash+'</a></td><td>' + tmx_items.type + '</td><td>' + tmx_items.status + '</td><td>' + tmx_items.value+ '</td><td>$' + tmx_items.usd  +  '</td></tr>';
+           trHTML += '<tr><td>' + tmx_items.address + '</td><td> <a href="https://basescan.org/tx/' + tmx_items.tx_hash + '">'+tmx_items.tx_hash+'</a></td><td>' + tmx_items.type + '</td><td>' + tmx_items.status + '</td><td>' + tmx_items.value+ '</td><td>$' + tmx_items.usd  +  '</td></tr>';
       });
         //}
         $('#table-tmxgold-transactions').append(trHTML);
@@ -202,7 +202,7 @@ try {
         rows += `
           <tr>
             <td>${blockNum}</td>
-            <td><a href="https://snowtrace.io/tx/${tx.hash}" target="_blank">
+            <td><a href="https://basescan.org/tx/${tx.hash}" target="_blank">
                 ${tx.hash.slice(0,12)}…</a></td>
             <td>${tx.from}</td>
             <td>${tx.to || ""}</td>
@@ -255,7 +255,7 @@ function populateTable(txList) {
     tr.innerHTML = `
       <td>${tx.blockNumber}</td>
       <td>${formatTimestamp(tx.timeStamp)}</td>
-      <td><a href="https://snowtrace.io/tx/${tx.hash}" target="_blank">${tx.hash.slice(0, 12)}…</a></td>
+      <td><a href="https://basescan.org/tx/${tx.hash}" target="_blank">${tx.hash.slice(0, 12)}…</a></td>
       <td>${tx.from}</td>
       <td>${tx.to}</td>
       <td>${(Number(tx.value) / 1e18).toFixed(6)}</td>

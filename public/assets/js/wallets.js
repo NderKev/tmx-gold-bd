@@ -4,9 +4,11 @@
   var config = {
     projectId: "64fdb4c3db7b60fe08d35ff66de0af9e",
     tokenAddress: "0xE88a92EcbAeeC20241D43A3e2512A4E705A847b8",
-    avalancheChainId: 43114,
-    avalancheChainHex: "0xa86a",
-    avalancheRpc: "https://api.avax.network/ext/bc/C/rpc"
+
+    /* ---- Updated for BASE ---- */
+    baseChainId: 8453,
+    baseChainHex: "0x2105",
+    baseRpc: "https://mainnet.base.org"
   };
 
   var wcClient = null;
@@ -68,25 +70,25 @@
     });
   };
 
-  /* -------------------- MetaMask Chain Switch -------------------- */
-  async function switchMetaMaskToAvalanche() {
+  /* -------------------- MetaMask Chain Switch (BASE) -------------------- */
+  async function switchMetaMaskToBase() {
     if (!window.ethereum) return;
 
     try {
       await window.ethereum.request({
         method: "wallet_switchEthereumChain",
-        params: [{ chainId: config.avalancheChainHex }]
+        params: [{ chainId: config.baseChainHex }]
       });
     } catch (err) {
       if (err.code === 4902) {
         await window.ethereum.request({
           method: "wallet_addEthereumChain",
           params: [{
-            chainId: config.avalancheChainHex,
-            chainName: "Avalanche C-Chain",
-            nativeCurrency: { name: "AVAX", symbol: "AVAX", decimals: 18 },
-            rpcUrls: [config.avalancheRpc],
-            blockExplorerUrls: ["https://snowtrace.io/"]
+            chainId: config.baseChainHex,
+            chainName: "Base Mainnet",
+            nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+            rpcUrls: [config.baseRpc],
+            blockExplorerUrls: ["https://basescan.org/"]
           }]
         });
       } else {
@@ -95,10 +97,9 @@
     }
   }
 
-  /* --------------------------- Connect WalletConnect --------------------------- */
+  /* --------------------------- Connect WalletConnect (BASE) --------------------------- */
   async function connectWalletConnect() {
 
-    // FIXED: this is the correct class exposed by the WC browser bundle
     if (!wcClient) {
       wcClient = await window.WalletConnectSign.init({
         projectId: config.projectId,
@@ -115,7 +116,7 @@
       requiredNamespaces: {
         eip155: {
           methods: ["eth_sendTransaction", "personal_sign", "eth_signTypedData"],
-          chains: ["eip155:43114"],
+          chains: ["eip155:8453"],   // BASE
           events: ["chainChanged", "accountsChanged"]
         }
       }
@@ -124,7 +125,6 @@
     var uri = connectResult.uri;
     var approval = connectResult.approval;
 
-    // Show QR (desktop) or redirect (mobile)
     if (uri) {
       if (isMobile()) {
         window.location = uri;
@@ -139,7 +139,6 @@
 
     wcSession = await approval();
 
-    // Provider wrapper
     wcProvider = new ethers.BrowserProvider({
       request: async function ({ method, params }) {
         return await wcClient.request({
@@ -152,18 +151,18 @@
 
     wcSigner = new WalletConnectSigner(wcClient, wcSession);
 
-    // Update UI
     updateAddressDisplays(wcSigner.address);
 
     safeLog("WC connected:", wcSigner.address);
     return wcSession;
   }
 
-  /* --------------------------- Connect MetaMask --------------------------- */
+  /* --------------------------- Connect MetaMask (BASE) --------------------------- */
   async function connectMetaMask() {
     if (!window.ethereum) throw new Error("MetaMask not available");
 
-    await switchMetaMaskToAvalanche();
+    // Switch to BASE
+    await switchMetaMaskToBase();
 
     mmProvider = new ethers.BrowserProvider(window.ethereum);
     await mmProvider.send("eth_requestAccounts", []);
@@ -207,7 +206,6 @@
   /* --------------------------- Bind UI Clicks --------------------------- */
   document.addEventListener("DOMContentLoaded", function () {
 
-    // WC Button
     var wcBtn = $("wcConnect");
     if (wcBtn) {
       wcBtn.onclick = async function () {
@@ -216,15 +214,8 @@
       };
     }
 
-    // MetaMask Button
-    /** var mmBtn = $("connectWalletMain");
-    if (mmBtn) {
-      mmBtn.onclick = async function () {
-        try { await connectMetaMask(); }
-        catch (err) { alert(err.message || "MetaMask failed"); }
-      };
-    } **/
-  }); 
+    // MetaMask button is optional depending on your UI
+  });
 
   /* --------------------------- Expose API --------------------------- */
   window.TMXWallet = {
