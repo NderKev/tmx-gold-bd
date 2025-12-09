@@ -9,7 +9,7 @@ async function assignReferralIdToUser(userId) {
   if (user.referral_id) {
     return {
       referral_id: user.referral_id,
-      referral_link: `https://www.goldcoin.co/?affiliate-id=${user.referral_id}`,
+      referral_link: `https://www.tmxgoldcoin.co/?affiliate-id=${user.referral_id}`,
     };
   }
 
@@ -33,7 +33,7 @@ async function assignReferralIdToUser(userId) {
 
   return {
     referral_id: newId,
-    referral_link: `https://www.goldcoin.co/?affiliate-id=${newId}`,
+    referral_link: `https://www.tmxgoldcoin.co/?affiliate-id=${newId}`,
   };
 }
 

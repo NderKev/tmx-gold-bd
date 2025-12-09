@@ -10,7 +10,7 @@ const createAffiliateHandler = async (req, res) => {
     return res.json({
       success: true,
       affiliate_id: affiliate.affiliate_id,
-      link: `https://www.goldcoin.co/?affiliate-id=${affiliate.affiliate_id}`
+      link: `https://www.tmxgoldcoin.co/?affiliate-id=${affiliate.affiliate_id}`
     });
   } catch (err) {
     console.error(err);
