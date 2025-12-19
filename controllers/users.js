@@ -699,7 +699,7 @@ const getReferralLink = async (req, res) => {
       referral_id = assigned.referral_id;
     }
 
-    const referral_link = `https://www.goldcoin.co/?affiliate-id=${referral_id}`;
+    const referral_link = `https://www.tmxgoldcoin.co/?affiliate-id=${referral_id}`;
 
     return res.status(200).json({
       success: true,
