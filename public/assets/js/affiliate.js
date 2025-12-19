@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  const AUTH_BACKEND_URL = "https://www.tmxgoldcoin.co";
+  const AUTH_BACKEND_URL = "https://tmxgoldcoin.co";
   const role = localStorage.getItem("role");
   const userId = localStorage.getItem("user_id");
   const userName = localStorage.getItem("tmx_gold_name");
