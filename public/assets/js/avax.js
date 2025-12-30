@@ -401,8 +401,8 @@ async function sendSelectedToken() {
     });
     const email = localStorage.getItem("name");
     const from = document.getElementById("wallet_address");
-
-    startPaymentPolling(token, email, from, amount);
+    //const _token = 
+    startPaymentPolling(option, email, from, amount);
 
   /* Remaining (Mpesa, Paystack, BTC, Bank, Wire) unchanged */
 }
