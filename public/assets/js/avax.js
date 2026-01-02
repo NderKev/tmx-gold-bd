@@ -447,8 +447,9 @@ function startPaymentPolling(crypto, email, from, amount) {
   if (polling) clearInterval(polling);
 
   // Run immediately
+  if (crypto === "BTC"){
   checkPayment(crypto, email, from, amount);
-
+  }
   // Then run every 60 seconds
   polling = setInterval(() => {
     checkPayment(crypto, email, from, amount);
