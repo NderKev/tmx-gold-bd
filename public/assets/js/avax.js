@@ -343,7 +343,7 @@ async function sendSelectedToken() {
   const amount = document.getElementById("amount").value;
   const option = document.getElementById("payment_method").value;
 
-  if (option === "ETH")
+  if (option === "eth")
     return sendToken({
       token: "ETH",
       chain: "ethereum",
@@ -351,7 +351,7 @@ async function sendSelectedToken() {
       amount
     });
 
-  if (option === "BASE")
+  if (option === "base")
     return sendToken({
       token: "BASE",
       chain: "base",
@@ -359,7 +359,7 @@ async function sendSelectedToken() {
       amount
     });
 
-  if (option === "USDC")
+  if (option === "usdc")
     return sendToken({
       token: "USDC",
       chain: "ethereum",
@@ -367,7 +367,7 @@ async function sendSelectedToken() {
       amount
     });
 
-  if (option === "USDT")
+  if (option === "usdt")
     return sendToken({
       token: "USDT",
       chain: "ethereum",
@@ -376,7 +376,7 @@ async function sendSelectedToken() {
     });
 
   /* BASE MAINNET USDT / USDC */
-  if (option === "USDC_BASE")
+  if (option === "usdc_base")
     return sendToken({
       token: "USDC",
       chain: "base",
@@ -384,7 +384,7 @@ async function sendSelectedToken() {
       amount
     });
 
-  if (option === "USDT_BASE")
+  if (option === "usdt_base")
     return sendToken({
       token: "USDT",
       chain: "base",
@@ -392,7 +392,7 @@ async function sendSelectedToken() {
       amount
     });
 
-  if (option === "BNB")
+  if (option === "bnb")
     return sendToken({
       token: "BNB",
       chain: "bsc",
@@ -447,7 +447,7 @@ function startPaymentPolling(crypto, email, from, amount) {
   if (polling) clearInterval(polling);
 
   // Run immediately
-  if (crypto === "BTC"){
+  if (crypto === "btc"){
   checkPayment(crypto, email, from, amount);
   }
   // Then run every 60 seconds
