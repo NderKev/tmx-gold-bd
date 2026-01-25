@@ -164,7 +164,7 @@ async function sendToken({ token, chain, recipient, amount }) {
   const signer = await provider.getSigner();
 
   // Minimum USD threshold for native tokens (e.g. require at least $10 worth)
-  const MIN_USD = 1;
+  const MIN_USD = 10;
 
   // Compute native minimum amounts in wei (BigInt) using current prices.
   // Note: ethers.parseEther expects a decimal string.
@@ -414,7 +414,7 @@ document.getElementById("btnBuyTokens").onclick = sendSelectedToken;
 ------------------------------ */
 async function checkPayment(crypto, email, from, amount) {
   try {
-    /**const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
+    const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, amount, from })
@@ -429,8 +429,8 @@ async function checkPayment(crypto, email, from, amount) {
       document.getElementById("status").textContent =
         "⚡ Payment detected, waiting for confirmations...";
       document.getElementById("status").className = "pending";
-    } **/
-   const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
+    } 
+   /** const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -445,7 +445,7 @@ if (!res.ok) {
   throw new Error(`HTTP ${res.status}`);
 }
 
-const data = await res.json();
+const data = await res.json(); **/
 
   } catch (err) {
     console.error("Payment check error:", err);
