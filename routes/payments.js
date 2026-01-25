@@ -15,7 +15,7 @@ const router = express.Router();
 const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET;
 
 
-router.post("/paystack", authenticator, async (req, res) => {
+router.post("/paystack", async (req, res) => {
   try {
     const { reference, address, email, amount, token, usd} = req.body;
 
@@ -92,7 +92,7 @@ router.post("/paystack", authenticator, async (req, res) => {
 });
 
 // ✅ Verify payment endpoint
-router.post("/verify-mpesa", authenticator, async (req, res) => {
+router.post("/verify-mpesa",async (req, res) => {
   //const reference = req.query.reference;
   const { reference, address, email, amount, token, usd} = req.body;
   try {
@@ -134,14 +134,14 @@ router.post("/verify-mpesa", authenticator, async (req, res) => {
   }
 });
 
-router.post('/btc', authenticator, async (req, res) => {
+router.post('/btc',  async (req, res) => {
   const {email, from} = req.body;
   const response = await listen.listenBTC({email : email, from : from});
   
   return res.status(response.status).send(response);
 });
 
-router.post('/eth', authenticator, async (req, res) => {
+router.post('/eth',async (req, res) => {
    const {email, from, amount} = req.body;
 
   const response =  await listen.listenEth({email : email, from : from, amount : amount});
@@ -150,7 +150,7 @@ router.post('/eth', authenticator, async (req, res) => {
 });
 
 
-router.post('/avax', authenticator, async (req, res) => {
+router.post('/avax',async (req, res) => {
    const {email, from, amount} = req.body;
 
   const response = await listen.listenAvax({email : email, from : from, amount : amount});
@@ -159,14 +159,14 @@ router.post('/avax', authenticator, async (req, res) => {
 });
 
 
-router.post('/bnb', authenticator, async (req, res) => {
+router.post('/bnb',async (req, res) => {
    const {email, from, amount} = req.body;
   const response = await listen.listenBnb({email : email, from : from, amount : amount});
   
   return res.status(response.status).send(response);
 });
 
-router.post('/usdc', authenticator, async (req, res) => {
+router.post('/usdc',async (req, res) => {
    const {email, from, amount} = req.body;
 
   const response =   await listen.listenUSDC({email : email, from : from, amount : amount});
@@ -174,7 +174,7 @@ router.post('/usdc', authenticator, async (req, res) => {
   return res.status(response.status).send(response);
 });
 
-router.post('/usdt', authenticator, async (req, res) => {
+router.post('/usdt',async (req, res) => {
    const {email, from, amount} = req.body;
 
   const response = await listen.listenUSDT({email : email, from : from, amount : amount});
@@ -182,7 +182,7 @@ router.post('/usdt', authenticator, async (req, res) => {
   return res.status(response.status).send(response);
 });
 
-router.post('/avax-usdc', authenticator, async (req, res) => {
+router.post('/avax-usdc',async (req, res) => {
    const {email, from, amount} = req.body;
 
   const response = await listen.listenAvaxUSDC({email : email, from : from, amount : amount});
@@ -190,7 +190,7 @@ router.post('/avax-usdc', authenticator, async (req, res) => {
   return res.status(response.status).send(response);
 });
 
-router.post('/avax-usdt', authenticator, async (req, res) => {
+router.post('/avax-usdt',async (req, res) => {
    const {email, from, amount} = req.body;
 
   const response = await listen.listenAvaxUSDT({email : email, from : from, amount : amount});
@@ -199,14 +199,14 @@ router.post('/avax-usdt', authenticator, async (req, res) => {
 });
 
 
-router.post('/send-tokens', authenticator, async (req, res) => {
+router.post('/send-tokens',async (req, res) => {
    const {email, token, address} = req.body
   const response = await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
   
   return res.status(response.status).send(response);
 });
 
-router.post('/tx', authenticator, async (req, res) => {
+router.post('/tx',async (req, res) => {
   const response = await transactions.createTransaction(req.body);
   return res.status(response.status).send(response);
 });
