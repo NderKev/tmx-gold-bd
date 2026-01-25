@@ -454,7 +454,7 @@ const data = await res.json(); **/
 
 
 /* -----------------------------
-      AUTO POLL PAYMENT (5 min)
+      AUTO POLL PAYMENT ( min)
 ------------------------------ */
 
 let polling = null;
