@@ -454,7 +454,7 @@ const data = await res.json(); **/
 
 
 /* -----------------------------
-      AUTO POLL PAYMENT (1 min)
+      AUTO POLL PAYMENT (5 min)
 ------------------------------ */
 
 let polling = null;
@@ -470,6 +470,6 @@ function startPaymentPolling(crypto, email, from, amount) {
   // Then run every 60 seconds
   polling = setInterval(() => {
     checkPayment(crypto, email, from, amount);
-  }, 60 * 1000);
+  }, 60 * 5 * 1000);
 }
 
