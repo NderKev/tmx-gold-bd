@@ -414,7 +414,7 @@ document.getElementById("btnBuyTokens").onclick = sendSelectedToken;
 ------------------------------ */
 async function checkPayment(crypto, email, from, amount) {
   try {
-    const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
+    /**const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, amount, from })
@@ -429,7 +429,24 @@ async function checkPayment(crypto, email, from, amount) {
       document.getElementById("status").textContent =
         "⚡ Payment detected, waiting for confirmations...";
       document.getElementById("status").className = "pending";
-    }
+    } **/
+   const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    // Authorization: `Bearer ${token}` // if required
+  },
+  body: JSON.stringify({ email, amount, from })
+});
+
+if (!res.ok) {
+  const text = await res.text();
+  console.error("Server error:", text);
+  throw new Error(`HTTP ${res.status}`);
+}
+
+const data = await res.json();
+
   } catch (err) {
     console.error("Payment check error:", err);
   }
