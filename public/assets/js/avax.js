@@ -414,6 +414,7 @@ document.getElementById("btnBuyTokens").onclick = sendSelectedToken;
 ------------------------------ */
 async function checkPayment(crypto, email, from, amount) {
   try {
+    if(crypto !== "paystack" && crypto !== "mpesa" && crypto !== "bank" && crypto !== "wire"){
     const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -446,10 +447,11 @@ if (!res.ok) {
 }
 
 const data = await res.json(); **/
-
+  }
   } catch (err) {
     console.error("Payment check error:", err);
   }
+
 }
 
 
