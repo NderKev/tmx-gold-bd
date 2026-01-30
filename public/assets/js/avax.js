@@ -351,7 +351,8 @@ async function sendSelectedToken() {
       amount
     });
   if (option === "btc") {
-  showBTC(amount);
+  //showBTC(amount);
+  openBtcPopup(`https://tmxgoldcoin.co/profile/${localStorage.getItem("user_id")}/btc`, amount);
   return;
 }
 
@@ -501,6 +502,15 @@ function showBTC(amount) {
   document.getElementById("btcAmount").innerText =
     "Amount: " + amount + " BTC";
   document.getElementById("btcModal").style.display = "block";
+}
+
+function openBtcPopup(url, amount) {
+  // Pass the amount as a query parameter
+  const popupUrl = `${url}?amount=${encodeURIComponent(amount)}`;
+  const popupWindow = window.open(popupUrl, "btcPopup", "width=400,height=200,scrollbars=no,resizable=no");
+  if (window.focus && popupWindow) {
+    popupWindow.focus();
+  }
 }
 
 function closeBTC() {
