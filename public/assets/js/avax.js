@@ -350,6 +350,10 @@ async function sendSelectedToken() {
       recipient: ETH_ADDRESS,
       amount
     });
+  if (option === "btc") {
+  showBTC(amount);
+  return;
+}
 
   if (option === "base")
     return sendToken({
@@ -412,7 +416,46 @@ document.getElementById("btnBuyTokens").onclick = sendSelectedToken;
 /* -----------------------------
       CHECK PAYMENT STATUS
 ------------------------------ */
+
+
 async function checkPayment(crypto, email, from, amount) {
+  try {
+    const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, amount, from })
+    });
+
+    const text = await res.text();
+
+    if (!res.ok) {
+      console.error("API error:", res.status, text);
+      return;
+    }
+
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      console.error("Server returned non-JSON:", text);
+      return;
+    }
+
+    if (data.data && data.status === 201) {
+      document.getElementById("status").textContent = "✅ Payment Confirmed!";
+      document.getElementById("status").className = "confirmed";
+      clearInterval(polling);
+    } else {
+      document.getElementById("status").textContent =
+        "⚡ Payment detected, waiting for confirmations...";
+      document.getElementById("status").className = "pending";
+    }
+  } catch (err) {
+    console.error("Payment check error:", err);
+  }
+}
+
+/** async function checkPayment(crypto, email, from, amount) {
   try {
     if(crypto !== "paystack" && crypto !== "mpesa" && crypto !== "bank" && crypto !== "wire"){
     const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
@@ -430,7 +473,7 @@ async function checkPayment(crypto, email, from, amount) {
       document.getElementById("status").textContent =
         "⚡ Payment detected, waiting for confirmations...";
       document.getElementById("status").className = "pending";
-    } 
+    }  **/
    /** const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
   method: "POST",
   headers: {
@@ -446,12 +489,22 @@ if (!res.ok) {
   throw new Error(`HTTP ${res.status}`);
 }
 
-const data = await res.json(); **/
+const data = await res.json();
   }
   } catch (err) {
     console.error("Payment check error:", err);
   }
 
+} **/
+
+function showBTC(amount) {
+  document.getElementById("btcAmount").innerText =
+    "Amount: " + amount + " BTC";
+  document.getElementById("btcModal").style.display = "block";
+}
+
+function closeBTC() {
+  document.getElementById("btcModal").style.display = "none";
 }
 
 
@@ -459,9 +512,9 @@ const data = await res.json(); **/
       AUTO POLL PAYMENT ( min)
 ------------------------------ */
 
-let polling = null;
+let polling = 10;
 
-function startPaymentPolling(crypto, email, from, amount) {
+/** function startPaymentPolling(crypto, email, from, amount) {
   // Clear old interval if running
   if (polling) clearInterval(polling);
 
@@ -473,5 +526,21 @@ function startPaymentPolling(crypto, email, from, amount) {
   polling = setInterval(() => {
     checkPayment(crypto, email, from, amount);
   }, 60 * 5 * 1000);
-}
+}**/
 
+function startPaymentPolling(crypto, email, from, amount) {
+  if (polling) clearInterval(polling);
+
+  const SUPPORTED = ["eth", "usdt", "usdc", "base", "bnb"];
+
+  if (!SUPPORTED.includes(crypto)) {
+    console.warn("No backend support for:", crypto);
+    return;
+  }
+
+  checkPayment(crypto, email, from, amount);
+
+  polling = setInterval(() => {
+    checkPayment(crypto, email, from, amount);
+  }, 60 * 1000);
+}

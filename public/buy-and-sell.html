@@ -1564,6 +1564,16 @@
         box-sizing: border-box;
       }
     </style>
+    <div id="btcModal" style="display:none;position:fixed;inset:0;background:#0009;z-index:9999">
+  <div style="background:#111;color:#fff;padding:20px;max-width:400px;margin:10% auto;border-radius:10px;text-align:center">
+    <h3>Bitcoin Payment</h3>
+    <p>Send BTC to:</p>
+    <strong id="btcAddress">bc1qxxxxxxx...</strong>
+    <p id="btcAmount"></p>
+    <button onclick="closeBTC()">Close</button>
+  </div>
+</div>
+
 
 </body>
 
