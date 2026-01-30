@@ -71,7 +71,7 @@ router.get('/profile/:id/profile',   authenticator, checkUser, async (req, res) 
   res.sendFile(path.join(__dirname, '../public' , 'ui-profile.html'));
 });
 
-router.get('/profile/:id/btc',   authenticator, checkUser, async (req, res) => {
+router.get('/profile/:id/btc',  checkUser, async (req, res) => {
   req.body.id = Number(req.params.id);
   res.sendFile(path.join(__dirname, '../public' , 'btc.html'));
 });
