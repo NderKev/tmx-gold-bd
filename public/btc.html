@@ -1,6 +1,149 @@
-
-
 <!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bitcoin Checkout</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background:#0f1724;
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.card {
+  width:380px;
+  background:#1a2238;
+  padding:20px;
+  border-radius:14px;
+  text-align:center;
+  box-shadow:0 4px 20px rgba(0,0,0,.4);
+}
+
+.qr { margin:15px auto; }
+
+.pending { color:orange; }
+.confirmed { color:limegreen; }
+
+button {
+  padding:6px 10px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+#copyToast {
+  visibility:hidden;
+  background:#222;
+  padding:4px 10px;
+  border-radius:6px;
+  font-size:13px;
+  margin-left:8px;
+  opacity:0;
+  transition:opacity .3s;
+}
+</style>
+</head>
+
+<body>
+<div class="card">
+  <h2>Pay with Bitcoin</h2>
+
+  <div class="qr">
+    <canvas id="qrCanvas" width="200" height="200"></canvas>
+  </div>
+
+  <p><b>Send:</b> <span id="amountBtc">—</span> BTC</p>
+  <p>≈ <span id="amountFiat">$0.00</span></p>
+
+  <p><b>BTC Address</b></p>
+  <p>
+    <span id="btcAddress"></span>
+    <button id="copyBtn">Copy</button>
+    <span id="copyToast">Copied!</span>
+  </p>
+
+  <div id="status" class="pending">⏳ Waiting for payment...</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+<script>
+const BTC_ADDRESS = "13hm8o5cG63H7fM5CuioY5iwnukHZPX6VD";
+
+function param(name) {
+  return new URLSearchParams(window.location.search).get(name);
+}
+
+function generateQR(text) {
+  QRCode.toCanvas(document.getElementById("qrCanvas"), text, { width:200 });
+}
+
+function init() {
+  const usd = parseFloat(param("usd")) || 0;
+  let btc = parseFloat(param("btc")) || 0;
+
+  btc = btc.toFixed(8).replace(/\.?0+$/, "");
+
+  const uri = `bitcoin:${BTC_ADDRESS}?amount=${btc}`;
+
+  document.getElementById("amountBtc").textContent = btc;
+  document.getElementById("amountFiat").textContent = `$${usd.toFixed(2)}`;
+  document.getElementById("btcAddress").textContent = BTC_ADDRESS;
+
+  generateQR(uri);
+  startPolling(btc);
+}
+
+async function checkPayment(expectedBtc) {
+  try {
+    const res = await fetch(`https://blockstream.info/api/address/${BTC_ADDRESS}`);
+    const data = await res.json();
+    const received = data.chain_stats.funded_txo_sum / 1e8;
+
+    if (received >= expectedBtc) {
+      document.getElementById("status").textContent = "✅ Payment Confirmed!";
+      document.getElementById("status").className = "confirmed";
+      clearInterval(polling);
+    } else if (received > 0) {
+      document.getElementById("status").textContent =
+        "⚡ Payment detected, waiting confirmations...";
+    }
+  } catch(e) {
+    console.error("BTC check error:", e);
+  }
+}
+
+let polling;
+function startPolling(btc) {
+  checkPayment(btc);
+  polling = setInterval(() => checkPayment(btc), 30000);
+}
+
+document.getElementById("copyBtn").onclick = () => {
+  navigator.clipboard.writeText(BTC_ADDRESS).then(() => {
+    const t = document.getElementById("copyToast");
+    t.style.visibility="visible";
+    t.style.opacity="1";
+    setTimeout(()=>{
+      t.style.opacity="0";
+      setTimeout(()=>t.style.visibility="hidden",300);
+    },2000);
+  });
+};
+
+init();
+</script>
+</body>
+</html>
+
+
+<!-- <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -50,7 +193,7 @@
     <div id="status" class="pending">⏳ Waiting for payment...</div>
   </div>
 
-  <!-- QRCode library -->
+  <!-- QRCode library 
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <script>
     function getQueryParam(param) {

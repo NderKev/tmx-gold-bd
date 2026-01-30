@@ -352,7 +352,7 @@ async function sendSelectedToken() {
     });
   if (option === "btc") {
   //showBTC(amount);
-  openBtcPopup(`/btc`, amount);
+  openBtcPopup(amount, amount);
   return;
 }
 
@@ -504,13 +504,10 @@ function showBTC(amount) {
   document.getElementById("btcModal").style.display = "block";
 }
 
-function openBtcPopup(url, amount) {
-  // Pass the amount as a query parameter
-  const popupUrl = `${url}?amount=${encodeURIComponent(amount)}`;
-  const popupWindow = window.open(popupUrl, "btcPopup", "width=400,height=200,scrollbars=no,resizable=no");
-  if (window.focus && popupWindow) {
-    popupWindow.focus();
-  }
+function openBtcPopup(usd, btc) {
+  const url = `/btc.html?usd=${encodeURIComponent(usd)}&btc=${encodeURIComponent(btc)}`;
+  const popup = window.open(url, "btcPopup", "width=420,height=520,resizable=no");
+  if (popup) popup.focus();
 }
 
 function closeBTC() {
