@@ -352,7 +352,7 @@ async function sendSelectedToken() {
     });
   if (option === "btc") {
   //showBTC(amount);
-  openBtcPopup(`https://tmxgoldcoin.co/profile/${localStorage.getItem("user_id")}/btc`, amount);
+  openBtcPopup(`btc.html`, amount);
   return;
 }
 
