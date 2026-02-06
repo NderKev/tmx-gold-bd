@@ -351,8 +351,8 @@ async function sendSelectedToken() {
       amount
     });
   if (option === "btc") {
-  //showBTC(amount);
-  openBtcPopup(amount, amount);
+  showBTC(amount);
+  //openBtcPopup(amount, amount);
   return;
 }
 
