@@ -351,8 +351,8 @@ async function sendSelectedToken() {
       amount
     });
   if (option === "btc") {
-  showBTC(amount);
-  //openBtcPopup(amount, amount);
+  //showBTC(amount);
+  openBtcPopup(amount, amount);
   return;
 }
 
@@ -506,7 +506,7 @@ function showBTC(amount) {
 
 function openBtcPopup(usd, btc) {
   const url = `/btc.html?usd=${encodeURIComponent(usd)}&btc=${encodeURIComponent(btc)}`;
-  const popup = window.open(url, "btcPopup", "width=420,height=520,resizable=no");
+  const popup = window.open(url, "btcPopup", "width=600,height=520,resizable=no");
   if (popup) popup.focus();
 }
 
