@@ -322,7 +322,7 @@ async function loadBalance() {
 }
 
 // --------------------------- CONNECT WALLET ---------------------------
-async function connect() {
+/** async function connect() {
   if (!window.ethereum) return alert("Install MetaMask!");
 
   provider = new ethers.BrowserProvider(window.ethereum);
@@ -350,6 +350,61 @@ async function connect() {
     signer = await provider.getSigner();
     token = new ethers.Contract(TOKEN_ADDRESS, ERC20_ABI_TMXGT, provider);
     await loadBalance();
+  });
+} **/
+
+  async function connect() {
+  if (!window.ethereum) return alert("Install MetaMask!");
+
+  try {
+    // 1. Initialize the provider
+    provider = new ethers.BrowserProvider(window.ethereum);
+
+    // 2. SAFETY CHECK: Check if we are already authorized. 
+    // This prevents the -32603 error if the user is already logged in.
+    const accounts = await provider.listAccounts();
+    
+    if (accounts.length === 0) {
+      // 3. Only request if not already connected
+      await provider.send("eth_requestAccounts", []);
+    }
+
+    // 4. Set the signer
+    signer = await provider.getSigner();
+    console.log("Signer address:", signer.address);
+
+    // 5. Run your network checks and contract setup
+    if (!(await checkNetwork())) return;
+
+    token = new ethers.Contract(TOKEN_ADDRESS, ERC20_ABI_TMXGT, signer); // Use signer, not provider for write actions
+
+    decimals = await token.decimals();
+    symbol = await token.symbol();
+
+    await loadBalance();
+
+    // Event listeners...
+    setupEventListeners();
+
+  } catch (err) {
+    if (err.code === -32603) {
+      alert("MetaMask is busy or locked. Please open your MetaMask extension and try again.");
+    } else {
+      console.error("Connection Error:", err);
+      alert("Failed to connect wallet: " + err.message);
+    }
+  }
+}
+
+// Move listeners to a helper function to keep connect() clean
+function setupEventListeners() {
+  window.ethereum.on("accountsChanged", async () => {
+    signer = await provider.getSigner();
+    await loadBalance();
+  });
+
+  window.ethereum.on("chainChanged", () => {
+    window.location.reload(); // Recommended for chain changes to clear state
   });
 }
 
