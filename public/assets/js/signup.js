@@ -124,7 +124,7 @@ input.addEventListener('keyup', reset); **/
 $("#btnRegister").click(function (e) {
   e.preventDefault();
 
-  const AUTH_BACKEND_URL = "https://tmxgoldcoin.co"; // or your local URL
+  const AUTH_BACKEND_URL = "http://localhost:7000"//"https://tmxgoldcoin.co"; // or your local URL
   const $error = $("#placement_error");
 
   function refresh() {

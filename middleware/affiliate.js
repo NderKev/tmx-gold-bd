@@ -1,7 +1,7 @@
 const affiliateModel = require('../models/affiliateModel');
 
 const affiliateMiddleware = async (req, res, next) => {
-  const affiliateId = Number(req.query['affiliate-id']);
+  const affiliateId = Number(req.query['affiliate-id'] || req.query.a || req.query.ref);
   if (!affiliateId) return next();
 
   // check DB quickly
@@ -17,9 +17,12 @@ const affiliateMiddleware = async (req, res, next) => {
   affiliateModel.incrementClick(affiliateId, clickData).catch(console.error);
 
   // set cookie (so subsequent signup flow knows)
+  const isSecure = req.secure || process.env.NODE_ENV === 'production';
   res.cookie('affiliate_id', String(affiliateId), {
     maxAge: 30 * 24 * 60 * 60 * 1000,
-    httpOnly: false, sameSite: 'Lax', secure: true,
+    httpOnly: false,
+    sameSite: 'lax',
+    secure: isSecure,
   });
 
   // optionally rewrite URL to remove param: redirect with clean URL

@@ -11,7 +11,7 @@ const {successResponse, errorResponse} = require('../lib/response');
 // ---------- CONFIG ----------
 const config = require('../config');
 
-const MONITOR_ADDRESS = config.ETH_ADDRESS.toLowerCase(); // address to monitor
+const MONITOR_ADDRESS = config.ETH_ADDRESS?.toLowerCase(); // address to monitor
 
 const logStruct = (func, error) => {
   return {'func': func, 'file': 'CryptoListenController', error}

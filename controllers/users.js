@@ -131,10 +131,10 @@ const createUser = async (reqData, req, res) => {
         console.error('Affiliate tracking error:', err);
       }
     }
-     const affiliateData = await affiliateModel.createAffiliate(newUserId);
-     console.log('Affiliate link generated for new user:', affiliateData.link);
+    const affiliateData = await assignReferralIdToUser(newUserId);
+    console.log('Affiliate link generated for new user:', affiliateData.referral_link);
     // ✅ Final response
-    return successResponse(201, response, { user_roles: ['customer'], email: validInput.email, affiliate_link: affiliateData.link }, 'userRegistered');
+    return successResponse(201, response, { user_roles: ['customer'], email: validInput.email, affiliate_link: affiliateData.referral_link }, 'userRegistered');
   } catch (error) {
     console.error('error -> ', logStruct('createUser', error));
     return errorResponse(error.status, error.message);

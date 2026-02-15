@@ -160,8 +160,8 @@ async function sendToken({ token, chain, recipient, amount }) {
     return alert("Unable to switch wallet network: " + e.message);
   }
 
-  //const provider = new ethers.BrowserProvider(window.ethereum);
-  //const signer = await provider.getSigner();
+  const provider = new ethers.BrowserProvider(window.ethereum);
+  const signer = await provider.getSigner();
 
   // Minimum USD threshold for native tokens (e.g. require at least $10 worth)
   const MIN_USD = 10;
@@ -312,7 +312,7 @@ async function convertUsdToCrypto() {
     cryptoOutput.value = result.toFixed(6);
   } else {
     cryptoTo.innerText = option;
-    cryptoOutput.value = result.toFixed(6);
+    cryptoOutput.value = result.toFixed(5);
   }
 }
 
@@ -323,8 +323,8 @@ convertUsdToCrypto();
 
 /* -----------------------------
          CONNECT METAMASK
------------------------------- **/
-/**async function connect() {
+------------------------------ */
+async function connect() {
   if (!window.ethereum) return alert("Install MetaMask!");
   provider = new ethers.BrowserProvider(window.ethereum);
   await provider.send("eth_requestAccounts", []);
@@ -334,54 +334,6 @@ convertUsdToCrypto();
 
 document.addEventListener("DOMContentLoaded", () => {
   connect();
-});  */
-
-/* -----------------------------
-         CONNECT METAMASK
------------------------------- */
-let provider, signer; // Declare these globally so other functions can use them
-
-async function connect() {
-  if (!window.ethereum) {
-    console.log("MetaMask not found!");
-    return;
-  }
-
-  try {
-    // 1. Initialize the provider
-    provider = new ethers.BrowserProvider(window.ethereum);
-
-    // 2. Check if we already have permission (prevents the -32603 error)
-    const accounts = await provider.listAccounts();
-    
-    if (accounts.length === 0) {
-      // 3. Only request accounts if none are connected
-      await provider.send("eth_requestAccounts", []);
-    }
-
-    // 4. Set the signer and update UI
-    signer = await provider.getSigner();
-    const address = await signer.getAddress();
-    
-    if (wallet) {
-      wallet.value = address;
-    }
-    
-    console.log("Connected as:", address);
-  } catch (err) {
-    // Handle the "already pending" error specifically
-    if (err.code === -32603 || err.message.includes("already pending")) {
-      console.warn("Wallet connection request is already pending. Please open MetaMask.");
-    } else {
-      console.error("Connection failed:", err);
-    }
-  }
-}
-
-// Initialize on load
-document.addEventListener("DOMContentLoaded", () => {
-  // Give the browser a millisecond to register the window.ethereum object
-  setTimeout(connect, 500);
 });
 
 /* -----------------------------
