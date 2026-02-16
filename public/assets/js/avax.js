@@ -406,6 +406,16 @@ async function sendSelectedToken() {
     });
     const email = localStorage.getItem("name");
     const from = document.getElementById("wallet_address");
+    if (option === "mpesa") {
+    // 1. Trigger the Mpesa STK Push/Instruction UI here if needed
+    // 2. Then start polling the backend to see when the IPN confirms the payment
+    return startPaymentPolling("mpesa", email, from, amount);
+  }
+
+  if (option === "paystack") {
+    // Usually Paystack requires a popup or redirect
+    return setupPaystackPayment(email, amount);
+  }
     //const _token = 
     startPaymentPolling(option, email, from, amount);
 
