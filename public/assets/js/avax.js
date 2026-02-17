@@ -104,7 +104,7 @@ async function getPrices() {
       BNB: data.binancecoin?.usd,
       USDT: data.tether?.usd,
       USDC: data["usd-coin"]?.usd,
-      Mpesa: data["celo-kenyan-shilling"]?.usd
+      mpesa: data["celo-kenyan-shilling"]?.usd
       // Paystack/KES omitted here because this endpoint requests only usd.
     };
   } catch (err) {
@@ -300,10 +300,10 @@ async function convertUsdToCrypto() {
 
   cryptoOutput.value = result.toString();
 
-  if (option === "Mpesa") {
+  if (option === "mpesa") {
     cryptoTo.innerText = "KES";
     mpesa_amount.value = result_kes.toFixed(0);
-  } else if (option === "Paystack") {
+  } else if (option === "paystack") {
     cryptoTo.innerText = "USD";
     cryptoOutput.value = usd;
     kes_amount.value = usd;
