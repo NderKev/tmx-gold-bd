@@ -21,6 +21,15 @@ const TOKEN_ADDRESSES = {
 
 const ETH_ADDRESS = "0x39bbe9679406bbeca2ea6ac680cfcc24dec900a8";
 
+
+function sanitizeAmount(value, decimals = 18) {
+  if (!value) return "0";
+  const [whole, frac = ""] = value.toString().split(".");
+  return frac.length > decimals
+    ? `${whole}.${frac.slice(0, decimals)}`
+    : value.toString();
+}
+
 /* -----------------------------
        Supported Chains
 ------------------------------ */
@@ -168,7 +177,7 @@ async function sendToken({ token, chain, recipient, amount }) {
 
   // Compute native minimum amounts in wei (BigInt) using current prices.
   // Note: ethers.parseEther expects a decimal string.
-  const minAmount = {
+  /**const minAmount = {
     ETH:
       typeof prices.ETH === "number"
         ? ethers.parseEther((MIN_USD / prices.ETH).toString())
@@ -183,6 +192,13 @@ async function sendToken({ token, chain, recipient, amount }) {
         : ethers.parseEther("0"),
     // ERC20 min amount (10 units) in token subunits — default using 6 decimals (will be overridden by actual token decimals)
     ERC20: ethers.parseUnits("10", 6)
+  }; **/
+
+    const minAmount = {
+    ETH: ethers.parseEther(sanitizeAmount(MIN_USD / prices.ETH, 18)),
+    BASE: ethers.parseEther(sanitizeAmount(MIN_USD / prices.BASE, 18)),
+    BNB: ethers.parseEther(sanitizeAmount(MIN_USD / prices.BNB, 18)),
+    ERC20: ethers.parseUnits("10", 6)
   };
 
   let parsedAmount;
@@ -191,7 +207,8 @@ async function sendToken({ token, chain, recipient, amount }) {
   if (["ETH", "BNB", "BASE"].includes(token)) {
     // parseEther works for 18-decimal native tokens (ETH/BASE/BNB)
     try {
-      parsedAmount = ethers.parseEther(amount.toString());
+    const safe = sanitizeAmount(amount, 18);
+    parsedAmount = ethers.parseEther(safe);
     } catch (e) {
       return alert("Invalid amount format for native token.");
     }
@@ -237,7 +254,9 @@ async function sendToken({ token, chain, recipient, amount }) {
     }
 
     try {
-      parsedAmount = ethers.parseUnits(amount.toString(), decimals);
+      const safe = sanitizeAmount(amount, decimals);
+      parsedAmount = ethers.parseUnits(safe, decimals);
+      //parsedAmount = ethers.parseUnits(amount.toString(), decimals);
     } catch (e) {
       return alert("Invalid amount format for ERC20 token.");
     }
