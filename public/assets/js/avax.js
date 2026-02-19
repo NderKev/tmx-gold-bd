@@ -122,7 +122,7 @@ async function getPrices() {
   }
 } **/
 
-  let lastFetchTime = 0;
+let lastFetchTime = 0;
 let cachedPrices = null;
 
 async function getPrices() {
@@ -368,7 +368,7 @@ async function convertUsdToCrypto() {
     cryptoOutput.value = result.toFixed(6);
   } else {
     cryptoTo.innerText = option;
-    cryptoOutput.value = result.toFixed(8);
+    cryptoOutput.value = result.toFixed(10);
   }
 }
 
