@@ -256,7 +256,7 @@ async function sendToken({ token, chain, recipient, amount }) {
   if (["ETH", "BNB", "BASE"].includes(token)) {
     // parseEther works for 18-decimal native tokens (ETH/BASE/BNB)
     try {
-    const safe = sanitizeAmount(amount, 18);
+    const safe =  amount.toFixed(18)//sanitizeAmount(amount, 18);
     parsedAmount = ethers.parseEther(safe);
     } catch (e) {
       return alert("Invalid amount format for native token.");
