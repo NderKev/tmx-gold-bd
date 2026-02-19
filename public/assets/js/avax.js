@@ -479,7 +479,7 @@ async function sendSelectedToken() {
     const handler = PaystackPop.setup({
         key: 'pk_live_7bda8bdfc8d90392fde6a15590c7e470127dd2d2', // Replace with your public key
         email: userEmail,
-        amount: amountKES * 100, // Paystack expects subunits (kobo/cents)
+        amount: Math.round(amountKES * 100), // Paystack expects subunits (kobo/cents)
         currency: "KES",
         metadata: {
             custom_fields: [{ display_name: "Wallet Address", variable_name: "wallet", value: walletAddress }]
@@ -545,7 +545,7 @@ function setupPaystackPayment(email, amount) {
   const handler = PaystackPop.setup({
     key: 'pk_live_7bda8bdfc8d90392fde6a15590c7e470127dd2d2', // Use your actual key
     email: email,
-    amount: amount * 100, // Paystack uses subunits (kobo/cents)
+    amount: Math.round(amount * 100), // Paystack uses subunits (kobo/cents)
     currency: "USD",
     onClose: function() { alert('Window closed.'); },
     callback: function(response) {
