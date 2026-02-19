@@ -394,20 +394,7 @@ document.addEventListener("DOMContentLoaded", () => {
   connect();
 });
 
-function setupPaystackPayment(email, amount) {
-  //email = 
-  const handler = PaystackPop.setup({
-    key: 'pk_live_7bda8bdfc8d90392fde6a15590c7e470127dd2d2', // Use your actual key
-    email: email,
-    amount: amount * 100, // Paystack uses subunits (kobo/cents)
-    onClose: function() { alert('Window closed.'); },
-    callback: function(response) {
-      alert('Payment successful! Reference: ' + response.reference);
-      // Here you would notify your backend
-    }
-  });
-  handler.openIframe();
-}
+
 
 /* -----------------------------
    SEND BUTTON DISPATCHER
@@ -551,6 +538,22 @@ async function sendSelectedToken() {
     startPaymentPolling(option, email, from, amount);
 
   /* Remaining (Mpesa, Paystack, BTC, Bank, Wire) unchanged */
+}
+
+function setupPaystackPayment(email, amount) {
+  //email = 
+  const handler = PaystackPop.setup({
+    key: 'pk_live_7bda8bdfc8d90392fde6a15590c7e470127dd2d2', // Use your actual key
+    email: email,
+    amount: amount * 100, // Paystack uses subunits (kobo/cents)
+    currency: "USD",
+    onClose: function() { alert('Window closed.'); },
+    callback: function(response) {
+      alert('Payment successful! Reference: ' + response.reference);
+      // Here you would notify your backend
+    }
+  });
+  handler.openIframe();
 }
 
 document.getElementById("btnBuyTokens").onclick = sendSelectedToken;
