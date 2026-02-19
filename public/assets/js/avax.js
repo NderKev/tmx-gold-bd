@@ -422,7 +422,8 @@ async function sendSelectedToken() {
     });
   if (option === "btc") {
   //showBTC(amount);
-  openBtcPopup(amount, amount);
+  const _usd = document.getElementById("usd");
+  openBtcPopup(_usd, amount);
   return;
 }
 
