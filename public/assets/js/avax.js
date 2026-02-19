@@ -173,7 +173,7 @@ async function sendToken({ token, chain, recipient, amount }) {
   const signer = await provider.getSigner();
 
   // Minimum USD threshold for native tokens (e.g. require at least $10 worth)
-  const MIN_USD = 10;
+  const MIN_USD = 1;
 
   // Compute native minimum amounts in wei (BigInt) using current prices.
   // Note: ethers.parseEther expects a decimal string.
