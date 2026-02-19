@@ -85,7 +85,7 @@ async function switchChain(chain) {
 
 /* -----------------------------
          Price Fetching
------------------------------- */
+------------------------------ 
 async function getPrices() {
   const ids = [
     "bitcoin",
@@ -119,6 +119,43 @@ async function getPrices() {
   } catch (err) {
     console.error("Price fetch error:", err);
     return null;
+  }
+} **/
+
+  let lastFetchTime = 0;
+let cachedPrices = null;
+
+async function getPrices() {
+  const now = Date.now();
+  // Only fetch if we don't have prices or if the cache is older than 5 minutes (300,000ms)
+  if (cachedPrices && (now - lastFetchTime < 300000)) {
+    return cachedPrices;
+  }
+
+  const ids = ["bitcoin","ethereum","base-2","binancecoin","tether","usd-coin","celo-kenyan-shilling"];
+  const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids.join(",")}&vs_currencies=usd`;
+
+  try {
+    const res = await fetch(url);
+    if (res.status === 429) {
+      console.warn("Rate limit hit. Using old prices.");
+      return cachedPrices; 
+    }
+    const data = await res.json();
+    cachedPrices = {
+      BTC: data.bitcoin?.usd,
+      ETH: data.ethereum?.usd,
+      BASE: data["base-2"]?.usd,
+      BNB: data.binancecoin?.usd,
+      USDT: data.tether?.usd,
+      USDC: data["usd-coin"]?.usd,
+      mpesa: data["celo-kenyan-shilling"]?.usd
+    };
+    lastFetchTime = now;
+    return cachedPrices;
+  } catch (err) {
+    console.error("Price fetch error:", err);
+    return cachedPrices; // Fallback to cache on error
   }
 }
 
@@ -354,6 +391,20 @@ async function connect() {
 document.addEventListener("DOMContentLoaded", () => {
   connect();
 });
+
+function setupPaystackPayment(email, amount) {
+  const handler = PaystackPop.setup({
+    key: 'pk_live_7bda8bdfc8d90392fde6a15590c7e470127dd2d2', // Use your actual key
+    email: email,
+    amount: amount * 100, // Paystack uses subunits (kobo/cents)
+    onClose: function() { alert('Window closed.'); },
+    callback: function(response) {
+      alert('Payment successful! Reference: ' + response.reference);
+      // Here you would notify your backend
+    }
+  });
+  handler.openIframe();
+}
 
 /* -----------------------------
    SEND BUTTON DISPATCHER
