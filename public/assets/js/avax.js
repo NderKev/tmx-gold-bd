@@ -395,6 +395,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function setupPaystackPayment(email, amount) {
+  //email = 
   const handler = PaystackPop.setup({
     key: 'pk_live_7bda8bdfc8d90392fde6a15590c7e470127dd2d2', // Use your actual key
     email: email,
@@ -483,7 +484,7 @@ async function sendSelectedToken() {
     const amountKES = document.getElementById("mpesa_amount").value;
     const usdValue = document.getElementById("usd").value; // The USD input
     const tokenAmount = document.getElementById("amount").value; // The crypto amount to send
-    const userEmail = localStorage.getItem("name") || localStorage.getItem("tmx_gold_name");
+    const userEmail = "tony@tmxglobal.com"; // Hardcoded email for testing
     const walletAddress = document.getElementById("wallet_address").value;
 
     // 2. Trigger Paystack M-Pesa Flow
@@ -544,7 +545,7 @@ async function sendSelectedToken() {
 
   if (option === "paystack") {
     // Usually Paystack requires a popup or redirect
-    return setupPaystackPayment(email, amount);
+    return setupPaystackPayment("tony@tmxglobal.com", amount);
   }
     //const _token = 
     startPaymentPolling(option, email, from, amount);
