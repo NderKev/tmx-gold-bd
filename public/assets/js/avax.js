@@ -3,7 +3,7 @@
    Avalanche removed, Base added
 ============================================================ */
 
-const { useDebugValue } = require("react");
+//const { useDebugValue } = require("react");
 
 const ERC20_ABI = [
   "function transfer(address to, uint amount) returns (bool)",
@@ -233,12 +233,22 @@ async function sendToken({ token, chain, recipient, amount }) {
     ERC20: ethers.parseUnits("10", 6)
   }; **/
 
-    const minAmount = {
+   /**  const minAmount = {
     ETH: ethers.parseEther(sanitizeAmount(MIN_USD / prices.ETH, 18)),
     BASE: ethers.parseEther(sanitizeAmount(MIN_USD / prices.BASE, 18)),
     BNB: ethers.parseEther(sanitizeAmount(MIN_USD / prices.BNB, 18)),
-    ERC20: ethers.parseUnits("10", 6)
-  };
+    ERC20: ethers.parseUnits("1", 6)
+  }; **/
+
+  const minAmount = {
+  // Use toFixed(18) to ensure we don't exceed the 18-decimal limit for native tokens
+  ETH: ethers.parseEther((MIN_USD / prices.ETH).toFixed(18)),
+  BASE: ethers.parseEther((MIN_USD / prices.BASE).toFixed(18)),
+  BNB: ethers.parseEther((MIN_USD / prices.BNB).toFixed(18)),
+  
+  // For USDC/USDT on Base/Ethereum, usually 6 decimals
+  ERC20: ethers.parseUnits("1", 6) 
+};
 
   let parsedAmount;
 
