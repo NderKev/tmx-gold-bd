@@ -331,7 +331,7 @@ async function convertUsdToCrypto() {
     cryptoOutput.value = result.toFixed(6);
   } else {
     cryptoTo.innerText = option;
-    cryptoOutput.value = result.toFixed(5);
+    cryptoOutput.value = result.toFixed(8);
   }
 }
 
