@@ -3,6 +3,8 @@
    Avalanche removed, Base added
 ============================================================ */
 
+const { useDebugValue } = require("react");
+
 const ERC20_ABI = [
   "function transfer(address to, uint amount) returns (bool)",
   "function decimals() view returns (uint8)"
@@ -489,7 +491,7 @@ async function sendSelectedToken() {
     const handler = PaystackPop.setup({
         key: 'pk_live_7bda8bdfc8d90392fde6a15590c7e470127dd2d2', // Replace with your public key
         email: userEmail,
-        amount: userEmail * 100, // Paystack expects subunits (kobo/cents)
+        amount: amountKES * 100, // Paystack expects subunits (kobo/cents)
         currency: "KES",
         metadata: {
             custom_fields: [{ display_name: "Wallet Address", variable_name: "wallet", value: walletAddress }]
