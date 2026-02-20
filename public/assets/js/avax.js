@@ -195,10 +195,10 @@ let prices = null,
 async function sendToken({ token, chain, recipient, amount }) {
   if (!window.ethereum) return alert("MetaMask not found!");
 
-  if (!prices) {
-    // try to refresh prices if they weren't loaded
+  // 1. Ensure prices are loaded before proceeding
+  if (!prices || !prices.ETH) {
     prices = await getPrices();
-    if (!prices) return alert("Unable to fetch prices. Try again later.");
+    if (!prices) return alert("Price data is currently unavailable. Please refresh.");
   }
 
   try {
@@ -211,61 +211,33 @@ async function sendToken({ token, chain, recipient, amount }) {
   const provider = new ethers.BrowserProvider(window.ethereum);
   const signer = await provider.getSigner();
 
-  // Minimum USD threshold for native tokens (e.g. require at least $10 worth)
   const MIN_USD = 1;
 
-  // Compute native minimum amounts in wei (BigInt) using current prices.
-  // Note: ethers.parseEther expects a decimal string.
-  /**const minAmount = {
-    ETH:
-      typeof prices.ETH === "number"
-        ? ethers.parseEther((MIN_USD / prices.ETH).toString())
-        : ethers.parseEther("0"),
-    BASE:
-      typeof prices.BASE === "number"
-        ? ethers.parseEther((MIN_USD / prices.BASE).toString())
-        : ethers.parseEther("0"),
-    BNB:
-      typeof prices.BNB === "number"
-        ? ethers.parseEther((MIN_USD / prices.BNB).toString())
-        : ethers.parseEther("0"),
-    // ERC20 min amount (10 units) in token subunits — default using 6 decimals (will be overridden by actual token decimals)
-    ERC20: ethers.parseUnits("10", 6)
-  }; **/
-
-   /**  const minAmount = {
-    ETH: ethers.parseEther(sanitizeAmount(MIN_USD / prices.ETH, 18)),
-    BASE: ethers.parseEther(sanitizeAmount(MIN_USD / prices.BASE, 18)),
-    BNB: ethers.parseEther(sanitizeAmount(MIN_USD / prices.BNB, 18)),
-    ERC20: ethers.parseUnits("1", 6)
-  }; **/
-
+  // 2. NaN Protection: Added fallbacks (|| 1) to prevent division by undefined/zero
   const minAmount = {
-  // Use toFixed(18) to ensure we don't exceed the 18-decimal limit for native tokens
-  ETH: ethers.parseEther((MIN_USD / prices.ETH).toFixed(18)),
-  BASE: ethers.parseEther((MIN_USD / prices.BASE).toFixed(18)),
-  BNB: ethers.parseEther((MIN_USD / prices.BNB).toFixed(18)),
-  
-  // For USDC/USDT on Base/Ethereum, usually 6 decimals
-  ERC20: ethers.parseUnits("1", 6) 
-};
+    ETH: ethers.parseEther((MIN_USD / (prices.ETH || 1)).toFixed(18)),
+    BASE: ethers.parseEther((MIN_USD / (prices.BASE || 1)).toFixed(18)),
+    BNB: ethers.parseEther((MIN_USD / (prices.BNB || 1)).toFixed(18)),
+    ERC20: ethers.parseUnits("1", 6) 
+  };
 
   let parsedAmount;
 
   /* Native tokens: ETH, BNB, BASE */
   if (["ETH", "BNB", "BASE"].includes(token)) {
-    // parseEther works for 18-decimal native tokens (ETH/BASE/BNB)
     try {
-    const safe =  amount.toFixed(18)//sanitizeAmount(amount, 18);
-    parsedAmount = ethers.parseEther(safe);
+      // 3. Type Fix: amount comes from .value (String). Convert to Number before .toFixed()
+      const numericAmount = parseFloat(amount);
+      if (isNaN(numericAmount)) throw new Error("Amount is NaN");
+      
+      const safe = numericAmount.toFixed(18);
+      parsedAmount = ethers.parseEther(safe);
     } catch (e) {
       return alert("Invalid amount format for native token.");
     }
 
-    // ensure we compare BigInts
     const tokenMin = minAmount[token];
     if (tokenMin && parsedAmount < tokenMin) {
-      // format min back to human-readable amount
       const humanMin = ethers.formatEther(tokenMin);
       return alert(`Min ${token} is ${humanMin}`);
     }
@@ -291,10 +263,8 @@ async function sendToken({ token, chain, recipient, amount }) {
     if (!tokenAddress)
       return alert(`${token} is not supported on ${chain}`);
 
-    // create contract connected to signer
     const contract = new ethers.Contract(tokenAddress, ERC20_ABI, signer);
 
-    // get decimals from contract (fallback to 6 if the call fails)
     let decimals = 6;
     try {
       decimals = Number(await contract.decimals());
@@ -303,14 +273,13 @@ async function sendToken({ token, chain, recipient, amount }) {
     }
 
     try {
+      // sanitizeAmount handles the string conversion internally
       const safe = sanitizeAmount(amount, decimals);
       parsedAmount = ethers.parseUnits(safe, decimals);
-      //parsedAmount = ethers.parseUnits(amount.toString(), decimals);
     } catch (e) {
       return alert("Invalid amount format for ERC20 token.");
     }
 
-    // compute correct minimum for ERC20 using the token's decimals if needed
     const minERC20 = ethers.parseUnits("10", decimals);
     if (parsedAmount < minERC20) {
       return alert(
@@ -323,7 +292,6 @@ async function sendToken({ token, chain, recipient, amount }) {
 
     try {
       const tx = await contract.transfer(recipient, parsedAmount);
-      // contract.transfer returns a transaction response object
       alert(`${token} TX sent: ${tx.hash}`);
       await tx.wait();
       alert(`${token} confirmed!`);
