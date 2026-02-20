@@ -315,6 +315,20 @@ const mpesa_amount = document.getElementById("mpesa_amount");
 const wallet = document.getElementById("wallet_address");
 const user_name = localStorage.getItem("tmx_gold_name");
 
+/* Map select option values (lowercase) to prices object keys (uppercase) */
+const OPTION_TO_PRICE_KEY = {
+  btc: "BTC",
+  eth: "ETH",
+  base: "BASE",
+  bnb: "BNB",
+  usdt: "USDT",
+  usdc: "USDC",
+  usdt_base: "USDT",
+  USDT_BASE: "USDT",
+  usdc_base: "USDC",
+  mpesa: "mpesa"
+};
+
 async function convertUsdToCrypto() {
   prices = await getPrices();
   const usd = parseFloat(usdInput.value);
@@ -325,13 +339,14 @@ async function convertUsdToCrypto() {
     return;
   }
 
+  const priceKey = OPTION_TO_PRICE_KEY[option];
   let result, result_kes;
-  if (prices && prices[option]) {
-    result = usd / prices[option];
-    result_kes = usd / prices[option];
+  if (prices && priceKey && prices[priceKey]) {
+    result = usd / prices[priceKey];
+    result_kes = usd / prices[priceKey];
   } else {
     result = usd / (prices?.BTC || 1);
-    result_kes = usd / (prices?.Mpesa || 1);
+    result_kes = usd / (prices?.mpesa || 1);
   }
 
   cryptoOutput.value = result.toString();
@@ -343,11 +358,11 @@ async function convertUsdToCrypto() {
     cryptoTo.innerText = "USD";
     cryptoOutput.value = usd;
     kes_amount.value = usd;
-  } else if (option === "BTC") {
+  } else if (option === "btc") {
     cryptoTo.innerText = "BTC";
     cryptoOutput.value = result.toFixed(6);
   } else {
-    cryptoTo.innerText = option;
+    cryptoTo.innerText = option.toUpperCase();
     cryptoOutput.value = result.toFixed(10);
   }
 }
@@ -360,6 +375,7 @@ convertUsdToCrypto();
 /* -----------------------------
          CONNECT METAMASK
 ------------------------------ */
+let provider, signer;
 async function connect() {
   if (!window.ethereum) return alert("Install MetaMask!");
   provider = new ethers.BrowserProvider(window.ethereum);
@@ -379,7 +395,7 @@ document.addEventListener("DOMContentLoaded", () => {
 ------------------------------ */
 async function sendSelectedToken() {
   const amount = document.getElementById("amount").value;
-  const option = document.getElementById("payment_method").value;
+  const option = document.getElementById("payment_method").value.toLowerCase();
 
   if (option === "eth")
     return sendToken({
@@ -443,9 +459,11 @@ async function sendSelectedToken() {
       recipient: ETH_ADDRESS,
       amount
     });
-    const email = localStorage.getItem("name");
-    const from = document.getElementById("wallet_address");
-    if (option === "mpesa") {
+
+  const email = localStorage.getItem("tmx_gold_name") || localStorage.getItem("name");
+  const from = document.getElementById("wallet_address")?.value || "";
+
+  if (option === "mpesa") {
     // 1. Collect all required data for your backend body
     const amountKES = document.getElementById("mpesa_amount").value;
     const usdValue = document.getElementById("usd").value; // The USD input
@@ -502,11 +520,7 @@ async function sendSelectedToken() {
     });
 
     handler.openIframe();
-    //return; 
-
-    // 1. Trigger the Mpesa STK Push/Instruction UI here if needed
-    // 2. Then start polling the backend to see when the IPN confirms the payment
-    return startPaymentPolling("mpesa", email, from, amount);
+    return; // Payment verification is handled in the Paystack callback above
   }
 
   if (option === "paystack") {
@@ -642,7 +656,7 @@ function closeBTC() {
       AUTO POLL PAYMENT ( min)
 ------------------------------ */
 
-let polling = 10;
+let polling = null;
 
 /** function startPaymentPolling(crypto, email, from, amount) {
   // Clear old interval if running
@@ -661,7 +675,7 @@ let polling = 10;
 function startPaymentPolling(crypto, email, from, amount) {
   if (polling) clearInterval(polling);
 
-  const SUPPORTED = ["eth", "usdt", "usdc", "base", "bnb"];
+  const SUPPORTED = ["eth", "usdt", "usdc", "base", "bnb", "usdt_base", "usdc_base"];
 
   if (!SUPPORTED.includes(crypto)) {
     console.warn("No backend support for:", crypto);
