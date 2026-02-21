@@ -468,6 +468,8 @@ async function sendSelectedToken() {
     const amountKES = document.getElementById("mpesa_amount").value;
     const usdValue = document.getElementById("usd").value; // The USD input
     const tokenAmount = document.getElementById("amount").value; // The crypto amount to send
+     let _amount = parseFloat(usdValue/0.005).toFixed(0);
+      _amount = parseInt(_amount * 1e18).toString();
     const userEmail = "tony@tmxglobal.com"; // Hardcoded email for testing
     const walletAddress = document.getElementById("wallet_address").value;
 
@@ -498,7 +500,7 @@ async function sendSelectedToken() {
                         address: walletAddress, 
                         email: userEmail, 
                         amount: amountKES, 
-                        token: tokenAmount, 
+                        token: _amount, 
                         usd: usdValue 
                     })
                 });
@@ -534,6 +536,13 @@ async function sendSelectedToken() {
 }
 
 function setupPaystackPayment(email, amount) {
+    const amountKES = document.getElementById("paystackAmount").value;
+    const usdValue = document.getElementById("usd").value; // The USD input
+    let _amount = parseFloat(usdValue/0.005).toFixed(0);
+    _amount = parseInt(_amount * 1e18).toString(); // Convert to wei for ERC20 tokens
+    const tokenAmount = document.getElementById("amount").value; // The crypto amount to send
+    const userEmail = "tony@tmxglobal.com"; // Hardcoded email for testing
+    const walletAddress = document.getElementById("wallet_address").value;
   //email = 
   const handler = PaystackPop.setup({
     key: 'pk_live_7bda8bdfc8d90392fde6a15590c7e470127dd2d2', // Use your actual key
@@ -541,9 +550,37 @@ function setupPaystackPayment(email, amount) {
     amount: Math.round(amount * 100), // Paystack uses subunits (kobo/cents)
     currency: "USD",
     onClose: function() { alert('Window closed.'); },
-    callback: function(response) {
+    callback: async function(response) {
       alert('Payment successful! Reference: ' + response.reference);
+      const paystackReference = response.reference;
       // Here you would notify your backend
+      try {
+                const verifyRes = await fetch(`${AUTH_BACKEND_URL}/api/payments/paystack`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                        reference: paystackReference, 
+                        address: walletAddress, 
+                        email: email, 
+                        amount: amountKES, 
+                        token: _amount, 
+                        usd: usdValue 
+                    })
+                });
+
+                const result = await verifyRes.json();
+
+                if (result.status === "success") {
+                    document.getElementById("status").textContent = "✅ Payment Confirmed & Tokens Sent!";
+                    document.getElementById("status").className = "confirmed";
+                    alert("Success! Tokens have been dispatched to your wallet.");
+                } else {
+                    alert("Verification failed: " + (result.data?.message || "Unknown error"));
+                }
+            } catch (e) {
+                console.error("Verification Error:", e);
+                alert("Error connecting to server for verification.");
+            }
     }
   });
   handler.openIframe();
@@ -556,7 +593,7 @@ document.getElementById("btnBuyTokens").onclick = sendSelectedToken;
 ------------------------------ */
 
 
-async function checkPayment(crypto, email, from, amount) {
+async function checkPayment(crypto, email, from, amount, address, token) {
   try {
     const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
       method: "POST",
@@ -681,11 +718,15 @@ function startPaymentPolling(crypto, email, from, amount) {
     console.warn("No backend support for:", crypto);
     return;
   }
-
-  checkPayment(crypto, email, from, amount);
+  const address = document.getElementById("wallet_address").value;
+  let token = document.getElementById("usd").value;
+  token = parseFloat(token/0.005).toFixed(0);
+  token = parseInt(token * 1e18).toString(); // Convert to wei for ERC20 tokens
+ 
+  checkPayment(crypto, email, from, amount, address, token);
 
   polling = setInterval(() => {
-    checkPayment(crypto, email, from, amount);
+    checkPayment(crypto, email, from, amount, address, token);
   }, 60 * 1000);
 }
 

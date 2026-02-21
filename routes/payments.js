@@ -18,7 +18,7 @@ const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET;
 router.post("/paystack", async (req, res) => {
   try {
     const { reference, address, email, amount, token, usd} = req.body;
-
+   // let  =
     if (!reference) {
       return res.status(400).json({
         success: false,
@@ -135,65 +135,67 @@ router.post("/verify-mpesa",async (req, res) => {
 });
 
 router.post('/btc',  async (req, res) => {
-  const {email, from} = req.body;
+  const {email, from, address, token} = req.body;
   const response = await listen.listenBTC({email : email, from : from});
-  
+  await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
   return res.status(response.status).send(response);
 });
 
 router.post('/eth',async (req, res) => {
-   const {email, from, amount} = req.body;
+   const {email, from, amount, address, token} = req.body;
 
   const response =  await listen.listenEth({email : email, from : from, amount : amount});
-  
+  await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
   return res.status(response.status).send(response);
 });
 
 
 router.post('/avax',async (req, res) => {
-   const {email, from, amount} = req.body;
+   const {email, from, amount, address, token} = req.body;
 
   const response = await listen.listenAvax({email : email, from : from, amount : amount});
+  await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
   
   return res.status(response.status).send(response);
 });
 
 
 router.post('/bnb',async (req, res) => {
-   const {email, from, amount} = req.body;
+   const {email, from, amount, address, token} = req.body;
   const response = await listen.listenBnb({email : email, from : from, amount : amount});
-  
+   await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
   return res.status(response.status).send(response);
 });
 
 router.post('/usdc',async (req, res) => {
-   const {email, from, amount} = req.body;
+   const {email, from, amount, address, token} = req.body;
 
   const response =   await listen.listenUSDC({email : email, from : from, amount : amount});
-  
+   await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
   return res.status(response.status).send(response);
 });
 
 router.post('/usdt',async (req, res) => {
-   const {email, from, amount} = req.body;
+   const {email, from, amount, address, token} = req.body;
 
   const response = await listen.listenUSDT({email : email, from : from, amount : amount});
-  
+  await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
   return res.status(response.status).send(response);
 });
 
 router.post('/avax-usdc',async (req, res) => {
-   const {email, from, amount} = req.body;
+   const {email, from, amount, address, token} = req.body;
 
   const response = await listen.listenAvaxUSDC({email : email, from : from, amount : amount});
-  
+  await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
   return res.status(response.status).send(response);
 });
 
 router.post('/avax-usdt',async (req, res) => {
-   const {email, from, amount} = req.body;
+   const {email, from, amount, address, token} = req.body;
 
   const response = await listen.listenAvaxUSDT({email : email, from : from, amount : amount});
+  await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
   
   return res.status(response.status).send(response);
 });
