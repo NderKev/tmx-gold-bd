@@ -134,7 +134,7 @@ async function getPrices() {
     return cachedPrices;
   }
 
-  const ids = ["bitcoin","ethereum","base-2","binancecoin","tether","usd-coin","celo-kenyan-shilling"];
+  const ids = ["bitcoin","ethereum","binancecoin","tether","usd-coin","mento-kenyan-shilling"];
   const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids.join(",")}&vs_currencies=usd`;
 
   try {
@@ -147,11 +147,11 @@ async function getPrices() {
     cachedPrices = {
       BTC: data.bitcoin?.usd,
       ETH: data.ethereum?.usd,
-      BASE: data["base-2"]?.usd,
+      BASE: data.ethereum?.usd,
       BNB: data.binancecoin?.usd,
       USDT: data.tether?.usd,
       USDC: data["usd-coin"]?.usd,
-      mpesa: data["celo-kenyan-shilling"]?.usd
+      mpesa: data["mento-kenyan-shilling"]?.usd
     };
     lastFetchTime = now;
     return cachedPrices;
