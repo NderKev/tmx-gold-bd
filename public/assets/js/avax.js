@@ -151,7 +151,7 @@ async function getPrices() {
       BNB: data.binancecoin?.usd,
       USDT: data.tether?.usd,
       USDC: data["usd-coin"]?.usd,
-      mpesa: data["mento-kenyan-shilling"]?.usd
+      Mpesa: data["mento-kenyan-shilling"]?.usd
     };
     lastFetchTime = now;
     return cachedPrices;
@@ -326,7 +326,7 @@ const OPTION_TO_PRICE_KEY = {
   usdt_base: "USDT",
   USDT_BASE: "USDT",
   usdc_base: "USDC",
-  mpesa: "mpesa"
+  mpesa: "Mpesa"
 };
 
 async function convertUsdToCrypto() {
@@ -688,3 +688,27 @@ function startPaymentPolling(crypto, email, from, amount) {
     checkPayment(crypto, email, from, amount);
   }, 60 * 1000);
 }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const paymentMethodSelect = document.getElementById('payment_method');
+    const paymentFields = document.getElementById('paymentFields');
+
+    paymentMethodSelect.addEventListener('change', function() {
+        // Get the currently selected option
+        const selectedOption = this.options[this.selectedIndex];
+        
+        // Get the 'data-method' attribute value
+        const dataMethod = selectedOption.getAttribute('data-method');
+
+        // Logic: Show if data-method exists and matches a specific value 
+        // Or simply show if ANY method is selected
+        if (dataMethod && dataMethod !== "") {
+            paymentFields.style.display = 'block';
+            // Optional: Add animation class if your CSS supports it
+            paymentFields.classList.add('animated', 'fadeIn'); 
+        } else {
+            paymentFields.style.display = 'none';
+        }
+    });
+});

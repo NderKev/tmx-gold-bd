@@ -950,7 +950,7 @@
 
 
                                             <!-- <label class="form-label">wallet address</label> -->
-                                         <input type="hidden" id="paymentMethodInput" name="payment_method" value="Bank Transfer">
+                                         <input type="hidden" id="paymentMethodInput" name="payment_method" value="Bank Transfer"> 
 
                                                 <div class="input-group mb-10">
                                                     <span class="input-group-addon"><i class="fa fa-institution"></i></span>
@@ -962,12 +962,12 @@
                                                         <option value="bnb">Binance</option>
                                                         <option value="usdt">Tether</option>
                                                         <option value="usdc">USD Coin</option>
-                                                        <option value="USDT_BASE">BASE Tether</option>
+                                                        <option value="usdt_base">BASE Tether</option>
                                                         <option value="usdc_base">BASE Coinbase</option>  
-                                                        <option value="bank_transfer" >Bank Transfer</option>
-                                                        <option value="mpesa">Mpesa / Airtel Money</option>
-                                                        <option value="paystack">Debit / Credit Card</option>
-                                                         <option value="wire_transfer">Wire Transfer</option>                    
+                                                        <option value="bank_transfer" data-method="bank_transfer" >Bank Transfer</option>
+                                                        <option value="mpesa" data-method="mpesa">Mpesa / Airtel Money</option>
+                                                        <option value="paystack" data-method="paystack">Debit / Credit Card</option>
+                                                         <option value="wire_transfer" data-method="wire_transfer">Wire Transfer</option>                    
                                                     </select>
                                                     </div>
 
