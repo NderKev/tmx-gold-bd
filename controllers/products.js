@@ -1,7 +1,7 @@
 const prodModel = require('../models/products');
 const {successResponse, errorResponse} = require('../lib/response');
 const { validateProductRegister, validateProductCategory } = require('../validators/products');
-const { validateId, validateSellerId } = require('../validators/common');
+const { validateId, validateSellerId, validateWarehouseId } = require('../validators/common');
 
 const logStruct = (func, error) => {
   return {'func': func, 'file': 'prodController', error}

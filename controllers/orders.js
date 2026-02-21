@@ -81,7 +81,7 @@ const fetchOrderByUserId = async (reqData) => {
 const updateOrderQuantity = async (reqData) => {
   try {
     const validInput = validateId(reqData);
-    const currOrder = orderModel.fetchOrderById(validInput.id);
+    const currOrder = await orderModel.fetchOrderById(validInput.id);
     validInput.quantity = currOrder[0].quantity - validInput.quantity;
     const response = await orderModel.updateOrder(validInput);
     return successResponse(204, null, null, 'updated')
@@ -213,6 +213,7 @@ const removeFromCart = async (reqData) => {
       sub_total: product[0].sub_total - validInput.sub_total > 0 ? product[0].sub_total - validInput.sub_total : 0
     }
 
+    let response;
     if (cartPayload.quantity > 0) {
       response = await orderModel.updateCart(cartPayload);
     } else {

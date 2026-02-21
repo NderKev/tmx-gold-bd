@@ -159,38 +159,38 @@ const listenBTC = async (reqData) => {
             for (const vout of data.tx.vout) {
                 if (vout.scriptpubkey_address === ADDRESS) {
                 totalReceived += vout.value; // value in sats
+                    }
                 }
-            }
-            const btc = totalReceived / 1e8;
-            let _btc_usd = parseFloat(btc*(prices.AVAX));
-             _btc_usd = _avax_usd.toFixed(2);
-            if (btc >= MIN_AMOUNT) {
-                console.log(`💰 BTC deposit received: ${btc} BTC in tx ${data.tx.txid}`);
-                 let data = {
-                    email: reqData.email,
-                    address: data.tx.from,
-                    tx_hash: data.tx.txid,
-                    mode: "btc",
-                    type: "transfer",
-                    to: ADDRESS,    
-                    status: "complete",
-                    value: btc,
-                    usd: _btc_usd
-                }
-                await transactionsModel.createTransaction(data);
-               try {
-                  let _amount = parseFloat(btc*(prices.AVAX));
-                  _amount = _amount.toFixed(2);
-                  let user_name = await userModel.fetchUserName(reqData.email);
-                   user_name = user_name[0].name;
-                  let crypto = "Bitcoin"
-                  const link = `https://live.blockcyper.com/tx/${data.tx.txid}`
-                  await sendEmail(reqData.email, TransactionMail(user_name, link, _amount, crypto, ADDRESS));
-                } catch (error) {
-                  console.log(error);
-                } 
-                console.log(`💰 Native deposit received: ${btc} BTC at tx ${data.tx.txid}`);
-                return successResponse(201, data, 'transactionCreated')
+                const btc = totalReceived / 1e8;
+                let _btc_usd = parseFloat(btc*(prices.BTC));
+                 _btc_usd = _btc_usd.toFixed(2);
+                if (btc >= MIN_AMOUNT) {
+                    console.log(`💰 BTC deposit received: ${btc} BTC in tx ${data.tx.txid}`);
+                     let txData = {
+                        email: reqData.email,
+                        address: data.tx.from,
+                        tx_hash: data.tx.txid,
+                        mode: "btc",
+                        type: "transfer",
+                        to: ADDRESS,
+                        status: "complete",
+                        value: btc,
+                        usd: _btc_usd
+                    }
+                    await transactionsModel.createTransaction(txData);
+                   try {
+                      let _amount = parseFloat(btc*(prices.BTC));
+                      _amount = _amount.toFixed(2);
+                      let user_name = await userModel.fetchUserName(reqData.email);
+                       user_name = user_name[0].name;
+                      let crypto = "Bitcoin"
+                      const link = `https://live.blockcypher.com/tx/${data.tx.txid}`
+                      await sendEmail(reqData.email, TransactionMail(user_name, link, _amount, crypto, ADDRESS));
+                    } catch (error) {
+                      console.log(error);
+                    }
+                    console.log(`💰 Native deposit received: ${btc} BTC at tx ${data.tx.txid}`);
+                    return successResponse(201, txData, 'transactionCreated')
             }
             }
         } catch (err) {
@@ -224,8 +224,8 @@ const listenEth = async (reqData) => {
         const value = ethers.formatEther(tx.value);
         const from = tx.from;
         const prices = await getPrices();
-        let _eth_usd = parseFloat(value*(prices.AVAX));
-        _eth_usd = _avax_usd.toFixed(2);
+        let _eth_usd = parseFloat(value*(prices.ETH));
+        _eth_usd = _eth_usd.toFixed(2);
         if(value == reqData.amount && reqData.from === from){
          let data = {
             email: reqData.email,
@@ -288,8 +288,8 @@ const listenBnb = async (reqData) => {
         const value = ethers.formatEther(tx.value);
         const from = tx.from;
         const prices = await getPrices();
-         let _bnb_usd = parseFloat(value*(prices.AVAX));
-         _bnb_usd = _avax_usd.toFixed(2);
+         let _bnb_usd = parseFloat(value*(prices.BNB));
+         _bnb_usd = _bnb_usd.toFixed(2);
         if(value == reqData.amount && reqData.from === from){
          let data = {
             email: reqData.email,
@@ -308,7 +308,7 @@ const listenBnb = async (reqData) => {
             _amount = _amount.toFixed(2);
             let user_name = await userModel.fetchUserName(reqData.email);
             user_name = user_name[0].name;
-            let crypto = "Ether"
+            let crypto = "BNB"
             const link = `https://bscscan.com/tx/${tx.hash}`
             await sendEmail(reqData.email, TransactionMail(user_name, link, _amount, crypto, tx.to));
           } catch (error) {
@@ -337,7 +337,7 @@ const listenAvaxUSDC = async (reqData) => {
   try {
     
     const RPC_URL = "https://api.avax.network/ext/bc/C/rpc"
-    const provider = new ethers.JsonRpcProvider("wss://api.avax.network/ext/bc/C/ws"); 
+    const provider = new ethers.WebSocketProvider("wss://api.avax.network/ext/bc/C/ws");
     prices = await getPrices();
     const ERC20_ABI = [
   "event Transfer(address indexed from, address indexed to, uint256 value)",
@@ -437,7 +437,7 @@ const listenAvaxUSDT = async (reqData) => {
             const link = `https://snowtrace.io/tx/${event.log.transactionHash}`
             let user_name = await userModel.fetchUserName(reqData.email);
             user_name = user_name[0].name;
-            await sendEmail(reqData.email, TransactionMail(user_name, link, _amount, crypto, tx.to));
+            await sendEmail(reqData.email, TransactionMail(user_name, link, _amount, crypto, to));
           } catch (error) {
             console.log(error);
           } 

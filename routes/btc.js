@@ -7,12 +7,11 @@ const listen = require('../controllers/listen')
 const {authenticator} = require('../lib/common');
 
 const BTC_ADDRESS = config.BTC_ADDRESS; // replace with your merchant BTC address
-let btc_price = listen.getPrices();
-btc_price = btc_price.BTC;
-  // BTC required for this order
 
 // Endpoint to get QR and payment info
-router.get("/payment-info/:amount", authenticator, (req, res) => {
+router.get("/payment-info/:amount", authenticator, async (req, res) => {
+ const prices = await listen.getPrices();
+ const btc_price = prices ? prices.BTC : 0;
  const EXPECTED_AMOUNT = parseFloat(req.params.amount);
   const qrUrl = `https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=bitcoin:${BTC_ADDRESS}?amount=${EXPECTED_AMOUNT}`;
   

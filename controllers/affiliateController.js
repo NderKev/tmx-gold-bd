@@ -4,7 +4,7 @@ const affiliateModel = require('../models/affiliateModel');
 const createAffiliateHandler = async (req, res) => {
   try {
     // Optionally require authenticated user: req.user.id
-    const owner_user_id = req.user?.password || null;
+    const owner_user_id = req.user?.id || null;
     const { name, source, meta } = req.body;
     const affiliate = await affiliateModel.createAffiliate({ owner_user_id, name, source, meta });
     return res.json({

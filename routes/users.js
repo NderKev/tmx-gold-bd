@@ -5,7 +5,7 @@ const router  = express.Router();
 const userController = require('../controllers/users');
 const {authenticator, allowSeller} = require('../lib/common');
 const path = require('path');
-//const authController = require('../controllers/auth');
+const authController = require('../controllers/auth');
 const url = require('url');
 const checkAdmin = require('../middleware/checkAdmin');
 const checkUser = require('../middleware/checkUser');
@@ -114,31 +114,26 @@ router.post('/verify', async (req, res) => {
   return res.status(response.status).send(response);
 })
 
-router.post('/resend-otp', async (req, res) => {
-  const response = await userController.resendEmailOtp(req.body.email);
-  return res.status(response.status).send(response);
+router.post('/resend-otp', resendOtpLimiter, async (req, res) => {
+  return userController.resendEmailOtp(req, res);
 });
 
 
-
-router.post('/sendReset', async (req, res) => {
-  const response = await userController.sendResetPassword(req.body.email);
-  return res.status(response.status).send(response);
-})
 
 
 router.post('/login', loginLimiter, async (req, res) => {
   const response = await userController.loginUser(req.body);
 
   if (response.success && response.meta) {
-    req.session.user = response.data[0];
+    req.session.user = {
+      id: response.data[0].id,
+      email: response.data[0].email,
+      name: response.data[0].name
+    };
     req.session.email = response.meta.email;
-    req.session.password = response.data[0].password;
     req.session.user_roles = response.meta.user_roles;
     req.session.user_id = response.data[0].id;
     req.session.user.role = response.meta.user_roles[0];
-    const key = req.body.email || req.ip;
-    loginLimiter.resetKey(key);
   }
 
 
