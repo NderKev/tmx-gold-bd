@@ -217,7 +217,7 @@ router.post('/tx',async (req, res) => {
 
 
 
-app.post('/latest/paystack', async (req, res) => {
+router.post('/latest/paystack', async (req, res) => {
     const { reference, address, usd, token } = req.body;
 
     try {
