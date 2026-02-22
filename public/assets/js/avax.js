@@ -541,8 +541,8 @@ async function sendSelectedToken() {
     return setupPaystackPayment(userEmail, amount);
   }
     //const _token = 
-    startPaymentPolling(option, email, from, amount);
-
+    
+startPaymentPolling(option, email, from, amount);
   /* Remaining (Mpesa, Paystack, BTC, Bank, Wire) unchanged */
 }
 
@@ -603,6 +603,7 @@ function setupPaystackPayment(email, amount) {
         handleVerification(response);
     }
 });
+
   handler.open();
 
   async function handleVerification(response) {

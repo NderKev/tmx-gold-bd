@@ -215,4 +215,44 @@ router.post('/tx',async (req, res) => {
 });
 
 
+
+
+app.post('/latest/paystack', async (req, res) => {
+    const { reference, address, usd, token } = req.body;
+
+    try {
+        // 1. Verify the transaction with Paystack directly
+        const response = await axios.get(`https://api.paystack.co/transaction/verify/${reference}`, {
+            headers: {
+                Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}` // Use SECRET key here
+            }
+        });
+
+        const data = response.data.data;
+
+        // 2. Validate the data integrity
+        // Check if Paystack says 'success' AND the amount matches your record
+        const expectedAmountInCents = Math.round(usd * 100); 
+        
+        if (data.status === 'success' && data.amount === expectedAmountInCents) {
+            
+            // 3. Trigger Token Dispatch
+            // Call your Smart Contract 'transfer' function here using ethers.js or web3.js
+            const tx = await sendTokensToWallet(address, token);
+
+            return res.status(200).json({ 
+                status: "success", 
+                message: "Payment verified and tokens dispatched",
+                txHash: tx.hash 
+            });
+        } else {
+            return res.status(400).json({ status: "error", message: "Invalid transaction data" });
+        }
+
+    } catch (error) {
+        console.error("Paystack Verification Error:", error.response?.data || error.message);
+        res.status(500).json({ status: "error", message: "Internal server error" });
+    }
+});
+
 module.exports = router;
