@@ -326,7 +326,7 @@ const OPTION_TO_PRICE_KEY = {
   usdt_base: "USDT",
   USDT_BASE: "USDT",
   usdc_base: "USDC",
-  mpesa: "Mpesa"
+  mpesa: "mpesa"
 };
 
 async function convertUsdToCrypto() {
