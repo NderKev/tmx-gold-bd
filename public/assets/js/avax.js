@@ -499,8 +499,9 @@ async function sendSelectedToken() {
            
         
     });
-    
+
     async function handleMpesa(response) {
+      const paystackReference = response.reference;
        try {
                 const verifyRes = await fetch(`${AUTH_BACKEND_URL}/api/payments/verify-mpesa`, {
                     method: "POST",
