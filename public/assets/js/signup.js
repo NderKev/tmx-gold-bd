@@ -256,3 +256,46 @@ $("#btnRegister").click(function (e) {
   })();
 
 
+$(document).ready(function() {
+    const responses = {
+        "hello": "Hello! Ready to join the gold revolution?",
+        "gold": "TMX Gold Coin is a digital asset backed by physical gold reserves.",
+        "signup": "Just fill out your email, phone, and password on this page to get started!",
+        "password": "Passwords must be secure. Use the eye icon to verify what you've typed.",
+        "safety": "We use industry-standard encryption to keep your data and assets safe.",
+        "default": "I'm not sure about that. Try asking about 'gold', 'signup', or 'safety'!"
+    };
+
+    function addMessage(text, type) {
+        const msgClass = type === 'bot' ? 'bot-msg' : 'user-msg';
+        $('#chatContent').append(`<div class="chat-message ${msgClass}">${text}</div>`);
+        $('#chatContent').scrollTop($('#chatContent')[0].scrollHeight);
+    }
+
+    $('#chatLauncher').click(() => $('#chatBox').fadeIn());
+    $('#closeChat').click(() => $('#chatBox').fadeOut());
+
+    function handleSend() {
+        const input = $('#chatInput').val().toLowerCase().trim();
+        if (!input) return;
+
+        addMessage($('#chatInput').val(), 'user');
+        $('#chatInput').val('');
+
+        setTimeout(() => {
+            let reply = responses.default;
+            for (let key in responses) {
+                if (input.includes(key)) {
+                    reply = responses[key];
+                    break;
+                }
+            }
+            addMessage(reply, 'bot');
+        }, 600);
+    }
+
+    $('#sendBtn').click(handleSend);
+    $('#chatInput').keypress(function(e) {
+        if(e.which == 13) handleSend();
+    });
+});
