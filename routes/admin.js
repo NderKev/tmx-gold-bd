@@ -42,6 +42,7 @@ router.get('/profile/:id/buy',  authenticator, checkAdmin, async (req, res) => {
 
 router.get('/profile/:id/affiliate',  authenticator, checkAdmin, async (req, res) => {
   req.body.id = Number(req.params.id);
+
   res.sendFile(path.join(__dirname, '../public' , '/affailite-program.html'));
 });
 

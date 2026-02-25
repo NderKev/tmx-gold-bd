@@ -1,5 +1,7 @@
 $(document).ready(function () {
-const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
+const AUTH_BACKEND_URL = window.location.hostname === 'localhost'
+  ? "http://localhost:7000"
+  : 'https://tmxgoldcoin.co';
 document.getElementById("verify-otp").addEventListener("click", async (e) => {
   e.preventDefault();
 
@@ -17,9 +19,10 @@ document.getElementById("verify-otp").addEventListener("click", async (e) => {
   }
 
   try {
-    const response = await fetch(`${AUTH_BACKEND_URL}/api/user/verify`, {
+    const response = await fetch(`${AUTH_BACKEND_URL}/tmxGold/v1/user/verify`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: 'include',
       body: JSON.stringify({ otp }),
     });
 
@@ -83,9 +86,10 @@ document.getElementById("verify-otp").addEventListener("click", async (e) => {
         $("#resend_status").html('Resending OTP...');
 
       $.ajax({
-        url: `${AUTH_BACKEND_URL}/api/user/resend-otp`,
+        url: `${AUTH_BACKEND_URL}/tmxGold/v1/user/resend-otp`,
         method: "POST",
         contentType: "application/json",
+        xhrFields: { withCredentials: true },
         data: JSON.stringify({ email : email}),
         success: function (res) {
           $("#otp_placement_error").html('✅ New OTP sent to your email');

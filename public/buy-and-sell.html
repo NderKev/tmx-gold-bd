@@ -950,7 +950,7 @@
 
 
                                             <!-- <label class="form-label">wallet address</label> -->
-                                         <input type="hidden" id="paymentMethodInput" name="payment_method" value="Bank Transfer"> 
+                                         <input type="hidden" id="paymentMethodInput" name="payment_method" value="Bank Transfer">
 
                                                 <div class="input-group mb-10">
                                                     <span class="input-group-addon"><i class="fa fa-institution"></i></span>
@@ -964,10 +964,10 @@
                                                         <option value="usdc">USD Coin</option>
                                                         <option value="usdt_base">BASE Tether</option>
                                                         <option value="usdc_base">BASE Coinbase</option>  
-                                                       <!-- <option value="bank_transfer" data-value="bank_transfer" >Bank Transfer</option>
-                                                        <option value="mpesa" data-value="mpesa">Mpesa / Airtel Money</option>
-                                                        <option value="paystack" data-value="paystack">Debit / Credit Card</option>
-                                                         <option value="wire_transfer" >Wire Transfer</option> -->                  
+                                                        <option value="bank_transfer" >Bank Transfer</option>
+                                                        <option value="mpesa">Mpesa / Airtel Money</option>
+                                                        <option value="paystack">Debit / Credit Card</option>
+                                                         <option value="wire_transfer">Wire Transfer</option>                    
                                                     </select>
                                                     </div>
 
@@ -987,7 +987,7 @@
 
                                             <div class="col-lg-5 no-pl">
                                                 <div class="input-group">
-                                                    <input type="number" id="usd" min="1" value="1" class="form-control" placeholder="Exchange amount" aria-describedby="basic-addon2">
+                                                    <input type="number" id="usd" min="10" value="10" class="form-control" placeholder="Exchange amount" aria-describedby="basic-addon2">
                                                     <span class="input-group-addon" id="basic-addon1">USD</span>
                                                 </div>
                                             </div>
@@ -1048,7 +1048,7 @@
                                                 </div> -->
 
                                                 <!-- Paystack -->
-                                                <div class="method-fields" id="paystackFields" data-method="paystack" style="display:none; margin-top:15px;">
+                                                <div class="method-fields" id="paystackFields" data-method="Paystack" style="display:none; margin-top:15px;">
                                                     <label for="paystackEmail">Paystack Email</label>
                                                     <input type="email" class="form-control" id="paystackEmail" placeholder="Enter Paystack email" value="tony@tmxglobal.com" readonly>
 
@@ -1061,7 +1061,7 @@
                                                 </div>
 
                                                 <!-- Mpesa -->
-                                                <div class="method-fields" data-method="mpesa" style="display:none;">
+                                                <div class="method-fields" data-method="Mpesa" style="display:none;">
                                                  <label>Mpesa Phone Number</label>
                                                   <input type="text" class="form-control" name="mpesa_number" id="phone"  placeholder="Enter Mpesa number"> 
                                                   <label>Amount (in KES)</label>
@@ -1079,7 +1079,7 @@
                                                     TMXGLOBAL EXPRESS SERVICE
                                                 -->
                                                 <!-- Bank -->
-                                                <div class="method-fields" data-method="bank_transfer" style="display:none;">
+                                                <div class="method-fields" data-method="Bank_Transfer" style="display:none;">
                                                   <label>Bank Name</label>
                                                   <input type="text" class="form-control" name="bank_name"  value="Co-operative Bank of Kenya" readonly>
                                                   <label>Account Number</label>
@@ -1088,7 +1088,7 @@
 
 
                                                 <!-- Wire Transfer -->
-                                                <div class="method-fields" data-method="wire_transfer" style="display:none;">
+                                                <div class="method-fields" data-method="Wire_Transfer" style="display:none;">
                                                   <label>Beneficiary Name</label>
                                                   <input type="text" class="form-control" name="wire_name" value="TMXGLOBAL EXPRESS SERVICE LTD" readonly>
                                                   <label>IBAN / Account Number</label>

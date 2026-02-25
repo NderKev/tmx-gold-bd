@@ -1,5 +1,7 @@
 $(document).ready(function () {
-  const AUTH_BACKEND_URL = "https://tmxgoldcoin.co";
+  const AUTH_BACKEND_URL = window.location.hostname === 'localhost'
+    ? "http://localhost:7000"
+    : "https://tmxgoldcoin.co";
   const role = localStorage.getItem("role");
   const userId = localStorage.getItem("user_id");
   const userName = localStorage.getItem("tmx_gold_name");
@@ -14,7 +16,7 @@ $(document).ready(function () {
   // 🌐 Dynamic Menu Links
   // =============================
   const links = {
-    affiliateIndex: "profile",
+    affiliateIndex: "",
     affiliateTrading: "trade",
     affiliateICO: "ico",
     affiliateUser: "user",
@@ -35,7 +37,12 @@ $(document).ready(function () {
 
   Object.entries(links).forEach(([id, endpoint]) => {
     const el = document.getElementById(id);
-    if (el) el.href = `/api/${role}/profile/${userId}/${endpoint}`;
+    if (!el) return;
+    if (!endpoint) {
+      el.href = `/tmxGold/v1/${role}/profile/${userId}`;
+      return;
+    }
+    el.href = `/tmxGold/v1/${role}/profile/${userId}/${endpoint}`;
   });
 
   // =============================
@@ -47,7 +54,7 @@ $(document).ready(function () {
 
     try {
       const resp = await fetch(
-        `${AUTH_BACKEND_URL}/api/user/referral/${encodeURIComponent(userId)}`,
+        `${AUTH_BACKEND_URL}/tmxGold/v1/affiliate/referral/${encodeURIComponent(userId)}`,
         {
           method: "GET",
           headers: { Accept: "application/json" },
@@ -66,12 +73,31 @@ $(document).ready(function () {
 
       if (res && res.success && res.referral_link) {
         $linkField.val(res.referral_link);
-        $("#statClicks").text(res.stats?.total_clicks || 0);
-        $("#statSignups").text(res.stats?.total_signups || 0);
-        $("#statConversions").text(res.stats?.total_conversions || 0);
-        $("#statCommission").text(
-          (Number(res.stats?.total_commission) || 0).toFixed(2)
-        );
+
+        const affiliateId = res.referral_id;
+        if (affiliateId) {
+          const statsResp = await fetch(
+            `${AUTH_BACKEND_URL}/tmxGold/v1/affiliate/stats/${encodeURIComponent(affiliateId)}`,
+            {
+              method: "GET",
+              headers: { Accept: "application/json" },
+              credentials: "include",
+            }
+          );
+
+          const statsJson = await statsResp.json().catch(() => ({}));
+          const stats = statsJson?.data;
+
+          $("#statClicks").text(0);
+          $("#statSignups").text(stats?.signups || 0);
+          $("#statConversions").text(stats?.total_conversions || 0);
+          $("#statCommission").text((0).toFixed(2));
+        } else {
+          $("#statClicks").text(0);
+          $("#statSignups").text(0);
+          $("#statConversions").text(0);
+          $("#statCommission").text((0).toFixed(2));
+        }
       } else {
         $linkField.val("Error fetching referral data.");
       }
@@ -110,10 +136,11 @@ $(document).ready(function () {
   // =============================
   setInterval(function () {
     $.ajax({
-      url: `${AUTH_BACKEND_URL}/api/${role}/profile/${userId}`,
+      url: `${AUTH_BACKEND_URL}/tmxGold/v1/${role}/profile/${userId}`,
       dataType: "json",
       contentType: "application/json",
       method: "GET",
+      xhrFields: { withCredentials: true },
       error: (err) => {
         if (err.status === 401) {
           alert("Session Expired! Kindly login again.");

@@ -102,6 +102,7 @@ const paymentRoutes = require('./routes/payments');
 app.use('/tmxGold/v1/payments', paymentRoutes);
 
 
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   res.status(404).send({

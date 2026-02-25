@@ -3,8 +3,6 @@
    Avalanche removed, Base added
 ============================================================ */
 
-//const { useDebugValue } = require("react");
-
 const ERC20_ABI = [
   "function transfer(address to, uint amount) returns (bool)",
   "function decimals() view returns (uint8)"
@@ -22,15 +20,6 @@ const TOKEN_ADDRESSES = {
 };
 
 const ETH_ADDRESS = "0x39bbe9679406bbeca2ea6ac680cfcc24dec900a8";
-
-
-function sanitizeAmount(value, decimals = 18) {
-  if (!value) return "0";
-  const [whole, frac = ""] = value.toString().split(".");
-  return frac.length > decimals
-    ? `${whole}.${frac.slice(0, decimals)}`
-    : value.toString();
-}
 
 /* -----------------------------
        Supported Chains
@@ -87,15 +76,14 @@ async function switchChain(chain) {
 
 /* -----------------------------
          Price Fetching
------------------------------- 
+------------------------------ */
 async function getPrices() {
   const ids = [
-    "bitcoin",
-    "ethereum",
-    "base-2",
-    "binancecoin",
-    "tether",
-    "usd-coin",
+    "bitcoin", // BTC
+    "ethereum", // ETH
+    "tether", // USDT
+    "usd-coin", // USDC
+    "binancecoin", // BNB
     "celo-kenyan-shilling"
   ];
 
@@ -111,7 +99,6 @@ async function getPrices() {
     return {
       BTC: data.bitcoin?.usd,
       ETH: data.ethereum?.usd,
-      BASE: data["base-2"]?.usd,
       BNB: data.binancecoin?.usd,
       USDT: data.tether?.usd,
       USDC: data["usd-coin"]?.usd,
@@ -121,43 +108,6 @@ async function getPrices() {
   } catch (err) {
     console.error("Price fetch error:", err);
     return null;
-  }
-} **/
-
-let lastFetchTime = 0;
-let cachedPrices = null;
-
-async function getPrices() {
-  const now = Date.now();
-  // Only fetch if we don't have prices or if the cache is older than 5 minutes (300,000ms)
-  if (cachedPrices && (now - lastFetchTime < 300000)) {
-    return cachedPrices;
-  }
-
-  const ids = ["bitcoin","ethereum","binancecoin","tether","usd-coin","mento-kenyan-shilling"];
-  const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids.join(",")}&vs_currencies=usd`;
-
-  try {
-    const res = await fetch(url);
-    if (res.status === 429) {
-      console.warn("Rate limit hit. Using old prices.");
-      return cachedPrices; 
-    }
-    const data = await res.json();
-    cachedPrices = {
-      BTC: data.bitcoin?.usd,
-      ETH: data.ethereum?.usd,
-      BASE: data.ethereum?.usd,
-      BNB: data.binancecoin?.usd,
-      USDT: data.tether?.usd,
-      USDC: data["usd-coin"]?.usd,
-      Mpesa: data["mento-kenyan-shilling"]?.usd
-    };
-    lastFetchTime = now;
-    return cachedPrices;
-  } catch (err) {
-    console.error("Price fetch error:", err);
-    return cachedPrices; // Fallback to cache on error
   }
 }
 
@@ -179,7 +129,21 @@ async function getCKESPrice() {
   }
 }
 
-const AUTH_BACKEND_URL = "https://tmxgoldcoin.co";
+const AUTH_BACKEND_URL = window.location.hostname === 'localhost'
+  ? "http://localhost:7000"
+  : "https://tmxgoldcoin.co";
+
+const PAYSTACK_PUBLIC_KEY = window.location.hostname === "localhost"
+  ? "pk_test_105d838cb4031bcd7f7a81c685193c75ce34e47e"
+  : "pk_live_7bda8bdfc8d90392fde6a15590c7e470127dd2d2";
+
+const PAYSTACK_CARD_CURRENCY =
+  localStorage.getItem("paystack_card_currency") ||
+  (window.location.hostname === "localhost" ? "GHS" : "USD");
+
+const PAYSTACK_MPESA_CURRENCY =
+  localStorage.getItem("paystack_mpesa_currency") ||
+  (window.location.hostname === "localhost" ? "GHS" : "KES");
 
 /* Preload Prices */
 let prices = null,
@@ -195,10 +159,10 @@ let prices = null,
 async function sendToken({ token, chain, recipient, amount }) {
   if (!window.ethereum) return alert("MetaMask not found!");
 
-  // 1. Ensure prices are loaded before proceeding
-  if (!prices || !prices.ETH) {
+  if (!prices) {
+    // try to refresh prices if they weren't loaded
     prices = await getPrices();
-    if (!prices) return alert("Price data is currently unavailable. Please refresh.");
+    if (!prices) return alert("Unable to fetch prices. Try again later.");
   }
 
   try {
@@ -211,33 +175,43 @@ async function sendToken({ token, chain, recipient, amount }) {
   const provider = new ethers.BrowserProvider(window.ethereum);
   const signer = await provider.getSigner();
 
-  const MIN_USD = 1;
+  // Minimum USD threshold for native tokens (e.g. require at least $10 worth)
+  const MIN_USD = 10;
 
-  // 2. NaN Protection: Added fallbacks (|| 1) to prevent division by undefined/zero
+  // Compute native minimum amounts in wei (BigInt) using current prices.
+  // Note: ethers.parseEther expects a decimal string.
   const minAmount = {
-    ETH: ethers.parseEther((MIN_USD / (prices.ETH || 1)).toFixed(18)),
-    BASE: ethers.parseEther((MIN_USD / (prices.BASE || 1)).toFixed(18)),
-    BNB: ethers.parseEther((MIN_USD / (prices.BNB || 1)).toFixed(18)),
-    ERC20: ethers.parseUnits("1", 6) 
+    ETH:
+      typeof prices.ETH === "number"
+        ? ethers.parseEther((MIN_USD / prices.ETH).toString())
+        : ethers.parseEther("0"),
+    BASE:
+      typeof prices.BASE === "number"
+        ? ethers.parseEther((MIN_USD / prices.BASE).toString())
+        : ethers.parseEther("0"),
+    BNB:
+      typeof prices.BNB === "number"
+        ? ethers.parseEther((MIN_USD / prices.BNB).toString())
+        : ethers.parseEther("0"),
+    // ERC20 min amount (10 units) in token subunits — default using 6 decimals (will be overridden by actual token decimals)
+    ERC20: ethers.parseUnits("10", 6)
   };
 
   let parsedAmount;
 
   /* Native tokens: ETH, BNB, BASE */
   if (["ETH", "BNB", "BASE"].includes(token)) {
+    // parseEther works for 18-decimal native tokens (ETH/BASE/BNB)
     try {
-      // 3. Type Fix: amount comes from .value (String). Convert to Number before .toFixed()
-      const numericAmount = parseFloat(amount);
-      if (isNaN(numericAmount)) throw new Error("Amount is NaN");
-      
-      const safe = numericAmount.toFixed(18);
-      parsedAmount = ethers.parseEther(safe);
+      parsedAmount = ethers.parseEther(amount.toString());
     } catch (e) {
       return alert("Invalid amount format for native token.");
     }
 
+    // ensure we compare BigInts
     const tokenMin = minAmount[token];
     if (tokenMin && parsedAmount < tokenMin) {
+      // format min back to human-readable amount
       const humanMin = ethers.formatEther(tokenMin);
       return alert(`Min ${token} is ${humanMin}`);
     }
@@ -263,8 +237,10 @@ async function sendToken({ token, chain, recipient, amount }) {
     if (!tokenAddress)
       return alert(`${token} is not supported on ${chain}`);
 
+    // create contract connected to signer
     const contract = new ethers.Contract(tokenAddress, ERC20_ABI, signer);
 
+    // get decimals from contract (fallback to 6 if the call fails)
     let decimals = 6;
     try {
       decimals = Number(await contract.decimals());
@@ -273,13 +249,12 @@ async function sendToken({ token, chain, recipient, amount }) {
     }
 
     try {
-      // sanitizeAmount handles the string conversion internally
-      const safe = sanitizeAmount(amount, decimals);
-      parsedAmount = ethers.parseUnits(safe, decimals);
+      parsedAmount = ethers.parseUnits(amount.toString(), decimals);
     } catch (e) {
       return alert("Invalid amount format for ERC20 token.");
     }
 
+    // compute correct minimum for ERC20 using the token's decimals if needed
     const minERC20 = ethers.parseUnits("10", decimals);
     if (parsedAmount < minERC20) {
       return alert(
@@ -292,6 +267,7 @@ async function sendToken({ token, chain, recipient, amount }) {
 
     try {
       const tx = await contract.transfer(recipient, parsedAmount);
+      // contract.transfer returns a transaction response object
       alert(`${token} TX sent: ${tx.hash}`);
       await tx.wait();
       alert(`${token} confirmed!`);
@@ -315,35 +291,21 @@ const mpesa_amount = document.getElementById("mpesa_amount");
 const wallet = document.getElementById("wallet_address");
 const user_name = localStorage.getItem("tmx_gold_name");
 
-/* Map select option values (lowercase) to prices object keys (uppercase) */
-const OPTION_TO_PRICE_KEY = {
-  btc: "BTC",
-  eth: "ETH",
-  base: "BASE",
-  bnb: "BNB",
-  usdt: "USDT",
-  usdc: "USDC",
-  usdt_base: "USDT",
-  USDT_BASE: "USDT",
-  usdc_base: "USDC",
-  mpesa: "mpesa"
-};
-
 async function convertUsdToCrypto() {
   prices = await getPrices();
   const usd = parseFloat(usdInput.value);
   const option = tokenSelect.value;
+  const normalizedOption = (option || "").toLowerCase();
 
   if (isNaN(usd)) {
     cryptoOutput.value = "Invalid USD";
     return;
   }
 
-  const priceKey = OPTION_TO_PRICE_KEY[option];
   let result, result_kes;
-  if (prices && priceKey && prices[priceKey]) {
-    result = usd / prices[priceKey];
-    result_kes = usd / prices[priceKey];
+  if (prices && prices[option]) {
+    result = usd / prices[option];
+    result_kes = usd / prices[option];
   } else {
     result = usd / (prices?.BTC || 1);
     result_kes = usd / (prices?.mpesa || 1);
@@ -351,19 +313,19 @@ async function convertUsdToCrypto() {
 
   cryptoOutput.value = result.toString();
 
-  if (option === "mpesa") {
+  if (normalizedOption === "mpesa") {
     cryptoTo.innerText = "KES";
     mpesa_amount.value = result_kes.toFixed(0);
-  } else if (option === "paystack") {
+  } else if (normalizedOption === "paystack") {
     cryptoTo.innerText = "USD";
     cryptoOutput.value = usd;
     kes_amount.value = usd;
-  } else if (option === "btc") {
+  } else if (normalizedOption === "btc") {
     cryptoTo.innerText = "BTC";
     cryptoOutput.value = result.toFixed(6);
   } else {
-    cryptoTo.innerText = option.toUpperCase();
-    cryptoOutput.value = result.toFixed(10);
+    cryptoTo.innerText = option;
+    cryptoOutput.value = result.toFixed(5);
   }
 }
 
@@ -372,10 +334,21 @@ usdInput.onchange = convertUsdToCrypto;
 tokenSelect.onchange = convertUsdToCrypto;
 convertUsdToCrypto();
 
+tokenSelect.addEventListener("change", function () {
+  const paystackFields = document.getElementById("paystackFields");
+  if (paystackFields) {
+    paystackFields.style.display = this.value === "paystack" ? "block" : "none";
+  }
+
+  const mpesaFields = document.querySelector('.method-fields[data-method="Mpesa"]');
+  if (mpesaFields) {
+    mpesaFields.style.display = this.value === "mpesa" ? "block" : "none";
+  }
+});
+
 /* -----------------------------
          CONNECT METAMASK
 ------------------------------ */
-let provider, signer;
 async function connect() {
   if (!window.ethereum) return alert("Install MetaMask!");
   provider = new ethers.BrowserProvider(window.ethereum);
@@ -388,14 +361,135 @@ document.addEventListener("DOMContentLoaded", () => {
   connect();
 });
 
-
-
 /* -----------------------------
    SEND BUTTON DISPATCHER
 ------------------------------ */
 async function sendSelectedToken() {
   const amount = document.getElementById("amount").value;
-  const option = document.getElementById("payment_method").value.toLowerCase();
+  const option = document.getElementById("payment_method").value;
+
+  if (option === "paystack") {
+    const address = document.getElementById("wallet_address")?.value;
+    const email = document.getElementById("paystackEmail")?.value;
+    const usd = Number(document.getElementById("paystackAmount")?.value);
+
+    if (!address || !email || !usd) {
+      alert("Please enter wallet address and Paystack amount.");
+      return;
+    }
+
+    const token = usd / 0.005;
+
+    if (typeof PaystackPop === "undefined") {
+      alert("Paystack is not available.");
+      return;
+    }
+
+    const handler = PaystackPop.setup({
+      key: PAYSTACK_PUBLIC_KEY,
+      email,
+      amount: Math.round(usd * 100),
+      currency: PAYSTACK_CARD_CURRENCY,
+      ref: "" + Math.floor(Math.random() * 1000000000 + 1),
+      callback: function (response) {
+        (async () => {
+          try {
+            const resp = await fetch(`${AUTH_BACKEND_URL}/tmxGold/v1/payments/paystack`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: JSON.stringify({
+                reference: response.reference,
+                address,
+                email,
+                amount: usd,
+                token,
+                usd,
+              }),
+            });
+
+            const data = await resp.json().catch(() => ({}));
+            if (resp.ok && data && data.success) {
+              alert("Payment verified successfully");
+            } else {
+              alert(data?.message || "Payment verification failed");
+            }
+          } catch (e) {
+            console.error("Paystack verification error:", e);
+            alert("Error verifying payment");
+          }
+        })();
+      },
+      onClose: function () {
+        alert("Transaction was not completed, window closed.");
+      },
+    });
+
+    handler.openIframe();
+    return;
+  }
+
+  if (option === "mpesa") {
+    const address = document.getElementById("wallet_address")?.value;
+    const email = document.getElementById("paystackEmail")?.value;
+    const kes = Number(document.getElementById("mpesa_amount")?.value);
+    const usd = Number(document.getElementById("usd")?.value);
+
+    if (!address || !email || !kes) {
+      alert("Please enter wallet address and Mpesa amount.");
+      return;
+    }
+
+    const token = (usd || 0) / 0.005;
+
+    if (typeof PaystackPop === "undefined") {
+      alert("Paystack is not available.");
+      return;
+    }
+
+    const handler = PaystackPop.setup({
+      key: PAYSTACK_PUBLIC_KEY,
+      email,
+      amount: Math.round(kes * 100),
+      currency: PAYSTACK_MPESA_CURRENCY,
+      ref: "" + Math.floor(Math.random() * 1000000000 + 1),
+      callback: function (response) {
+        (async () => {
+          try {
+            const resp = await fetch(`${AUTH_BACKEND_URL}/tmxGold/v1/payments/verify-mpesa`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: JSON.stringify({
+                reference: response.reference,
+                address,
+                email,
+                amount: kes,
+                token,
+                usd,
+              }),
+            });
+
+            const data = await resp.json().catch(() => ({}));
+            if (resp.ok && data && (data.success || data.status === "success")) {
+              alert("Payment verified successfully");
+            } else {
+              alert(data?.message || "Payment verification failed");
+            }
+          } catch (e) {
+            console.error("Mpesa verification error:", e);
+            alert("Error verifying payment");
+          }
+        })();
+      },
+      onClose: function () {
+        alert("Transaction was not completed, window closed.");
+      },
+    });
+
+    handler.openIframe();
+    return;
+  }
 
   if (option === "eth")
     return sendToken({
@@ -406,8 +500,7 @@ async function sendSelectedToken() {
     });
   if (option === "btc") {
   //showBTC(amount);
-  const _usd = document.getElementById("usd").value;
-  openBtcPopup(_usd, amount);
+  openBtcPopup(amount, amount);
   return;
 }
 
@@ -459,183 +552,12 @@ async function sendSelectedToken() {
       recipient: ETH_ADDRESS,
       amount
     });
-
-  const email = localStorage.getItem("tmx_gold_name") || localStorage.getItem("name");
-  const from = document.getElementById("wallet_address")?.value || "";
-
-  if (option === "mpesa") {
-    // 1. Collect all required data for your backend body
-    const amountKES = document.getElementById("mpesa_amount").value;
-    const usdValue = document.getElementById("usd").value; // The USD input
-    const tokenAmount = document.getElementById("amount").value; // The crypto amount to send
-     //let _amount = parseFloat(usdValue/0.005).toFixed(0);
-      //_amount = parseInt(_amount * 1e18).toString();
-    const pricePerToken = 0.005; // Example price per token in USD, replace with actual logic if needed
-    let _amount = ethers.parseUnits(usdValue / pricePerToken, 18);
-    const userEmail = "tony@tmxglobal.com"; // Hardcoded email for testing
-    const walletAddress = document.getElementById("wallet_address").value;
-
-    // 2. Trigger Paystack M-Pesa Flow
-    // Note: You must use the Paystack Inline JS to get a 'reference' first
-    const handler = PaystackPop.setup({
-        key: 'pk_live_7bda8bdfc8d90392fde6a15590c7e470127dd2d2', // Replace with your public key
-        email: userEmail,
-        amount: Math.round(amountKES * 100), // Paystack expects subunits (kobo/cents)
-        currency: "KES",
-        metadata: {
-            custom_fields: [{ display_name: "Wallet Address", variable_name: "wallet", value: walletAddress }]
-        },
-        onClose: function() {
-            alert('Transaction cancelled.');
-        },
-         onSuccess: (response) => {
-        // Handle the async backend call here
-        handleMpesa(response);
-    }
-            // response.reference is the ID generated by Paystack
-            
-
-            // 3. Match your Backend route: /verify-mpesa
-           
-        
-    });
-
-    async function handleMpesa(response) {
-      const paystackReference = response.reference;
-       try {
-                const verifyRes = await fetch(`${AUTH_BACKEND_URL}/api/payments/verify-mpesa`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ 
-                        reference: paystackReference, 
-                        address: walletAddress, 
-                        email: userEmail, 
-                        amount: amountKES, 
-                        token: _amount, 
-                        usd: usdValue 
-                    })
-                });
-
-                const result = await verifyRes.json();
-
-                if (result.status === "success") {
-                    document.getElementById("status").textContent = "✅ Payment Confirmed & Tokens Sent!";
-                    document.getElementById("status").className = "confirmed";
-                    alert("Success! Tokens have been dispatched to your wallet.");
-                } else {
-                    alert("Verification failed: " + (result.data?.message || "Unknown error"));
-                }
-            } catch (e) {
-                console.error("Verification Error:", e);
-                alert("Error connecting to server for verification.");
-            }
-    }
-
-    handler.open();
-    return; // Payment verification is handled in the Paystack callback above
-  }
-
-  if (option === "paystack") {
-    // Usually Paystack requires a popup or redirect
-    const userEmail = "tony@tmxglobal.com"; // Hardcoded email for testing
-    return setupPaystackPayment(userEmail, amount);
-  }
+    const email = localStorage.getItem("name");
+    const from = document.getElementById("wallet_address");
     //const _token = 
-    
-startPaymentPolling(option, email, from, amount);
+    startPaymentPolling(option, email, from?.value, amount);
+
   /* Remaining (Mpesa, Paystack, BTC, Bank, Wire) unchanged */
-}
-
-function setupPaystackPayment(email, amount) {
-    const amountKES = document.getElementById("paystackAmount").value;
-    const usdValue = document.getElementById("usd").value; // The USD input
-    //let _amount = parseFloat(usdValue/0.005).toFixed(0);
-   
-   // _amount = parseInt(_amount * 1e18).toString(); // Convert to wei for ERC20 tokens
-    const pricePerToken = 0.005; // Example price per token in USD, replace with actual logic if needed
-    let _amount = ethers.parseUnits(usdValue / pricePerToken, 18);
-    const tokenAmount = document.getElementById("amount").value; // The crypto amount to send
-    // Hardcoded email for testing
-    const walletAddress = document.getElementById("wallet_address").value;
-  //email = 
-
-  /**) {
-      alert('Payment successful! Reference: ' + response.reference);
-      const paystackReference = response.reference;
-      // Here you would notify your backend
-      try {
-                const verifyRes = await fetch(`${AUTH_BACKEND_URL}/api/payments/paystack`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ 
-                        reference: paystackReference, 
-                        address: walletAddress, 
-                        email: email, 
-                        amount: amountKES, 
-                        token: _amount, 
-                        usd: usdValue 
-                    })
-                });
-
-                const result = await verifyRes.json();
-
-                if (result.status === "success") {
-                    document.getElementById("status").textContent = "✅ Payment Confirmed & Tokens Sent!";
-                    document.getElementById("status").className = "confirmed";
-                    alert("Success! Tokens have been dispatched to your wallet.");
-                } else {
-                    alert("Verification failed: " + (result.data?.message || "Unknown error"));
-                }
-            } catch (e) {
-                console.error("Verification Error:", e);
-                alert("Error connecting to server for verification.");
-            }
-    }
-  }); **/
-  const handler = PaystackPop.setup({
-    key: 'pk_live_7bda8bdfc8d90392fde6a15590c7e470127dd2d2',
-    email: email,
-    amount: Math.round(amount * 100),
-    currency: "USD",
-    onClose: () => alert('Window closed.'),
-    onSuccess: (response) => {
-        // Handle the async backend call here
-        handleVerification(response);
-    }
-});
-
-  handler.open();
-
-  async function handleVerification(response) {
-    const paystackReference = response.reference;
-    try {
-        const verifyRes = await fetch(`${AUTH_BACKEND_URL}/api/payments/paystack`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ 
-                reference: paystackReference, 
-                address: walletAddress, 
-                email: email, 
-                amount: amountKES, 
-                token: _amount, 
-                usd: usdValue 
-            })
-        });
-        
-        // ... handle result
-         const result = await verifyRes.json();
-
-                if (result.status === "success") {
-                    document.getElementById("status").textContent = "✅ Payment Confirmed & Tokens Sent!";
-                    document.getElementById("status").className = "confirmed";
-                    alert("Success! Tokens have been dispatched to your wallet.");
-                } else {
-                    alert("Verification failed: " + (result.data?.message || "Unknown error"));
-                }
-    } catch (e) {
-        console.error("Verification Error:", e);
-    }
-}
 }
 
 document.getElementById("btnBuyTokens").onclick = sendSelectedToken;
@@ -645,11 +567,13 @@ document.getElementById("btnBuyTokens").onclick = sendSelectedToken;
 ------------------------------ */
 
 
-async function checkPayment(crypto, email, from, amount, address, token) {
+async function checkPayment(crypto, email, from, amount) {
   try {
-    const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
+    const routeCrypto = crypto === "base" ? "eth" : crypto;
+    const res = await fetch(`${AUTH_BACKEND_URL}/tmxGold/v1/payments/${routeCrypto}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({ email, amount, from })
     });
 
@@ -745,7 +669,7 @@ function closeBTC() {
       AUTO POLL PAYMENT ( min)
 ------------------------------ */
 
-let polling = null;
+let polling = 10;
 
 /** function startPaymentPolling(crypto, email, from, amount) {
   // Clear old interval if running
@@ -764,44 +688,15 @@ let polling = null;
 function startPaymentPolling(crypto, email, from, amount) {
   if (polling) clearInterval(polling);
 
-  const SUPPORTED = ["eth", "usdt", "usdc", "base", "bnb", "usdt_base", "usdc_base"];
-
+  const SUPPORTED = ["eth", "usdt", "usdc", "base", "bnb"];
   if (!SUPPORTED.includes(crypto)) {
-    console.warn("No backend support for:", crypto);
+    console.warn("Unsupported payment method for polling:", crypto);
     return;
   }
-  const address = document.getElementById("wallet_address").value;
-  let token = document.getElementById("usd").value;
-  token = parseFloat(token/0.005).toFixed(0);
-  token = parseInt(token * 1e18).toString(); // Convert to wei for ERC20 tokens
- 
-  checkPayment(crypto, email, from, amount, address, token);
+
+  checkPayment(crypto, email, from, amount);
 
   polling = setInterval(() => {
-    checkPayment(crypto, email, from, amount, address, token);
+    checkPayment(crypto, email, from, amount);
   }, 60 * 1000);
 }
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    const paymentMethodSelect = document.getElementById('payment_method');
-    const paymentFields = document.getElementById('paymentFields');
-
-    paymentMethodSelect.addEventListener('change', function() {
-        // Get the currently selected option
-        const selectedOption = this.options[this.selectedIndex];
-        
-        // Get the 'data-method' attribute value
-        const dataMethod = selectedOption.getAttribute('data-method');
-
-        // Logic: Show if data-method exists and matches a specific value 
-        // Or simply show if ANY method is selected
-        if (dataMethod && dataMethod !== "") {
-            paymentFields.style.display = 'block';
-            // Optional: Add animation class if your CSS supports it
-            paymentFields.classList.add('animated', 'fadeIn'); 
-        } else {
-            paymentFields.style.display = 'none';
-        }
-    });
-});

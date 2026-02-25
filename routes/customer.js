@@ -24,10 +24,13 @@ router.get('/profile/:id/user',  authenticator, checkUser, async (req, res) => {
   res.sendFile(path.join(__dirname, '../public' , 'index-ico-user.html'));
 });
 
-router.get('/profile/:id/buy',  authenticator, checkUser, async (req, res) => {
+router.get('/profile/:id/buy', authenticator, checkUser, async (req, res) => {
   req.body.id = Number(req.params.id);
-  res.sendFile(path.join(__dirname, '../public' , 'buy-and-sell.html'));
+  res.sendFile(path.join(__dirname, '../public', 'buy-and-sell.html'));
 });
+
+
+
 
 router.get('/profile/:id/affiliate',  authenticator, checkUser, async (req, res) => {
   req.body.id = Number(req.params.id);

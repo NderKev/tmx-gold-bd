@@ -1,7 +1,7 @@
 // routes/payments.js
+require('dotenv').config();
 const express = require("express");
 const axios = require("axios");
-const fetch = require("node-fetch");
 const listen = require("../controllers/listen");
 const tokens = require("../controllers/tokens");
 const transactions = require("../controllers/transactions");
@@ -19,7 +19,27 @@ const PAYSTACK_SECRET = process.env.PAYSTACK_SECRET;
 router.post("/paystack", async (req, res) => {
   try {
     const { reference, address, email, amount, token, usd} = req.body;
-   // let  =
+    if (!PAYSTACK_SECRET) {
+      return res.status(500).json({
+        success: false,
+        message: "PAYSTACK_SECRET is not configured on the server",
+      });
+    }
+
+    if (!email || !address) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required fields: email and address are required",
+      });
+    }
+
+    if (usd === undefined || usd === null || Number.isNaN(Number(usd))) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing/invalid required field: usd",
+      });
+    }
+
     if (!reference) {
       return res.status(400).json({
         success: false,
@@ -97,10 +117,28 @@ router.post("/verify-mpesa",async (req, res) => {
   //const reference = req.query.reference;
   const { reference, address, email, amount, token, usd} = req.body;
   try {
-    const response = await fetch(`https://api.paystack.co/transaction/verify/${reference}`, {
-      headers: { Authorization: `Bearer ${PAYSTACK_SECRET}` }
+    if (!PAYSTACK_SECRET) {
+      return res.status(500).json({
+        success: false,
+        message: "PAYSTACK_SECRET is not configured on the server",
+      });
+    }
+
+    if (!reference) {
+      return res.status(400).json({
+        success: false,
+        message: "No reference supplied",
+      });
+    }
+
+    const url = `https://api.paystack.co/transaction/verify/${reference}`;
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${PAYSTACK_SECRET}`,
+      },
     });
-    const result = await response.json();
+
+    const result = response.data;
 
     if (result.status && result.data.status === "success") {
       console.log("✅ Payment Success:", result.data);
@@ -125,78 +163,76 @@ router.post("/verify-mpesa",async (req, res) => {
       console.log(error);
     } 
        await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
-      return res.json({ status: "success", data: result.data });
+      return res.json({ success: true, status: "success", data: result.data });
     } else {
-      return res.json({ status: "failed", data: result.data });
+      return res.json({ success: false, status: "failed", data: result.data });
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Payment verification failed" });
+    console.error("Mpesa Verification Error:", error?.response?.data || error?.message || error);
+    res.status(500).json({ success: false, message: "Payment verification failed" });
   }
 });
 
 router.post('/btc',  async (req, res) => {
-  const {email, from, address, token} = req.body;
+  const {email, from} = req.body;
   const response = await listen.listenBTC({email : email, from : from});
-  await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
+  
   return res.status(response.status).send(response);
 });
 
 router.post('/eth',async (req, res) => {
-   const {email, from, amount, address, token} = req.body;
+   const {email, from, amount} = req.body;
 
   const response =  await listen.listenEth({email : email, from : from, amount : amount});
-  await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
+  
   return res.status(response.status).send(response);
 });
 
 
 router.post('/avax',async (req, res) => {
-   const {email, from, amount, address, token} = req.body;
+   const {email, from, amount} = req.body;
 
   const response = await listen.listenAvax({email : email, from : from, amount : amount});
-  await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
   
   return res.status(response.status).send(response);
 });
 
 
 router.post('/bnb',async (req, res) => {
-   const {email, from, amount, address, token} = req.body;
+   const {email, from, amount} = req.body;
   const response = await listen.listenBnb({email : email, from : from, amount : amount});
-   await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
+  
   return res.status(response.status).send(response);
 });
 
 router.post('/usdc',async (req, res) => {
-   const {email, from, amount, address, token} = req.body;
+   const {email, from, amount} = req.body;
 
   const response =   await listen.listenUSDC({email : email, from : from, amount : amount});
-   await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
+  
   return res.status(response.status).send(response);
 });
 
 router.post('/usdt',async (req, res) => {
-   const {email, from, amount, address, token} = req.body;
+   const {email, from, amount} = req.body;
 
   const response = await listen.listenUSDT({email : email, from : from, amount : amount});
-  await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
+  
   return res.status(response.status).send(response);
 });
 
 router.post('/avax-usdc',async (req, res) => {
-   const {email, from, amount, address, token} = req.body;
+   const {email, from, amount} = req.body;
 
   const response = await listen.listenAvaxUSDC({email : email, from : from, amount : amount});
-  await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
+  
   return res.status(response.status).send(response);
 });
 
 router.post('/avax-usdt',async (req, res) => {
-   const {email, from, amount, address, token} = req.body;
+   const {email, from, amount} = req.body;
 
   const response = await listen.listenAvaxUSDT({email : email, from : from, amount : amount});
-  await tokens.SendTokens({to : address, amount : token, email : email, from : FROM_ADDRESS});
   
   return res.status(response.status).send(response);
 });
@@ -214,45 +250,5 @@ router.post('/tx',async (req, res) => {
   return res.status(response.status).send(response);
 });
 
-
-
-
-router.post('/latest/paystack', async (req, res) => {
-    const { reference, address, usd, token } = req.body;
-
-    try {
-        // 1. Verify the transaction with Paystack directly
-        const response = await axios.get(`https://api.paystack.co/transaction/verify/${reference}`, {
-            headers: {
-                Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}` // Use SECRET key here
-            }
-        });
-
-        const data = response.data.data;
-
-        // 2. Validate the data integrity
-        // Check if Paystack says 'success' AND the amount matches your record
-        const expectedAmountInCents = Math.round(usd * 100); 
-        
-        if (data.status === 'success' && data.amount === expectedAmountInCents) {
-            
-            // 3. Trigger Token Dispatch
-            // Call your Smart Contract 'transfer' function here using ethers.js or web3.js
-            const tx = await sendTokensToWallet(address, token);
-
-            return res.status(200).json({ 
-                status: "success", 
-                message: "Payment verified and tokens dispatched",
-                txHash: tx.hash 
-            });
-        } else {
-            return res.status(400).json({ status: "error", message: "Invalid transaction data" });
-        }
-
-    } catch (error) {
-        console.error("Paystack Verification Error:", error.response?.data || error.message);
-        res.status(500).json({ status: "error", message: "Internal server error" });
-    }
-});
 
 module.exports = router;

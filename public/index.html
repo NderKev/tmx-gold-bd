@@ -99,94 +99,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css"
     />
-    <style>
-      /* Chatbot Styles */
-.chat-launcher {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 60px;
-    height: 60px;
-    background: #f3ad0c; /* TMX Gold Theme */
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    z-index: 1000;
-    transition: transform 0.3s ease;
-}
-
-.chat-launcher:hover { transform: scale(1.1); }
-
-.chat-box {
-    position: fixed;
-    bottom: 90px;
-    right: 20px;
-    width: 320px;
-    height: 450px;
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.2);
-    display: none;
-    flex-direction: column;
-    overflow: hidden;
-    z-index: 1000;
-}
-
-.chat-header {
-    background: #222;
-    color: #f3ad0c;
-    padding: 15px;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-}
-
-.chat-content {
-    flex: 1;
-    padding: 15px;
-    overflow-y: auto;
-    background: #f9f9f9;
-    font-size: 13px;
-}
-
-.chat-message {
-    margin-bottom: 10px;
-    padding: 8px 12px;
-    border-radius: 10px;
-    max-width: 85%;
-}
-
-.bot-msg { background: #eee; align-self: flex-start; }
-.user-msg { background: #f3ad0c; color: white; align-self: flex-end; margin-left: auto; }
-
-.chat-footer {
-    padding: 10px;
-    border-top: 1px solid #ddd;
-    display: flex;
-}
-
-.chat-footer input {
-    flex: 1;
-    border: 1px solid #ddd;
-    padding: 8px;
-    border-radius: 5px;
-    outline: none;
-}
-
-.chat-btn {
-    background: none;
-    border: none;
-    color: #f3ad0c;
-    margin-left: 10px;
-    cursor: pointer;
-    font-size: 18px;
-}
-    </style>
   </head>
   <!-- END HEAD -->
 
@@ -425,23 +337,6 @@
           </p>
         </div>
       </div>
-      <div class="chat-launcher" id="chatLauncher">
-    <i class="fa fa-comments"></i>
-</div>
-
-<div class="chat-box" id="chatBox">
-    <div class="chat-header">
-        TMX Gold Support
-        <span style="cursor:pointer" id="closeChat">&times;</span>
-    </div>
-    <div class="chat-content" id="chatContent">
-        <div class="chat-message bot-msg">Hi! 👋 How can I help you with TMX Gold Coin today?</div>
-    </div>
-    <div class="chat-footer">
-        <input type="text" id="chatInput" placeholder="Ask a question...">
-        <button class="chat-btn" id="sendBtn"><i class="fa fa-paper-plane"></i></button>
-    </div>
-</div>
     </div>
 
     <!-- MAIN CONTENT AREA ENDS -->

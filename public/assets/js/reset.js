@@ -1,10 +1,13 @@
 $(document).ready(function () {
-  const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
+  const AUTH_BACKEND_URL = window.location.hostname === 'localhost'
+    ? "http://localhost:7000"
+    : 'https://tmxgoldcoin.co';
 $("#sendOtpBtn").click(function (e) {
   e.preventDefault();
 
-  const AUTH_BACKEND_URL = "https://tmxgoldcoin.co";
-  // const AUTH_BACKEND_URL = "http://localhost:3030";
+  const AUTH_BACKEND_URL = window.location.hostname === 'localhost'
+    ? "http://localhost:7000"
+    : "https://tmxgoldcoin.co";
 
   const $btn = $("#sendOtpBtn");
   const $error = $("#send_placement_error");
@@ -20,10 +23,11 @@ $("#sendOtpBtn").click(function (e) {
   }
 
   $.ajax({
-    url: `${AUTH_BACKEND_URL}/api/user/sendReset`,
+    url: `${AUTH_BACKEND_URL}/tmxGold/v1/user/sendReset`,
     method: "POST",
     contentType: "application/json",
     dataType: "json",
+    xhrFields: { withCredentials: true },
     data: JSON.stringify({ email }),
 
     success: function (data) {
@@ -184,9 +188,10 @@ function startLockoutCountdown(lockedUntil, $btn, $error, defaultText) {
 
 
     $.ajax({
-      url: `${AUTH_BACKEND_URL}/api/user/updatePassword`,
+      url: `${AUTH_BACKEND_URL}/tmxGold/v1/user/updatePassword`,
       method: "POST",
       contentType: "application/json",  // keep JSON request
+      xhrFields: { withCredentials: true },
       data: JSON.stringify({ otp : otp, password : passsword }),
       // ✅ handle specific HTTP codes here:
       statusCode: {

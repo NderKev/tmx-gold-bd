@@ -1,8 +1,9 @@
 $("#btnLogin").click(function (e) {
   e.preventDefault();
 
-  const AUTH_BACKEND_URL = "https://tmxgoldcoin.co";
-  // const AUTH_BACKEND_URL = "http://localhost:3030";
+  const AUTH_BACKEND_URL = window.location.hostname === 'localhost'
+    ? "http://localhost:7000"
+    : "https://tmxgoldcoin.co";
 
   const $btn = $("#btnLogin");
   const $error = $("#login_placement_error");
@@ -25,10 +26,11 @@ $("#btnLogin").click(function (e) {
   }
 
   $.ajax({
-    url: `${AUTH_BACKEND_URL}/api/user/login`,
+    url: `${AUTH_BACKEND_URL}/tmxGold/v1/user/login`,
     method: "POST",
     contentType: "application/json",
     dataType: "json",
+    xhrFields: { withCredentials: true },
     data: JSON.stringify({
       user_name: email,
       password: password,
@@ -38,11 +40,11 @@ $("#btnLogin").click(function (e) {
       if (results.success === true || results.status === 200 || results.status === 201) {
         localStorage.setItem("tmx_gold_name", email);
         localStorage.setItem("user_id", results.meta.id);
-        localStorage.setItem("role", results.meta.user_roles);
+        localStorage.setItem("role", results.meta.user_roles?.[0] || results.meta.user_roles);
         localStorage.setItem("token", results.data?.[0]?.token || "");
         refreshLogin();
 
-        window.location.href = `${AUTH_BACKEND_URL}/api/${localStorage.getItem(
+        window.location.href = `${AUTH_BACKEND_URL}/tmxGold/v1/${localStorage.getItem(
           "role"
         )}/profile/${localStorage.getItem("user_id")}`;
       } else {

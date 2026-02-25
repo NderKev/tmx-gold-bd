@@ -1,5 +1,7 @@
 $(document).ready(function(){
- let AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
+ let AUTH_BACKEND_URL = window.location.hostname === 'localhost'
+   ? "http://localhost:7000"
+   : 'https://tmxgoldcoin.co';
    var logout = document.getElementById("logout")
     var isLoggedIn = localStorage.getItem("tmx_gold_name");
     var role = localStorage.getItem("role");
@@ -17,10 +19,11 @@ $(document).ready(function(){
         localStorage.setItem('role', "");
         localStorage.setItem('token', "");
       $.ajax({
-            url: `${AUTH_BACKEND_URL}/api/user/logout`,
+            url: `${AUTH_BACKEND_URL}/tmxGold/v1/user/logout`,
             dataType: "JSON",
             contentType: "application/json",
             method: "POST",
+            xhrFields: { withCredentials: true },
             data : {},
             error: (err) => {
                 $("#placement_error_log").html(err.mesage);
@@ -37,7 +40,9 @@ $(document).ready(function(){
 
 
 document.addEventListener('DOMContentLoaded', function() {
-  const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
+  const AUTH_BACKEND_URL = window.location.hostname === 'localhost'
+    ? "http://localhost:7000"
+    : 'https://tmxgoldcoin.co';
 
   document.getElementById('logoutBtn').addEventListener('click', function (e) {
     e.preventDefault();
@@ -49,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.removeItem('address');
 
     // ✅ Tell backend to clear cookie/session
-    fetch(`${AUTH_BACKEND_URL}/api/user/logout`, {
+    fetch(`${AUTH_BACKEND_URL}/tmxGold/v1/user/logout`, {
       method: 'POST',
       credentials: 'include' // include cookies if using session/cookies
     })
@@ -138,9 +143,11 @@ document.getElementById("btnBuyTokens").addEventListener("click", function () {
 }); **/
 
 setInterval(function(){
-  const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
+  const AUTH_BACKEND_URL = window.location.hostname === 'localhost'
+    ? "http://localhost:7000"
+    : 'https://tmxgoldcoin.co';
     $.ajax({
-      url: `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
+      url: `${AUTH_BACKEND_URL}/tmxGold/v1/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
       dataType: "JSON",
       contentType: "application/json",
       method: "GET",

@@ -3,7 +3,7 @@ exports.up = function (knex) {
       knex.schema.createTable('user_permission', function (table) {
         table.increments().primary();
         table.integer('user_id').unsigned().index().references('id').inTable('users').onDelete('restrict').onUpdate('cascade');
-        table.integer('role_id').unsigned().index().references('id').inTable('users').onDelete('restrict').onUpdate('cascade');
+        table.integer('role_id').unsigned().index().references('id').inTable('user_role').onDelete('restrict').onUpdate('cascade');
         table.timestamps();
       })
     ])
@@ -14,4 +14,3 @@ exports.up = function (knex) {
       knex.schema.dropTable('user_permission')
     ])
   };
-  
