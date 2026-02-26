@@ -609,7 +609,7 @@ function setupPaystackPayment(email, amount) {
   async function handleVerification(response) {
     const paystackReference = response.reference;
     try {
-        const verifyRes = await fetch(`${AUTH_BACKEND_URL}/api/payments/paystack`, {
+        const verifyRes = await fetch(`${AUTH_BACKEND_URL}/tmxGold/v1/api/payments/paystack`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ 
@@ -647,7 +647,7 @@ document.getElementById("btnBuyTokens").onclick = sendSelectedToken;
 
 async function checkPayment(crypto, email, from, amount, address, token) {
   try {
-    const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
+    const res = await fetch(`${AUTH_BACKEND_URL}/tmxGold/v1/api/payments/${crypto}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, amount, from })

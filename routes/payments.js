@@ -10,6 +10,7 @@ const {authenticator} = require('../lib/common');
 const { FiatTransactionMail} = require('../mails');
 const sendEmail = require('../helpers/sendMail');
 const userModel = require("../models/users");
+const { buyTokensBackend, processPurchase } = "../services/buyTokens";
 const router = express.Router();
 
 // you can create a .env file on the server for the public and private keys
@@ -253,6 +254,26 @@ router.post('/latest/paystack', async (req, res) => {
         console.error("Paystack Verification Error:", error.response?.data || error.message);
         res.status(500).json({ status: "error", message: "Internal server error" });
     }
+});
+
+
+router.post("/buy", async (req, res) => {
+  const { tokenAmount } = req.body;
+
+  const result = await buyTokensBackend(tokenAmount);
+
+  res.json(result);
+});
+
+app.post("/purchase", async (req, res) => {
+  const { tokenAmount, ethAmountWei } = req.body;
+
+  if (!tokenAmount || !ethAmountWei) {
+    return res.status(400).json({ error: "Missing parameters" });
+  }
+
+  const result = await processPurchase(tokenAmount, ethAmountWei);
+  res.json(result);
 });
 
 module.exports = router;

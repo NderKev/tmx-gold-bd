@@ -4,6 +4,7 @@ dotenv.config({ path: './.env'});
 const listen = require('./listen')
 const {successResponse, errorResponse} = require('../lib/response');
 const sendEmail = require('../helpers/sendMail');
+; // Replace with your actual token sale contract address on Base
 
 // -------- UPDATED CONFIG FOR BASE --------
 const RPC_URL = "https://mainnet.base.org"; // Base Mainnet RPC
