@@ -265,7 +265,7 @@ router.post("/buy", async (req, res) => {
   res.json(result);
 });
 
-app.post("/purchase", async (req, res) => {
+router.post("/purchase", async (req, res) => {
   const { tokenAmount, ethAmountWei } = req.body;
 
   if (!tokenAmount || !ethAmountWei) {
