@@ -4,7 +4,7 @@ $("#sendOtpBtn").click(function (e) {
   e.preventDefault();
 
   const AUTH_BACKEND_URL = "https://tmxgoldcoin.co";
-  // const AUTH_BACKEND_URL = "http://localhost:3030";
+ 
 
   const $btn = $("#sendOtpBtn");
   const $error = $("#send_placement_error");

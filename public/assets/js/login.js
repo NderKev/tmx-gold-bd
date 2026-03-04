@@ -2,7 +2,7 @@ $("#btnLogin").click(function (e) {
   e.preventDefault();
 
   const AUTH_BACKEND_URL = "https://tmxgoldcoin.co";
-  // const AUTH_BACKEND_URL = "http://localhost:3030";
+  
 
   const $btn = $("#btnLogin");
   const $error = $("#login_placement_error");
