@@ -1,7 +1,8 @@
 $("#btnLogin").click(function (e) {
   e.preventDefault();
 
-  const AUTH_BACKEND_URL = "https://tmxgoldcoin.co";
+  const AUTH_BACKEND_URL = "https://tmxgoldcoin.co/tmxGold/v1"
+  // "https://tmxgoldcoin.co";
   
 
   const $btn = $("#btnLogin");
