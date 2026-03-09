@@ -23,7 +23,7 @@ $("#sendOtpBtn").click(function (e) {
   }
 
   $.ajax({
-    url: `${AUTH_BACKEND_URL}/tmxGold/v1/user/sendReset`,
+    url: `${AUTH_BACKEND_URL}/user/sendReset`,
     method: "POST",
     contentType: "application/json",
     dataType: "json",
@@ -188,7 +188,7 @@ function startLockoutCountdown(lockedUntil, $btn, $error, defaultText) {
 
 
     $.ajax({
-      url: `${AUTH_BACKEND_URL}/tmxGold/v1/user/updatePassword`,
+      url: `${AUTH_BACKEND_URL}/user/updatePassword`,
       method: "POST",
       contentType: "application/json",  // keep JSON request
       xhrFields: { withCredentials: true },

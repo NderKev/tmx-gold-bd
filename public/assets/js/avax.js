@@ -394,7 +394,7 @@ async function sendSelectedToken() {
       callback: function (response) {
         (async () => {
           try {
-            const resp = await fetch(`${AUTH_BACKEND_URL}/tmxGold/v1/payments/paystack`, {
+            const resp = await fetch(`${AUTH_BACKEND_URL}/payments/paystack`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               credentials: "include",
@@ -456,7 +456,7 @@ async function sendSelectedToken() {
       callback: function (response) {
         (async () => {
           try {
-            const resp = await fetch(`${AUTH_BACKEND_URL}/tmxGold/v1/payments/verify-mpesa`, {
+            const resp = await fetch(`${AUTH_BACKEND_URL}/payments/verify-mpesa`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               credentials: "include",
@@ -570,7 +570,7 @@ document.getElementById("btnBuyTokens").onclick = sendSelectedToken;
 async function checkPayment(crypto, email, from, amount) {
   try {
     const routeCrypto = crypto === "base" ? "eth" : crypto;
-    const res = await fetch(`${AUTH_BACKEND_URL}/tmxGold/v1/payments/${routeCrypto}`, {
+    const res = await fetch(`${AUTH_BACKEND_URL}/payments/${routeCrypto}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

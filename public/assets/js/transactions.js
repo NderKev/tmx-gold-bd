@@ -28,27 +28,27 @@ var isLoggedIn = localStorage.getItem("tmx_gold_name");
 if (typeof isLoggedIn === 'undefined' || isLoggedIn === null || !isLoggedIn){
   window.location.href = "/index.html";
 }else{
-$(transactionsIndex).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id);
-$(transactionsTrading).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id + '/trade');
-$(transactionsICO).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id + '/ico');
-$(transactionsUser).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id + '/user');
-$(transactionsBuy).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id + '/buy');
-$(transactionsGateways).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id + '/gateways');
-$(transactionsAffiliate).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id + '/affiliate');
-$(transactionsWallet).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id + '/wallet');
-$(transactionsSecurity).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id + '/security');
-$(transactionsSettings).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id + '/settings');
-$(transactionsAccount).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id + '/account');
-$(transactionsFaq).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id + '/faq');
-$(transactionsSupport).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id + '/support');
-$(accountTransactions).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id + '/account');
-$(transactionsProfile).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id + '/profile');
-$(supportTransactions).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id + '/support');
-$(transactionsTransactions).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id + '/transactions');
+$(transactionsIndex).attr("href", '//'+ role +'/profile/'+ id);
+$(transactionsTrading).attr("href", '//'+ role +'/profile/'+ id + '/trade');
+$(transactionsICO).attr("href", '//'+ role +'/profile/'+ id + '/ico');
+$(transactionsUser).attr("href", '//'+ role +'/profile/'+ id + '/user');
+$(transactionsBuy).attr("href", '//'+ role +'/profile/'+ id + '/buy');
+$(transactionsGateways).attr("href", '//'+ role +'/profile/'+ id + '/gateways');
+$(transactionsAffiliate).attr("href", '//'+ role +'/profile/'+ id + '/affiliate');
+$(transactionsWallet).attr("href", '//'+ role +'/profile/'+ id + '/wallet');
+$(transactionsSecurity).attr("href", '//'+ role +'/profile/'+ id + '/security');
+$(transactionsSettings).attr("href", '//'+ role +'/profile/'+ id + '/settings');
+$(transactionsAccount).attr("href", '//'+ role +'/profile/'+ id + '/account');
+$(transactionsFaq).attr("href", '//'+ role +'/profile/'+ id + '/faq');
+$(transactionsSupport).attr("href", '//'+ role +'/profile/'+ id + '/support');
+$(accountTransactions).attr("href", '//'+ role +'/profile/'+ id + '/account');
+$(transactionsProfile).attr("href", '//'+ role +'/profile/'+ id + '/profile');
+$(supportTransactions).attr("href", '//'+ role +'/profile/'+ id + '/support');
+$(transactionsTransactions).attr("href", '//'+ role +'/profile/'+ id + '/transactions');
 
 
 $.ajax({
-  		url: `${AUTH_BACKEND_URL}/tmxGold/v1/tx/fetch/${isLoggedIn}`,
+  		url: `${AUTH_BACKEND_URL}/tx/fetch/${isLoggedIn}`,
   		dataType: "JSON",
   		contentType: "application/json",
   		method: "GET",
@@ -91,7 +91,7 @@ $.ajax({
 
 
 $.ajax({
-  		url: `${AUTH_BACKEND_URL}/tmxGold/v1/tx/fiat/${isLoggedIn}`,
+  		url: `${AUTH_BACKEND_URL}/tx/fiat/${isLoggedIn}`,
   		dataType: "JSON",
   		contentType: "application/json",
   		method: "GET",
@@ -115,7 +115,7 @@ $.ajax({
 });
 
 $.ajax({
-  		url: `${AUTH_BACKEND_URL}/tmxGold/v1/tx/token/${isLoggedIn}`,
+  		url: `${AUTH_BACKEND_URL}/tx/token/${isLoggedIn}`,
   		dataType: "JSON",
   		contentType: "application/json",
   		method: "GET",
@@ -146,7 +146,7 @@ setInterval(function(){
     ? "http://localhost:7000"
     : 'https://tmxgoldcoin.co';
     $.ajax({
-      url: `${AUTH_BACKEND_URL}/tmxGold/v1/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
+      url: `${AUTH_BACKEND_URL}/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
       dataType: "JSON",
       contentType: "application/json",
       method: "GET",

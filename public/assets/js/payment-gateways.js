@@ -24,26 +24,26 @@ var isLoggedIn = localStorage.getItem("tmx_gold_name");
 if (typeof isLoggedIn === 'undefined' || isLoggedIn === null || !isLoggedIn || role !== 'admin'){
   window.location.href = "/index.html";
 }else{
-$(paymentIndex).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id);
-$(paymentTrading).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/trade');
-$(paymentICO).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/ico');
-$(paymentUser).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/user');
-$(paymentBuy).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/buy');
-$(paymentGateways).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/gateways');
-$(paymentAffiliate).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/affiliate');
-$(paymentWallet).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/wallet');
-$(paymentSecurity).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/security');
-$(paymentSettings).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/settings');
-$(paymentAccount).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/account');
-$(paymentFaq).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/faq');
-$(paymentSupport).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/support');
-$(paymentAccount).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/account');
-$(paymentFaq).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/faq');
-$(paymentSupport).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/support');
-$(accountPayment).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/account');
-$(paymentProfile).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/profile');
-$(supportPayment).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/support');
-$(paymentTransactions).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id + '/transactions');
+$(paymentIndex).attr("href", '//admin'+'/profile/'+ id);
+$(paymentTrading).attr("href", '//admin'+'/profile/'+ id + '/trade');
+$(paymentICO).attr("href", '//admin'+'/profile/'+ id + '/ico');
+$(paymentUser).attr("href", '//admin'+'/profile/'+ id + '/user');
+$(paymentBuy).attr("href", '//admin'+'/profile/'+ id + '/buy');
+$(paymentGateways).attr("href", '//admin'+'/profile/'+ id + '/gateways');
+$(paymentAffiliate).attr("href", '//admin'+'/profile/'+ id + '/affiliate');
+$(paymentWallet).attr("href", '//admin'+'/profile/'+ id + '/wallet');
+$(paymentSecurity).attr("href", '//admin'+'/profile/'+ id + '/security');
+$(paymentSettings).attr("href", '//admin'+'/profile/'+ id + '/settings');
+$(paymentAccount).attr("href", '//admin'+'/profile/'+ id + '/account');
+$(paymentFaq).attr("href", '//admin'+'/profile/'+ id + '/faq');
+$(paymentSupport).attr("href", '//admin'+'/profile/'+ id + '/support');
+$(paymentAccount).attr("href", '//admin'+'/profile/'+ id + '/account');
+$(paymentFaq).attr("href", '//admin'+'/profile/'+ id + '/faq');
+$(paymentSupport).attr("href", '//admin'+'/profile/'+ id + '/support');
+$(accountPayment).attr("href", '//admin'+'/profile/'+ id + '/account');
+$(paymentProfile).attr("href", '//admin'+'/profile/'+ id + '/profile');
+$(supportPayment).attr("href", '//admin'+'/profile/'+ id + '/support');
+$(paymentTransactions).attr("href", '//'+ role +'/profile/'+ id + '/transactions');
 }
 
 });
@@ -53,7 +53,7 @@ setInterval(function(){
     ? "http://localhost:7000"
     : 'https://tmxgoldcoin.co';
     $.ajax({
-      url: `${AUTH_BACKEND_URL}/tmxGold/v1/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
+      url: `${AUTH_BACKEND_URL}/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
       dataType: "JSON",
       contentType: "application/json",
       method: "GET",
