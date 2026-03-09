@@ -48,7 +48,7 @@ $(transactionsTransactions).attr("href", '//'+ role +'/profile/'+ id + '/transac
 
 
 $.ajax({
-  		url: `${AUTH_BACKEND_URL}/tx/fetch/${isLoggedIn}`,
+  		url: `${AUTH_BACKEND_URL}/api/tx/fetch/${isLoggedIn}`,
   		dataType: "JSON",
   		contentType: "application/json",
   		method: "GET",
@@ -91,7 +91,7 @@ $.ajax({
 
 
 $.ajax({
-  		url: `${AUTH_BACKEND_URL}/tx/fiat/${isLoggedIn}`,
+  		url: `${AUTH_BACKEND_URL}/api/tx/fiat/${isLoggedIn}`,
   		dataType: "JSON",
   		contentType: "application/json",
   		method: "GET",
@@ -115,7 +115,7 @@ $.ajax({
 });
 
 $.ajax({
-  		url: `${AUTH_BACKEND_URL}/tx/token/${isLoggedIn}`,
+  		url: `${AUTH_BACKEND_URL}/api/tx/token/${isLoggedIn}`,
   		dataType: "JSON",
   		contentType: "application/json",
   		method: "GET",
@@ -146,7 +146,7 @@ setInterval(function(){
     ? "http://localhost:7000"
     : 'https://tmxgoldcoin.co';
     $.ajax({
-      url: `${AUTH_BACKEND_URL}/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
+      url: `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
       dataType: "JSON",
       contentType: "application/json",
       method: "GET",

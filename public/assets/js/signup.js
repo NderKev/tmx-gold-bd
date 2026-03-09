@@ -160,7 +160,7 @@ $("#btnRegister").click(function (e) {
 
   // 📡 Send signup request — only ONE AJAX call
   $.ajax({
-    url: `${AUTH_BACKEND_URL}/user/register${affiliateId ? `?affiliate-id=${affiliateId}` : ""}`,
+    url: `${AUTH_BACKEND_URL}/api/user/register${affiliateId ? `?affiliate-id=${affiliateId}` : ""}`,
     method: "POST",
     contentType: "application/json",
     dataType: "json",

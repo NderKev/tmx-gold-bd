@@ -394,7 +394,7 @@ async function sendSelectedToken() {
       callback: function (response) {
         (async () => {
           try {
-            const resp = await fetch(`${AUTH_BACKEND_URL}/payments/paystack`, {
+            const resp = await fetch(`${AUTH_BACKEND_URL}/api/payments/paystack`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               credentials: "include",
@@ -456,7 +456,7 @@ async function sendSelectedToken() {
       callback: function (response) {
         (async () => {
           try {
-            const resp = await fetch(`${AUTH_BACKEND_URL}/payments/verify-mpesa`, {
+            const resp = await fetch(`${AUTH_BACKEND_URL}/api/payments/verify-mpesa`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               credentials: "include",
@@ -570,7 +570,7 @@ document.getElementById("btnBuyTokens").onclick = sendSelectedToken;
 async function checkPayment(crypto, email, from, amount) {
   try {
     const routeCrypto = crypto === "base" ? "eth" : crypto;
-    const res = await fetch(`${AUTH_BACKEND_URL}/payments/${routeCrypto}`, {
+    const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${routeCrypto}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -609,7 +609,7 @@ async function checkPayment(crypto, email, from, amount) {
 /** async function checkPayment(crypto, email, from, amount) {
   try {
     if(crypto !== "paystack" && crypto !== "mpesa" && crypto !== "bank" && crypto !== "wire"){
-    const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
+    const res = await fetch(`${AUTH_BACKEND_URL}/api/api/payments/${crypto}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, amount, from })
@@ -625,7 +625,7 @@ async function checkPayment(crypto, email, from, amount) {
         "⚡ Payment detected, waiting for confirmations...";
       document.getElementById("status").className = "pending";
     }  **/
-   /** const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
+   /** const res = await fetch(`${AUTH_BACKEND_URL}/api/api/payments/${crypto}`, {
   method: "POST",
   headers: {
     "Content-Type": "application/json",

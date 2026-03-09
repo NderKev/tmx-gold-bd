@@ -26,7 +26,7 @@ $("#btnLogin").click(function (e) {
   }
 
   $.ajax({
-    url: `${AUTH_BACKEND_URL}/user/login`,
+    url: `${AUTH_BACKEND_URL}/api/user/login`,
     method: "POST",
     contentType: "application/json",
     dataType: "json",
@@ -44,7 +44,7 @@ $("#btnLogin").click(function (e) {
         localStorage.setItem("token", results.data?.[0]?.token || "");
         refreshLogin();
 
-        window.location.href = `${AUTH_BACKEND_URL}/${localStorage.getItem(
+        window.location.href = `${AUTH_BACKEND_URL}/api/${localStorage.getItem(
           "role"
         )}/profile/${localStorage.getItem("user_id")}`;
       } else {

@@ -49,7 +49,7 @@ $(usersTransactions).attr("href", '//'+ role +'/profile/'+ id + '/transactions')
 
 
  $.ajax({
-            url: `${AUTH_BACKEND_URL}/user/customers`,
+            url: `${AUTH_BACKEND_URL}/api/user/customers`,
             dataType: "JSON",
             contentType: "application/json",
             method: "GET",
@@ -83,7 +83,7 @@ $(usersTransactions).attr("href", '//'+ role +'/profile/'+ id + '/transactions')
              var user_id = id.replace(/[^0-9]/g,'');
              console.log(user_id);
              $.ajax({
-               url: `${AUTH_BACKEND_URL}/user/deActivate/${user_id}`,
+               url: `${AUTH_BACKEND_URL}/api/user/deActivate/${user_id}`,
                dataType: "JSON",
                contentType: "application/json",
                method: "PUT",
@@ -109,7 +109,7 @@ $(usersTransactions).attr("href", '//'+ role +'/profile/'+ id + '/transactions')
              var user_id = id.replace(/[^0-9]/g,'');
              console.log(user_id);
              $.ajax({
-               url: `${AUTH_BACKEND_URL}/user/activate/${user_id}`,
+               url: `${AUTH_BACKEND_URL}/api/user/activate/${user_id}`,
                dataType: "JSON",
                contentType: "application/json",
                method: "PUT",
@@ -139,7 +139,7 @@ setInterval(function(){
     ? "http://localhost:7000"
     : 'https://tmxgoldcoin.co';
     $.ajax({
-      url: `${AUTH_BACKEND_URL}/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
+      url: `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
       dataType: "JSON",
       contentType: "application/json",
       method: "GET",

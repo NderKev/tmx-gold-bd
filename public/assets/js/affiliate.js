@@ -54,7 +54,7 @@ $(document).ready(function () {
 
     try {
       const resp = await fetch(
-        `${AUTH_BACKEND_URL}/affiliate/referral/${encodeURIComponent(userId)}`,
+        `${AUTH_BACKEND_URL}/api/affiliate/referral/${encodeURIComponent(userId)}`,
         {
           method: "GET",
           headers: { Accept: "application/json" },
@@ -77,7 +77,7 @@ $(document).ready(function () {
         const affiliateId = res.referral_id;
         if (affiliateId) {
           const statsResp = await fetch(
-            `${AUTH_BACKEND_URL}/affiliate/stats/${encodeURIComponent(affiliateId)}`,
+            `${AUTH_BACKEND_URL}/api/affiliate/stats/${encodeURIComponent(affiliateId)}`,
             {
               method: "GET",
               headers: { Accept: "application/json" },
@@ -136,7 +136,7 @@ $(document).ready(function () {
   // =============================
   setInterval(function () {
     $.ajax({
-      url: `${AUTH_BACKEND_URL}/${role}/profile/${userId}`,
+      url: `${AUTH_BACKEND_URL}/api/${role}/profile/${userId}`,
       dataType: "json",
       contentType: "application/json",
       method: "GET",

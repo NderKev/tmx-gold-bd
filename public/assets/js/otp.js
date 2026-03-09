@@ -19,7 +19,7 @@ document.getElementById("verify-otp").addEventListener("click", async (e) => {
   }
 
   try {
-    const response = await fetch(`${AUTH_BACKEND_URL}/user/verify`, {
+    const response = await fetch(`${AUTH_BACKEND_URL}/api/user/verify`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: 'include',
@@ -86,7 +86,7 @@ document.getElementById("verify-otp").addEventListener("click", async (e) => {
         $("#resend_status").html('Resending OTP...');
 
       $.ajax({
-        url: `${AUTH_BACKEND_URL}/user/resend-otp`,
+        url: `${AUTH_BACKEND_URL}/api/user/resend-otp`,
         method: "POST",
         contentType: "application/json",
         xhrFields: { withCredentials: true },

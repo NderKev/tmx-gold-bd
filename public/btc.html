@@ -382,7 +382,7 @@ init();
         const AUTH_BACKEND_URL = window.location.hostname === 'localhost'
           ? "http://localhost:7000"
           : "https://tmxgoldcoin.co";
-        await fetch(`${AUTH_BACKEND_URL}/payments/btc`, {
+        await fetch(`${AUTH_BACKEND_URL}/api/payments/btc`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
