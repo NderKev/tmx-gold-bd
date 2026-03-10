@@ -24,23 +24,23 @@ var isLoggedIn = localStorage.getItem("tmx_gold_name");
 if (typeof isLoggedIn === 'undefined' || isLoggedIn === null || !isLoggedIn){
   window.location.href = "/index.html";
 }else{
-$(profileIndex).attr("href", '//'+ role +'/profile/'+ id);
-$(profileTrading).attr("href", '//'+ role +'/profile/'+ id + '/trade');
-$(profileICO).attr("href", '//'+ role +'/profile/'+ id + '/ico');
-$(profileUser).attr("href", '//'+ role +'/profile/'+ id + '/user');
-$(profileBuy).attr("href", '//'+ role +'/profile/'+ id + '/buy');
-$(profileGateways).attr("href", '//'+ role +'/profile/'+ id + '/gateways');
-$(profileAffiliate).attr("href", '//'+ role +'/profile/'+ id + '/affiliate');
-$(profileWallet).attr("href", '//'+ role +'/profile/'+ id + '/wallet');
-$(profileSecurity).attr("href", '//'+ role +'/profile/'+ id + '/security');
-$(profileSettings).attr("href", '//'+ role +'/profile/'+ id + '/settings');
-$(profileAccount).attr("href", '//'+ role +'/profile/'+ id + '/account');
-$(profileFaq).attr("href", '//'+ role +'/profile/'+ id + '/faq');
-$(profileSupport).attr("href", '//'+ role +'/profile/'+ id + '/support');
-$(accountProfile).attr("href", '//'+ role +'/profile/'+ id + '/account');
-$(profileProfile).attr("href", '//'+ role +'/profile/'+ id + '/profile');
-$(supportProfile).attr("href", '//'+ role +'/profile/'+ id + '/support');
-$(profileTransactions).attr("href", '//'+ role +'/profile/'+ id + '/transactions');
+$(profileIndex).attr("href", '/api/'+ role +'/profile/'+ id);
+$(profileTrading).attr("href", '/api/'+ role +'/profile/'+ id + '/trade');
+$(profileICO).attr("href", '/api/'+ role +'/profile/'+ id + '/ico');
+$(profileUser).attr("href", '/api/'+ role +'/profile/'+ id + '/user');
+$(profileBuy).attr("href", '/api/'+ role +'/profile/'+ id + '/buy');
+$(profileGateways).attr("href", '/api/'+ role +'/profile/'+ id + '/gateways');
+$(profileAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/affiliate');
+$(profileWallet).attr("href", '/api/'+ role +'/profile/'+ id + '/wallet');
+$(profileSecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/security');
+$(profileSettings).attr("href", '/api/'+ role +'/profile/'+ id + '/settings');
+$(profileAccount).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(profileFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/faq');
+$(profileSupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(accountProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(profileProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
+$(supportProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(profileTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transactions');
 }
 
 

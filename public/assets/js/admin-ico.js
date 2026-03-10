@@ -26,7 +26,7 @@ if (typeof isLoggedIn === 'undefined' || isLoggedIn === null || !isLoggedIn || r
   window.location.href = "/index.html";
 }else{
 $(indexAdmin).attr("href", '//admin'+'/profile/'+ id);
-$(adminUsers).attr("href", '//'+ role +'/profile/'+ id + '/users');
+$(adminUsers).attr("href", '/api/'+ role +'/profile/'+ id + '/users');
 $(adminTrading).attr("href", '//admin'+'/profile/'+ id + '/trade');
 $(adminICO).attr("href", '//admin'+'/profile/'+ id + '/ico');
 $(adminUser).attr("href", '//admin'+'/profile/'+ id + '/user');

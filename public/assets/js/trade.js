@@ -24,23 +24,23 @@ var isLoggedIn = localStorage.getItem("tmx_gold_name");
 if (typeof isLoggedIn === 'undefined' || isLoggedIn === null || !isLoggedIn){
   window.location.href = "/index.html";
 }else{
-$(tradeIndex).attr("href", '//'+ role +'/profile/'+ id);
-$(tradeTrading).attr("href", '//'+ role +'/profile/'+ id + '/trade');
-$(tradeICO).attr("href", '//'+ role +'/profile/'+ id + '/ico');
-$(tradeUser).attr("href", '//'+ role +'/profile/'+ id + '/user');
-$(tradeBuy).attr("href", '//'+ role +'/profile/'+ id + '/buy');
-$(tradeGateways).attr("href", '//'+ role +'/profile/'+ id + '/gateways');
-$(tradeAffiliate).attr("href", '//'+ role +'/profile/'+ id + '/affiliate');
-$(tradeWallet).attr("href", '//'+ role +'/profile/'+ id + '/wallet');
-$(tradeSecurity).attr("href", '//'+ role +'/profile/'+ id + '/security');
-$(tradeSettings).attr("href", '//'+ role +'/profile/'+ id + '/settings');
-$(tradeAccount).attr("href", '//'+ role +'/profile/'+ id + '/account');
-$(tradeFaq).attr("href", '//'+ role +'/profile/'+ id + '/faq');
-$(tradeSupport).attr("href", '//'+ role +'/profile/'+ id + '/support');
-$(accountTrade).attr("href", '//'+ role +'/profile/'+ id + '/account');
-$(tradeProfile).attr("href", '//'+ role +'/profile/'+ id + '/profile');
-$(supportTrade).attr("href", '//'+ role +'/profile/'+ id + '/support');
-$(tradeTransactions).attr("href", '//'+ role +'/profile/'+ id + '/transactions');
+$(tradeIndex).attr("href", '/api/'+ role +'/profile/'+ id);
+$(tradeTrading).attr("href", '/api/'+ role +'/profile/'+ id + '/trade');
+$(tradeICO).attr("href", '/api/'+ role +'/profile/'+ id + '/ico');
+$(tradeUser).attr("href", '/api/'+ role +'/profile/'+ id + '/user');
+$(tradeBuy).attr("href", '/api/'+ role +'/profile/'+ id + '/buy');
+$(tradeGateways).attr("href", '/api/'+ role +'/profile/'+ id + '/gateways');
+$(tradeAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/affiliate');
+$(tradeWallet).attr("href", '/api/'+ role +'/profile/'+ id + '/wallet');
+$(tradeSecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/security');
+$(tradeSettings).attr("href", '/api/'+ role +'/profile/'+ id + '/settings');
+$(tradeAccount).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(tradeFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/faq');
+$(tradeSupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(accountTrade).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(tradeProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
+$(supportTrade).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(tradeTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transactions');
 
   const data = [
     { y: '2024-10', btc: 1000, dush: 900 },

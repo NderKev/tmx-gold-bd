@@ -24,23 +24,23 @@ var isLoggedIn = localStorage.getItem("tmx_gold_name");
 if (typeof isLoggedIn === 'undefined' || isLoggedIn === null || !isLoggedIn){
   window.location.href = "/index.html";
 }else{
-$(settingsIndex).attr("href", '//'+ role +'/profile/'+ id);
-$(settingsTrading).attr("href", '//'+ role +'/profile/'+ id + '/trade');
-$(settingsICO).attr("href", '//'+ role +'/profile/'+ id + '/ico');
-$(settingsUser).attr("href", '//'+ role +'/profile/'+ id + '/user');
-$(settingsBuy).attr("href", '//'+ role +'/profile/'+ id + '/buy');
-$(settingsGateways).attr("href", '//'+ role +'/profile/'+ id + '/gateways');
-$(settingsAffiliate).attr("href", '//'+ role +'/profile/'+ id + '/affiliate');
-$(settingsWallet).attr("href", '//'+ role +'/profile/'+ id + '/wallet');
-$(settingsSecurity).attr("href", '//'+ role +'/profile/'+ id + '/security');
-$(settingsSettings).attr("href", '//'+ role +'/profile/'+ id + '/settings');
-$(settingsAccount).attr("href", '//'+ role +'/profile/'+ id + '/account');
-$(settingsFaq).attr("href", '//'+ role +'/profile/'+ id + '/faq');
-$(settingsSupport).attr("href", '//'+ role +'/profile/'+ id + '/support');
-$(accountSettings).attr("href", '//'+ role +'/profile/'+ id + '/account');
-$(settingsProfile).attr("href", '//'+ role +'/profile/'+ id + '/profile');
-$(supportSettings).attr("href", '//'+ role +'/profile/'+ id + '/support');
-$(settingsTransactions).attr("href", '//'+ role +'/profile/'+ id + '/transactions');
+$(settingsIndex).attr("href", '/api/'+ role +'/profile/'+ id);
+$(settingsTrading).attr("href", '/api/'+ role +'/profile/'+ id + '/trade');
+$(settingsICO).attr("href", '/api/'+ role +'/profile/'+ id + '/ico');
+$(settingsUser).attr("href", '/api/'+ role +'/profile/'+ id + '/user');
+$(settingsBuy).attr("href", '/api/'+ role +'/profile/'+ id + '/buy');
+$(settingsGateways).attr("href", '/api/'+ role +'/profile/'+ id + '/gateways');
+$(settingsAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/affiliate');
+$(settingsWallet).attr("href", '/api/'+ role +'/profile/'+ id + '/wallet');
+$(settingsSecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/security');
+$(settingsSettings).attr("href", '/api/'+ role +'/profile/'+ id + '/settings');
+$(settingsAccount).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(settingsFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/faq');
+$(settingsSupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(accountSettings).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(settingsProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
+$(supportSettings).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(settingsTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transactions');
 }
 
 

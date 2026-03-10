@@ -43,7 +43,7 @@ $(paymentSupport).attr("href", '//admin'+'/profile/'+ id + '/support');
 $(accountPayment).attr("href", '//admin'+'/profile/'+ id + '/account');
 $(paymentProfile).attr("href", '//admin'+'/profile/'+ id + '/profile');
 $(supportPayment).attr("href", '//admin'+'/profile/'+ id + '/support');
-$(paymentTransactions).attr("href", '//'+ role +'/profile/'+ id + '/transactions');
+$(paymentTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transactions');
 }
 
 });

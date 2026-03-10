@@ -32,22 +32,22 @@ $(buySell).attr("href", `//${role}/profile/${id}/buy`);
 // $(buyBuy).attr("href", `//user/profile/${id}/buy`);
 // $(buyIndex).attr("href", '/api/'+ role +'/profile/'+ id);
 // $(buyTrading).attr("href", '/api/'+ role +'/profile/'+ id + '/trade');
-$(buyICO).attr("href", '//'+ role +'/profile/'+ id + '/ico');
-$(buyUser).attr("href", '//'+ role +'/profile/'+ id + '/user');
+$(buyICO).attr("href", '/api/'+ role +'/profile/'+ id + '/ico');
+$(buyUser).attr("href", '/api/'+ role +'/profile/'+ id + '/user');
 // $(buyBuy).attr("href", '/api/'+ role +'/profile/'+ id + '/buy');
 // $(buySell).attr("href", '/api/'+ role +'/profile/'+ id + '/buysell');
-$(buyGateways).attr("href", '//'+ role +'/profile/'+ id + '/gateways');
-$(buyAffiliate).attr("href", '//'+ role +'/profile/'+ id + '/affiliate');
-$(buyWallet).attr("href", '//'+ role +'/profile/'+ id + '/wallet');
-$(buySecurity).attr("href", '//'+ role +'/profile/'+ id + '/security');
-$(buySettings).attr("href", '//'+ role +'/profile/'+ id + '/settings');
-$(buyAccount).attr("href", '//'+ role +'/profile/'+ id + '/account');
-$(buyFaq).attr("href", '//'+ role +'/profile/'+ id + '/faq');
-$(buySupport).attr("href", '//'+ role +'/profile/'+ id + '/support');
-$(accountBuy).attr("href", '//'+ role +'/profile/'+ id + '/account');
-$(buyProfile).attr("href", '//'+ role +'/profile/'+ id + '/profile');
-$(supportBuy).attr("href", '//'+ role +'/profile/'+ id + '/support');
-$(buyTransactions).attr("href", '//'+ role +'/profile/'+ id + '/transactions');
+$(buyGateways).attr("href", '/api/'+ role +'/profile/'+ id + '/gateways');
+$(buyAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/affiliate');
+$(buyWallet).attr("href", '/api/'+ role +'/profile/'+ id + '/wallet');
+$(buySecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/security');
+$(buySettings).attr("href", '/api/'+ role +'/profile/'+ id + '/settings');
+$(buyAccount).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(buyFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/faq');
+$(buySupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(accountBuy).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(buyProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
+$(supportBuy).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(buyTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transactions');
 }
 
 

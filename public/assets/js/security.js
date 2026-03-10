@@ -26,25 +26,25 @@ var isLoggedIn = localStorage.getItem("tmx_gold_name");
 if (typeof isLoggedIn === 'undefined' || isLoggedIn === null || !isLoggedIn){
   window.location.href = "/index.html";
 }else{
-$(securityIndex).attr("href", '//'+ role +'/profile/'+ id);
-$(securityTrading).attr("href", '//'+ role +'/profile/'+ id + '/trade');
-$(securityICO).attr("href", '//'+ role +'/profile/'+ id + '/ico');
-$(securityUser).attr("href", '//'+ role +'/profile/'+ id + '/user');
-$(securityBuy).attr("href", '//'+ role +'/profile/'+ id + '/buy');
-$(securityGateways).attr("href", '//'+ role +'/profile/'+ id + '/gateways');
-$(securityAffiliate).attr("href", '//'+ role +'/profile/'+ id + '/affiliate');
-$(securityWallet).attr("href", '//'+ role +'/profile/'+ id + '/wallet');
-$(securitySecurity).attr("href", '//'+ role +'/profile/'+ id + '/security');
-$(securitySettings).attr("href", '//'+ role +'/profile/'+ id + '/settings');
-$(securityAccount).attr("href", '//'+ role +'/profile/'+ id + '/account');
-$(securityFaq).attr("href", '//'+ role +'/profile/'+ id + '/faq');
-$(securitySupport).attr("href", '//'+ role +'/profile/'+ id + '/support');
-$(accountSecurity).attr("href", '//'+ role +'/profile/'+ id + '/account');
-$(securityProfile).attr("href", '//'+ role +'/profile/'+ id + '/profile');
-$(supportSecurity).attr("href", '//'+ role +'/profile/'+ id + '/support');
-$(securityTransactions).attr("href", '//'+ role +'/profile/'+ id + '/transactions');
-$(BuyandSell1).attr("href", '//'+ role +'/profile/'+ id + '/buy');
-$(BuyandSell2).attr("href", '//'+ role +'/profile/'+ id + '/buy');
+$(securityIndex).attr("href", '/api/'+ role +'/profile/'+ id);
+$(securityTrading).attr("href", '/api/'+ role +'/profile/'+ id + '/trade');
+$(securityICO).attr("href", '/api/'+ role +'/profile/'+ id + '/ico');
+$(securityUser).attr("href", '/api/'+ role +'/profile/'+ id + '/user');
+$(securityBuy).attr("href", '/api/'+ role +'/profile/'+ id + '/buy');
+$(securityGateways).attr("href", '/api/'+ role +'/profile/'+ id + '/gateways');
+$(securityAffiliate).attr("href", '/api/'+ role +'/profile/'+ id + '/affiliate');
+$(securityWallet).attr("href", '/api/'+ role +'/profile/'+ id + '/wallet');
+$(securitySecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/security');
+$(securitySettings).attr("href", '/api/'+ role +'/profile/'+ id + '/settings');
+$(securityAccount).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(securityFaq).attr("href", '/api/'+ role +'/profile/'+ id + '/faq');
+$(securitySupport).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(accountSecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/account');
+$(securityProfile).attr("href", '/api/'+ role +'/profile/'+ id + '/profile');
+$(supportSecurity).attr("href", '/api/'+ role +'/profile/'+ id + '/support');
+$(securityTransactions).attr("href", '/api/'+ role +'/profile/'+ id + '/transactions');
+$(BuyandSell1).attr("href", '/api/'+ role +'/profile/'+ id + '/buy');
+$(BuyandSell2).attr("href", '/api/'+ role +'/profile/'+ id + '/buy');
 }
 
 
