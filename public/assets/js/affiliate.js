@@ -39,10 +39,10 @@ $(document).ready(function () {
     const el = document.getElementById(id);
     if (!el) return;
     if (!endpoint) {
-      el.href = `//${role}/profile/${userId}`;
+      el.href = `/api/${role}/profile/${userId}`;
       return;
     }
-    el.href = `//${role}/profile/${userId}/${endpoint}`;
+    el.href = `/api/${role}/profile/${userId}/${endpoint}`;
   });
 
   // =============================

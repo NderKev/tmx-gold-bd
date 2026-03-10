@@ -26,9 +26,9 @@ if (typeof isLoggedIn === 'undefined' || isLoggedIn === null || !isLoggedIn){
   window.location.href = "/index.html";
 }else{
 
-$(buyIndex).attr("href", `//${role}/profile/${id}`);
-$(buyTrading).attr("href", `//${role}/profile/${id}/trade`);
-$(buySell).attr("href", `//${role}/profile/${id}/buy`);
+$(buyIndex).attr("href", `/api/${role}/profile/${id}`);
+$(buyTrading).attr("href", `/api/${role}/profile/${id}/trade`);
+$(buySell).attr("href", `/api/${role}/profile/${id}/buy`);
 // $(buyBuy).attr("href", `//user/profile/${id}/buy`);
 // $(buyIndex).attr("href", '/api/'+ role +'/profile/'+ id);
 // $(buyTrading).attr("href", '/api/'+ role +'/profile/'+ id + '/trade');
