@@ -100,15 +100,33 @@ function init() {
   startPolling(btc);
 }
 
-async function checkPayment(expectedBtc) {
+async function checkPayment(expectedBtc, usd) {
   try {
     const res = await fetch(`https://blockstream.info/api/address/${BTC_ADDRESS}`);
     const data = await res.json();
     const received = data.chain_stats.funded_txo_sum / 1e8;
-
+    const AUTH_BACKEND_URL = window.location.hostname === 'localhost'
+  ? "http://localhost:7000"
+  : "https://tmxgoldcoin.co";
+    const email = localStorage.getItem("tmx_gold_name");
+    const address = localStorage.getItem("address");
+    const token = parseFloat(usd / 0.005).toFixed(0); // Example: 1 token per $0.005
     if (received >= expectedBtc) {
       document.getElementById("status").textContent = "✅ Payment Confirmed!";
       document.getElementById("status").className = "confirmed";
+      const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/send-tokens`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email, token, address })
+    });
+
+    const text = await res.text();
+
+    if (!res.ok) {
+      console.error("API error:", res.status, text);
+      return;
+    }
       clearInterval(polling);
     } else if (received > 0) {
       document.getElementById("status").textContent =

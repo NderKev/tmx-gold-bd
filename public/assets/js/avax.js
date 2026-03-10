@@ -355,6 +355,7 @@ async function connect() {
   await provider.send("eth_requestAccounts", []);
   signer = await provider.getSigner();
   wallet.value = signer.address;
+  localStorage.setItem("address", signer.address);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -499,8 +500,8 @@ async function sendSelectedToken() {
       amount
     });
   if (option === "btc") {
-  //showBTC(amount);
-  openBtcPopup(amount, amount);
+   const _usd = document.getElementById("usd").value;
+  openBtcPopup(_usd, amount);
   return;
 }
 
@@ -552,7 +553,7 @@ async function sendSelectedToken() {
       recipient: ETH_ADDRESS,
       amount
     });
-    const email = localStorage.getItem("name");
+    const email = localStorage.getItem("tmx_gold_name");
     const from = document.getElementById("wallet_address");
     //const _token = 
     startPaymentPolling(option, email, from?.value, amount);
