@@ -244,7 +244,8 @@ $("#btnRegister").click(function (e) {
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 30);
 
-      document.cookie = `affiliate_id=${affiliateId}; expires=${expiryDate.toUTCString()}; path=/; secure; samesite=Lax`;
+      const isLocalhost = window.location.hostname === 'localhost';
+      document.cookie = `affiliate_id=${affiliateId}; expires=${expiryDate.toUTCString()}; path=/; ${isLocalhost ? '' : 'secure; '}samesite=Lax`;
 
       console.log("✅ Affiliate ID saved:", affiliateId);
     } else {

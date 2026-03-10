@@ -26,9 +26,9 @@ const logStruct = (func, error) => {
             otp += Math.floor(Math.random() * 10); // Generates a digit from 0-9
         }
         const now = new Date();
-        const expirySeconds = 30 * 60; // OTP expires in 5 minutes
+        const expirySeconds = 30 * 60; // OTP expires in 30 minutes
         const timeNow = Math.floor(Date.now() / 1000);
-        const expirationTime = timeNow + expirySeconds;//new Date(now.getTime() + expiryMinutes * 60 * 1000); // Add minutes in milliseconds
+        const expirationTime = timeNow + expirySeconds;
         return {otp, expirationTime};
     }
 
@@ -231,33 +231,51 @@ const createUser = async (reqData, req, res) => {
 const updatePassword = async (reqData) => {
   try {
     let _email;
-    const emailExists = await userModel.fetchEmailOTP(reqData.otp);
-     if (emailExists && emailExists.length) {
-       _email = emailExists[0].email;
-     }
-      else{
-    return errorResponse(400, 'otpNotSent');
-  }
+    
+    // If email is provided in request, use it directly; otherwise fetch from OTP
+    if (reqData.email) {
+      _email = reqData.email;
+    } else {
+      const emailExists = await userModel.fetchEmailOTP(reqData.otp);
+      if (emailExists && emailExists.length) {
+        _email = emailExists[0].email;
+      } else {
+        return errorResponse(400, 'otpNotSent');
+      }
+    }
+    
+    // Verify OTP is valid and not expired
+    const otpVerification = await userModel.verifyOTPForPasswordReset(reqData.otp, _email);
+    if (otpVerification.result === "invalid") {
+      return errorResponse(400, 'invalidOTP');
+    }
+    if (otpVerification.result === "expired") {
+      return errorResponse(400, 'otpExpired');
+    }
+    if (otpVerification.result === "error") {
+      return errorResponse(400, 'otpError');
+    }
+    
     const userExists = await userModel.getUserDetailsByEmail(_email);
     if (userExists && userExists.length) {
       reqData.email = _email;
       reqData.password = bcrypt.hashSync(String(reqData.password), saltRounds);
       const response = await userModel.updatePassword(reqData);
-       try {
-      await sendEmail(_email, PasswordResetMail(userExists[0].name));
-    } catch (error) {
-      console.log(error);
-    } 
-    await userModel.verifyOTPemail(reqData.otp);
-     let _data = {
-      message : "passwordUpdated",
-      data : reqData.email
-     }
+      try {
+        await sendEmail(_email, PasswordResetMail(userExists[0].name));
+      } catch (error) {
+        console.log(error);
+      } 
+      await userModel.verifyOTPemail(reqData.otp);
+      let _data = {
+        message : "passwordUpdated",
+        data : reqData.email
+      }
       return successResponse(204, _data, 'passwordUpdated')
     }
     else{
-    return errorResponse(403, 'userNotRegistered');
-  }
+      return errorResponse(403, 'userNotRegistered');
+    }
   } catch (error) {
     console.error('error -> ', logStruct('updatePassword', error))
     return errorResponse(error.status, error.message);
@@ -306,8 +324,7 @@ const sendResetPassword = async (reqData) => {
       let _data =
       {
         message : "sent",
-        data : reqData,
-        locked_until : new Date(Date.now() + 30 * 60 * 1000)
+        data : reqData
       }
       await userModel.createEmailOTP(data);
       await sendEmail(reqData, ResetPasswordMail(user_name, otp));
@@ -315,7 +332,7 @@ const sendResetPassword = async (reqData) => {
       //await sendEmail(validInput.email, VerifyMail(validInput.name, otp));
     } catch (error) {
       console.log(error);
-      return errorResponse(error.status, error.message, {locked_until : new Date(Date.now() + 30 * 60 * 1000)});
+      return errorResponse(error.status, error.message);
     } 
 };
 
@@ -505,7 +522,9 @@ const loginUser = async (reqData) => {
     // 🚫 Check if account is locked
     if (currentUser.locked_until && moment().isBefore(currentUser.locked_until)) {
       const minutesLeft = moment(currentUser.locked_until).diff(moment(), 'minutes');
-      return errorResponse(403, `Account locked. Try again in ${minutesLeft} minute(s).`);
+      return errorResponse(403, `Account locked. Try again in ${minutesLeft} minute(s).`, {
+        locked_until: currentUser.locked_until,
+      });
     }
 
     // 🔐 Verify password
@@ -518,7 +537,7 @@ const loginUser = async (reqData) => {
       if (attempts >= 3) {
         updateData = {
           failed_attempts: 0,
-          locked_until: moment().add(30, 'minutes').format('YYYY-MM-DD HH:mm:ss'),
+          locked_until: moment().add(10, 'minutes').format('YYYY-MM-DD HH:mm:ss'),
         };
 
         //if (typeof AccountLockedMail === 'function') {
@@ -529,7 +548,7 @@ const loginUser = async (reqData) => {
       await db.write('users').where({ id: currentUser.id }).update(updateData);
       const remaining = 3 - attempts;
       return attempts >= 3
-        ? errorResponse(403, 'Account locked for 30 minutes due to multiple failed attempts.')
+        ? errorResponse(403, 'Account locked for 10 minutes due to multiple failed attempts.')
         : errorResponse(401, `Invalid password`, {remaining_attempts: remaining});
     }
 

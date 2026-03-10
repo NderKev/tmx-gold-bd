@@ -449,6 +449,35 @@ const query = db.read.select('user_otps.email')
   return query;
 };
 
+// Verify OTP for password reset - checks validity and expiry
+exports.verifyOTPForPasswordReset = async (otp, email) => {
+  try {
+    // Fetch the OTP record
+    const otpRecord = await db.read.select("*").from('user_otps')
+      .where({ otp, email, used: 0 })
+      .first();
+
+    if (!otpRecord) {
+      return { result: "invalid" };
+    }
+
+    // Check expiry (OTP valid for 30 minutes)
+    const now = moment();
+    const created = moment(otpRecord.created_at);
+    const expiryMinutes = 30;
+    const isExpired = now.diff(created, 'minutes') > expiryMinutes;
+
+    if (isExpired) {
+      return { result: "expired" };
+    }
+
+    return { result: "valid" };
+  } catch (err) {
+    console.error("verifyOTPForPasswordReset error ->", err.message);
+    return { result: "error" };
+  }
+};
+
 exports.verifyEmailToken = async (data) => {
   const query = db.write('auth')
     .where('token', data.token)

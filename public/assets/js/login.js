@@ -75,9 +75,9 @@ $("#btnLogin").click(function (e) {
       } else if (xhr.status === 403) {
         $error.html("⚠️ User flagged or blacklisted. Contact admin for assistance.");
       } else if (xhr.status === 401) {
-        `❌ ${res.message || "Wrong password"}<br>Remaining attempts: <b>${res.data.remaining_attempts}</b>`
+        $error.html(`❌ ${res?.message || "Wrong password"}`);
       } else {
-        `❌ ${res.message || "Wrong password"}<br>Remaining attempts: <b>${res.data.remaining_attempts}</b>`
+        $error.html(`❌ ${res?.message || "Login error. Please try again."}`);
       }
     },
   });

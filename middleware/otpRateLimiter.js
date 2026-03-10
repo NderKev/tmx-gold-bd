@@ -6,9 +6,18 @@ const { ipKeyGenerator } = require('express-rate-limit');
 const resendOtpLimiter = rateLimit({
   windowMs: 30 * 60 * 1000, // 30 minutes
   max: 3,                   // limit to 3 requests per window
-  message: {
-    status: 429,
-    error: "Too many OTP requests. Please wait 30 minutes before trying again.",
+  message: (req, res) => {
+    // Calculate when the lockout expires
+    const retryAfter = Math.ceil(res.getHeader('Retry-After') || (30 * 60));
+    const lockedUntil = new Date(Date.now() + retryAfter * 1000);
+    return {
+      status: 429,
+      message: "Too many OTP requests. Please wait before trying again.",
+      data: {
+        locked_until: lockedUntil.toISOString(),
+        retry_after: retryAfter
+      }
+    };
   },
   standardHeaders: true,
   legacyHeaders: false,
@@ -17,6 +26,19 @@ const resendOtpLimiter = rateLimit({
     const email = req.body?.email || req.query?.email || 'unknown';
     return `${ip}-${email}`;
   },
+  // Ensure the rate limit info is available in the response
+  handler: (req, res, next, options) => {
+    const retryAfter = options.windowMs / 1000;
+    const lockedUntil = new Date(Date.now() + options.windowMs);
+    res.status(options.statusCode).send({
+      status: options.statusCode,
+      message: options.message,
+      data: {
+        locked_until: lockedUntil.toISOString(),
+        retry_after: retryAfter
+      }
+    });
+  }
 });
 
 module.exports = { resendOtpLimiter };
