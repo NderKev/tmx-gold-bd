@@ -25,24 +25,24 @@ var isLoggedIn = localStorage.getItem("tmx_gold_name");
 if (typeof isLoggedIn === 'undefined' || isLoggedIn === null || !isLoggedIn || role !== 'admin'){
   window.location.href = "/index.html";
 }else{
-$(indexAdmin).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id);
-$(adminUsers).attr("href", '/tmxGold/v1/'+ role +'/profile/'+ id + '/users');
-$(adminTrading).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/trade');
-$(adminICO).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/ico');
-$(adminUser).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/user');
-$(adminBuy).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/buy');
-$(adminGateways).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/gateways');
-$(adminAffiliate).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/affiliate');
-$(adminWallet).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/wallet');
-$(adminSecurity).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/security');
-$(adminSettings).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/settings');
-$(adminAccount).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/account');
-$(adminFaq).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/faq');
-$(adminSupport).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/support');
-$(accountAdmin).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/account');
-$(adminProfile).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/profile');
-$(supportAdmin).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/support');
-$(adminTransactions).attr("href", '/tmxGold/v1/admin'+'/profile/'+ id + '/transactions');
+$(indexAdmin).attr("href", '/api/admin'+'/profile/'+ id);
+$(adminUsers).attr("href", '/api/'+ role +'/profile/'+ id + '/users');
+$(adminTrading).attr("href", '/api/admin'+'/profile/'+ id + '/trade');
+$(adminICO).attr("href", '/api/admin'+'/profile/'+ id + '/ico');
+$(adminUser).attr("href", '/api/admin'+'/profile/'+ id + '/user');
+$(adminBuy).attr("href", '/api/admin'+'/profile/'+ id + '/buy');
+$(adminGateways).attr("href", '/api/admin'+'/profile/'+ id + '/gateways');
+$(adminAffiliate).attr("href", '/api/admin'+'/profile/'+ id + '/affiliate');
+$(adminWallet).attr("href", '/api/admin'+'/profile/'+ id + '/wallet');
+$(adminSecurity).attr("href", '/api/admin'+'/profile/'+ id + '/security');
+$(adminSettings).attr("href", '/api/admin'+'/profile/'+ id + '/settings');
+$(adminAccount).attr("href", '/api/admin'+'/profile/'+ id + '/account');
+$(adminFaq).attr("href", '/api/admin'+'/profile/'+ id + '/faq');
+$(adminSupport).attr("href", '/api/admin'+'/profile/'+ id + '/support');
+$(accountAdmin).attr("href", '/api/admin'+'/profile/'+ id + '/account');
+$(adminProfile).attr("href", '/api/admin'+'/profile/'+ id + '/profile');
+$(supportAdmin).attr("href", '/api/admin'+'/profile/'+ id + '/support');
+$(adminTransactions).attr("href", '/api/admin'+'/profile/'+ id + '/transactions');
 }
 
 
@@ -54,7 +54,7 @@ setInterval(function(){
     ? "http://localhost:7000"
     : 'https://tmxgoldcoin.co';
     $.ajax({
-      url: `${AUTH_BACKEND_URL}/tmxGold/v1/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
+      url: `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
       dataType: "JSON",
       contentType: "application/json",
       method: "GET",
@@ -72,4 +72,4 @@ setInterval(function(){
 
       }
     });
-  }, 1800000);
+  }, 30000);

@@ -26,7 +26,7 @@ $("#btnLogin").click(function (e) {
   }
 
   $.ajax({
-    url: `${AUTH_BACKEND_URL}/tmxGold/v1/user/login`,
+    url: `${AUTH_BACKEND_URL}/api/user/login`,
     method: "POST",
     contentType: "application/json",
     dataType: "json",
@@ -44,7 +44,7 @@ $("#btnLogin").click(function (e) {
         localStorage.setItem("token", results.data?.[0]?.token || "");
         refreshLogin();
 
-        window.location.href = `${AUTH_BACKEND_URL}/tmxGold/v1/${localStorage.getItem(
+        window.location.href = `${AUTH_BACKEND_URL}/api/${localStorage.getItem(
           "role"
         )}/profile/${localStorage.getItem("user_id")}`;
       } else {
@@ -75,9 +75,9 @@ $("#btnLogin").click(function (e) {
       } else if (xhr.status === 403) {
         $error.html("⚠️ User flagged or blacklisted. Contact admin for assistance.");
       } else if (xhr.status === 401) {
-        `❌ ${res.message || "Wrong password"}<br>Remaining attempts: <b>${res.data.remaining_attempts}</b>`
+        $error.html(`❌ ${res?.message || "Wrong password"}`);
       } else {
-        `❌ ${res.message || "Wrong password"}<br>Remaining attempts: <b>${res.data.remaining_attempts}</b>`
+        $error.html(`❌ ${res?.message || "Login error. Please try again."}`);
       }
     },
   });

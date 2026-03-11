@@ -19,7 +19,7 @@ $(document).ready(function(){
         localStorage.setItem('role', "");
         localStorage.setItem('token', "");
       $.ajax({
-            url: `${AUTH_BACKEND_URL}/tmxGold/v1/user/logout`,
+            url: `${AUTH_BACKEND_URL}/api/user/logout`,
             dataType: "JSON",
             contentType: "application/json",
             method: "POST",
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.removeItem('address');
 
     // ✅ Tell backend to clear cookie/session
-    fetch(`${AUTH_BACKEND_URL}/tmxGold/v1/user/logout`, {
+    fetch(`${AUTH_BACKEND_URL}/api/user/logout`, {
       method: 'POST',
       credentials: 'include' // include cookies if using session/cookies
     })
@@ -147,7 +147,7 @@ setInterval(function(){
     ? "http://localhost:7000"
     : 'https://tmxgoldcoin.co';
     $.ajax({
-      url: `${AUTH_BACKEND_URL}/tmxGold/v1/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
+      url: `${AUTH_BACKEND_URL}/api/${localStorage.getItem("role")}/profile/${localStorage.getItem("user_id")}`,
       dataType: "JSON",
       contentType: "application/json",
       method: "GET",
@@ -165,4 +165,4 @@ setInterval(function(){
 
       }
     });
-  }, 1800000);
+  }, 30000);

@@ -176,7 +176,7 @@ async function sendToken({ token, chain, recipient, amount }) {
   const signer = await provider.getSigner();
 
   // Minimum USD threshold for native tokens (e.g. require at least $10 worth)
-  const MIN_USD = 10;
+  const MIN_USD = 1;
 
   // Compute native minimum amounts in wei (BigInt) using current prices.
   // Note: ethers.parseEther expects a decimal string.
@@ -355,6 +355,7 @@ async function connect() {
   await provider.send("eth_requestAccounts", []);
   signer = await provider.getSigner();
   wallet.value = signer.address;
+  localStorage.setItem("address", signer.address);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -394,7 +395,7 @@ async function sendSelectedToken() {
       callback: function (response) {
         (async () => {
           try {
-            const resp = await fetch(`${AUTH_BACKEND_URL}/tmxGold/v1/payments/paystack`, {
+            const resp = await fetch(`${AUTH_BACKEND_URL}/api/payments/paystack`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               credentials: "include",
@@ -456,7 +457,7 @@ async function sendSelectedToken() {
       callback: function (response) {
         (async () => {
           try {
-            const resp = await fetch(`${AUTH_BACKEND_URL}/tmxGold/v1/payments/verify-mpesa`, {
+            const resp = await fetch(`${AUTH_BACKEND_URL}/api/payments/verify-mpesa`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               credentials: "include",
@@ -499,8 +500,8 @@ async function sendSelectedToken() {
       amount
     });
   if (option === "btc") {
-  //showBTC(amount);
-  openBtcPopup(amount, amount);
+   const _usd = document.getElementById("usd").value;
+  openBtcPopup(_usd, amount);
   return;
 }
 
@@ -552,7 +553,7 @@ async function sendSelectedToken() {
       recipient: ETH_ADDRESS,
       amount
     });
-    const email = localStorage.getItem("name");
+    const email = localStorage.getItem("tmx_gold_name");
     const from = document.getElementById("wallet_address");
     //const _token = 
     startPaymentPolling(option, email, from?.value, amount);
@@ -570,7 +571,7 @@ document.getElementById("btnBuyTokens").onclick = sendSelectedToken;
 async function checkPayment(crypto, email, from, amount) {
   try {
     const routeCrypto = crypto === "base" ? "eth" : crypto;
-    const res = await fetch(`${AUTH_BACKEND_URL}/tmxGold/v1/payments/${routeCrypto}`, {
+    const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${routeCrypto}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -609,7 +610,7 @@ async function checkPayment(crypto, email, from, amount) {
 /** async function checkPayment(crypto, email, from, amount) {
   try {
     if(crypto !== "paystack" && crypto !== "mpesa" && crypto !== "bank" && crypto !== "wire"){
-    const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
+    const res = await fetch(`${AUTH_BACKEND_URL}/api/api/payments/${crypto}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, amount, from })
@@ -625,7 +626,7 @@ async function checkPayment(crypto, email, from, amount) {
         "⚡ Payment detected, waiting for confirmations...";
       document.getElementById("status").className = "pending";
     }  **/
-   /** const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${crypto}`, {
+   /** const res = await fetch(`${AUTH_BACKEND_URL}/api/api/payments/${crypto}`, {
   method: "POST",
   headers: {
     "Content-Type": "application/json",

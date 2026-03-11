@@ -77,12 +77,12 @@ router.post('/sendAuth', async (req, res) => {
 
 router.post('/sendReset', resendOtpLimiter, async (req, res) => {
   const response = await userController.sendResetPassword(req.body.email);
-  return res.status(200).send(response);
+  return res.status(response.status).send(response);
 })
 
 router.post('/resetSuccess', async (req, res) => {
   const response = await userController.sendResetPasswordSuccess(req.body.email);
-  return res.status(200).send(response);
+  return res.status(response.status).send(response);
 })
 
 router.get('/verify/:email/:token', async (req, res) => {
@@ -93,21 +93,16 @@ router.get('/verify/:email/:token', async (req, res) => {
     email : email
   }
  await authController.verifyToken(packageToken);
-  //return res.status(response.status).send(response)
-  //console.log(response);
 
-function getFormattedUrl(req) {
-    return url.format({
-        protocol: req.protocol,
-        host: req.get('host')
-    });
-}
+  function getFormattedUrl(req) {
+      return url.format({
+          protocol: req.protocol,
+          host: req.get('host')
+      });
+  }
 
-res.redirect(getFormattedUrl(req));
-  //res.redirect('/home');
-
+  res.redirect(getFormattedUrl(req));
 })
-
 
 router.post('/verify', async (req, res) => {
   const response = await userController.verifyEmailOTP(req.body.otp);
@@ -118,14 +113,6 @@ router.post('/resend-otp', async (req, res) => {
   const response = await userController.resendEmailOtp(req.body.email);
   return res.status(response.status).send(response);
 });
-
-
-
-router.post('/sendReset', async (req, res) => {
-  const response = await userController.sendResetPassword(req.body.email);
-  return res.status(response.status).send(response);
-})
-
 
 router.post('/login', loginLimiter, async (req, res) => {
   const response = await userController.loginUser(req.body);

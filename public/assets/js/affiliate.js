@@ -39,10 +39,10 @@ $(document).ready(function () {
     const el = document.getElementById(id);
     if (!el) return;
     if (!endpoint) {
-      el.href = `/tmxGold/v1/${role}/profile/${userId}`;
+      el.href = `/api/${role}/profile/${userId}`;
       return;
     }
-    el.href = `/tmxGold/v1/${role}/profile/${userId}/${endpoint}`;
+    el.href = `/api/${role}/profile/${userId}/${endpoint}`;
   });
 
   // =============================
@@ -54,7 +54,7 @@ $(document).ready(function () {
 
     try {
       const resp = await fetch(
-        `${AUTH_BACKEND_URL}/tmxGold/v1/affiliate/referral/${encodeURIComponent(userId)}`,
+        `${AUTH_BACKEND_URL}/api/affiliate/referral/${encodeURIComponent(userId)}`,
         {
           method: "GET",
           headers: { Accept: "application/json" },
@@ -77,7 +77,7 @@ $(document).ready(function () {
         const affiliateId = res.referral_id;
         if (affiliateId) {
           const statsResp = await fetch(
-            `${AUTH_BACKEND_URL}/tmxGold/v1/affiliate/stats/${encodeURIComponent(affiliateId)}`,
+            `${AUTH_BACKEND_URL}/api/affiliate/stats/${encodeURIComponent(affiliateId)}`,
             {
               method: "GET",
               headers: { Accept: "application/json" },
@@ -136,7 +136,7 @@ $(document).ready(function () {
   // =============================
   setInterval(function () {
     $.ajax({
-      url: `${AUTH_BACKEND_URL}/tmxGold/v1/${role}/profile/${userId}`,
+      url: `${AUTH_BACKEND_URL}/api/${role}/profile/${userId}`,
       dataType: "json",
       contentType: "application/json",
       method: "GET",
@@ -149,7 +149,7 @@ $(document).ready(function () {
         }
       },
     });
-  }, 1800000); // 30 minutes
+  }, 30000); // 30 minutes
 
   // =============================
   // 🔧 Role-based Menu Visibility
