@@ -557,7 +557,100 @@ async function sendSelectedToken() {
     //const _token = 
     startPaymentPolling(option, email, from?.value, amount);
 
+<<<<<<< HEAD
   /* Remaining (Mpesa, Paystack, BTC, Bank, Wire) unchanged */
+=======
+function setupPaystackPayment(email, amount) {
+    const amountKES = document.getElementById("paystackAmount").value;
+    const usdValue = document.getElementById("usd").value; // The USD input
+    //let _amount = parseFloat(usdValue/0.005).toFixed(0);
+   
+   // _amount = parseInt(_amount * 1e18).toString(); // Convert to wei for ERC20 tokens
+    const pricePerToken = 0.005; // Example price per token in USD, replace with actual logic if needed
+    let _amount = ethers.parseUnits(usdValue / pricePerToken, 18);
+    const tokenAmount = document.getElementById("amount").value; // The crypto amount to send
+    // Hardcoded email for testing
+    const walletAddress = document.getElementById("wallet_address").value;
+  //email = 
+
+  /**) {
+      alert('Payment successful! Reference: ' + response.reference);
+      const paystackReference = response.reference;
+      // Here you would notify your backend
+      try {
+                const verifyRes = await fetch(`${AUTH_BACKEND_URL}/api/payments/paystack`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                        reference: paystackReference, 
+                        address: walletAddress, 
+                        email: email, 
+                        amount: amountKES, 
+                        token: _amount, 
+                        usd: usdValue 
+                    })
+                });
+
+                const result = await verifyRes.json();
+
+                if (result.status === "success") {
+                    document.getElementById("status").textContent = "✅ Payment Confirmed & Tokens Sent!";
+                    document.getElementById("status").className = "confirmed";
+                    alert("Success! Tokens have been dispatched to your wallet.");
+                } else {
+                    alert("Verification failed: " + (result.data?.message || "Unknown error"));
+                }
+            } catch (e) {
+                console.error("Verification Error:", e);
+                alert("Error connecting to server for verification.");
+            }
+    }
+  }); **/
+  const handler = PaystackPop.setup({
+    key: 'pk_live_7bda8bdfc8d90392fde6a15590c7e470127dd2d2',
+    email: email,
+    amount: Math.round(amount * 100),
+    currency: "USD",
+    onClose: () => alert('Window closed.'),
+    onSuccess: (response) => {
+        // Handle the async backend call here
+        handleVerification(response);
+    }
+});
+
+  handler.open();
+
+  async function handleVerification(response) {
+    const paystackReference = response.reference;
+    try {
+        const verifyRes = await fetch(`${AUTH_BACKEND_URL}/tmxGold/v1/api/payments/paystack`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                reference: paystackReference, 
+                address: walletAddress, 
+                email: email, 
+                amount: amountKES, 
+                token: _amount, 
+                usd: usdValue 
+            })
+        });
+        
+        // ... handle result
+         const result = await verifyRes.json();
+
+                if (result.status === "success") {
+                    document.getElementById("status").textContent = "✅ Payment Confirmed & Tokens Sent!";
+                    document.getElementById("status").className = "confirmed";
+                    alert("Success! Tokens have been dispatched to your wallet.");
+                } else {
+                    alert("Verification failed: " + (result.data?.message || "Unknown error"));
+                }
+    } catch (e) {
+        console.error("Verification Error:", e);
+    }
+}
+>>>>>>> bcbb8092b092ce65ca1fae3f6c5589a36e08f590
 }
 
 document.getElementById("btnBuyTokens").onclick = sendSelectedToken;
@@ -569,8 +662,12 @@ document.getElementById("btnBuyTokens").onclick = sendSelectedToken;
 
 async function checkPayment(crypto, email, from, amount) {
   try {
+<<<<<<< HEAD
     const routeCrypto = crypto === "base" ? "eth" : crypto;
     const res = await fetch(`${AUTH_BACKEND_URL}/tmxGold/v1/payments/${routeCrypto}`, {
+=======
+    const res = await fetch(`${AUTH_BACKEND_URL}/tmxGold/v1/api/payments/${crypto}`, {
+>>>>>>> bcbb8092b092ce65ca1fae3f6c5589a36e08f590
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",

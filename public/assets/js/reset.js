@@ -5,9 +5,14 @@ $(document).ready(function () {
 $("#sendOtpBtn").click(function (e) {
   e.preventDefault();
 
+<<<<<<< HEAD
   const AUTH_BACKEND_URL = window.location.hostname === 'localhost'
     ? "http://localhost:7000"
     : "https://tmxgoldcoin.co";
+=======
+  const AUTH_BACKEND_URL = "https://tmxgoldcoin.co";
+ 
+>>>>>>> bcbb8092b092ce65ca1fae3f6c5589a36e08f590
 
   const $btn = $("#sendOtpBtn");
   const $error = $("#send_placement_error");

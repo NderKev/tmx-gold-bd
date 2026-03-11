@@ -6,9 +6,21 @@ const dotenv = require('dotenv');
 dotenv.config({ path: '../.env'});
 const listen = require('./listen')
 const {successResponse, errorResponse} = require('../lib/response');
+<<<<<<< HEAD
 const RPC_URL = "https://api.avax.network/ext/bc/C/rpc"; // Avalanche mainnet
 const PRIVATE_KEY = process.env.PRIVATE_KEY;   // reserve wallet PK
 const TOKEN_ADDRESS = process.env.TMX_GOLD_ADDRESS; // ERC20 contract on Avalanche
+=======
+const sendEmail = require('../helpers/sendMail');
+; // Replace with your actual token sale contract address on Base
+
+// -------- UPDATED CONFIG FOR BASE --------
+const RPC_URL = "https://mainnet.base.org"; // Base Mainnet RPC
+const PRIVATE_KEY = process.env.PRIVATE_KEY; 
+const TOKEN_ADDRESS = process.env.TMX_GOLD_ADDRESS; // Your TMXG contract address on Base
+// -----------------------------------------
+
+>>>>>>> bcbb8092b092ce65ca1fae3f6c5589a36e08f590
 const transactionsModel = require('../models/transactions');
 const { DepositMail } = require('../mails');
 const userModel = require("../models/users");

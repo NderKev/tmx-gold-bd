@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.2;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -63,7 +63,8 @@ contract TMXGoldTokenSale is Ownable, ReentrancyGuard {
     function withdrawFunds(address payable to) external onlyOwner {
         uint256 balance = address(this).balance;
         require(balance > 0, "No ETH to withdraw");
-        to.transfer(balance);
+        (bool success, ) = to.call{value: balance}("");
+        require(success, "Withdrawal failed");
     }
 
     /**

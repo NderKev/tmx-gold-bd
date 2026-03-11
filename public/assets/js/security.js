@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 $(document).ready(function(){
 let securityIndex = document.getElementById("securityIndex");
 let securityTrading = document.getElementById("securityTrade")
@@ -67,567 +68,201 @@ setInterval(function(){
         localStorage.setItem('tmx_gold_name', "");
         localStorage.setItem('role', "");
         localStorage.setItem('token', "");
+=======
+$(document).ready(function() {
+    // --- UI Element Selectors ---
+    const securityElements = {
+        index: document.getElementById("securityIndex"),
+        trade: document.getElementById("securityTrade"),
+        ico: document.getElementById("securityICO"),
+        user: document.getElementById("securityUser"),
+        buy: document.getElementById("securityBuy"),
+        gateways: document.getElementById("securityGateways"),
+        affiliate: document.getElementById("securityAffiliate"),
+        wallet: document.getElementById("securityWallet"),
+        security: document.getElementById("securitySecurity"),
+        settings: document.getElementById("securitySettings"),
+        account: document.getElementById("securityAccount"),
+        faq: document.getElementById("securityFaq"),
+        support: document.getElementById("securitySupport"),
+        accSec: document.getElementById("accountSecurity"),
+        profile: document.getElementById("securityProfile"),
+        suppSec: document.getElementById("supportSecurity"),
+        trans: document.getElementById("securityTransactions"),
+        buy1: document.getElementById("BuyandSell1"),
+        buy2: document.getElementById("BuyandSell2")
+    };
+
+    const role = localStorage.getItem("role");
+    const id = localStorage.getItem("user_id");
+    const isLoggedIn = localStorage.getItem("tmx_gold_name");
+
+    // --- Authentication Check ---
+    if (!isLoggedIn) {
+>>>>>>> bcbb8092b092ce65ca1fae3f6c5589a36e08f590
         window.location.href = "/index.html";
-      }
-      },
-      success: function(results){
+    } else {
+        const basePath = `/api/${role}/profile/${id}`;
+        
+        // Map UI elements to their respective paths
+        const routes = {
+            index: '', trade: '/trade', ico: '/ico', user: '/user', buy: '/buy',
+            gateways: '/gateways', affiliate: '/affiliate', wallet: '/wallet',
+            security: '/security', settings: '/settings', account: '/account',
+            faq: '/faq', support: '/support', accSec: '/account', profile: '/profile',
+            suppSec: '/support', trans: '/transactions', buy1: '/buy', buy2: '/buy'
+        };
 
-      }
-    });
-  }, 1800000);
-
-
-document.addEventListener('DOMContentLoaded', function () {
-  const role = localStorage.getItem('role');   // e.g. "admin" or "customer"
-
-  if (role === 'customer') {
-    // Option 1: completely remove the element
-    document.getElementById('icoMenu').remove();
-    document.getElementById('paymentMenu').remove();
-
-    // Option 2 (alternative): just hide it
-    // document.getElementById('icoMenu').style.display = 'none';
-  }
+        for (let key in routes) {
+            if (securityElements[key]) {
+                $(securityElements[key]).attr("href", basePath + routes[key]);
+            }
+        }
+    }
 });
 
+// --- Session Expiry Watchdog (30 mins) ---
+setInterval(function() {
+    const AUTH_BACKEND_URL = 'https://tmxgoldcoin.co';
+    const role = localStorage.getItem("role");
+    const id = localStorage.getItem("user_id");
 
-const AVALANCHE_RPC = "https://api.avax.network/ext/bc/C/rpc";
-const AVALANCHE_CHAIN_ID = "0xa86a";
-
-    // Example ERC20 token (USDC.e on Avalanche)
- const TOKEN_ADDRESS = "0xE88a92EcbAeeC20241D43A3e2512A4E705A847b8";
-    const ERC20_ABI = [
-  "function balanceOf(address account) view returns (uint256)",
-  "function transfer(address to, uint256 amount) returns (bool)",
-  "function decimals() view returns (uint8)",
-  "function symbol() view returns (string)"
-];
-
-    const ERC20_ABI_TMXGT = [
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "name",
-    "outputs": [
-      {
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "spender",
-        "type": "address"
-      },
-      {
-        "name": "value",
-        "type": "uint256"
-      }
-    ],
-    "name": "approve",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "totalSupply",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "sender",
-        "type": "address"
-      },
-      {
-        "name": "recipient",
-        "type": "address"
-      },
-      {
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "transferFrom",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "decimals",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint8"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "spender",
-        "type": "address"
-      },
-      {
-        "name": "addedValue",
-        "type": "uint256"
-      }
-    ],
-    "name": "increaseAllowance",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "account",
-        "type": "address"
-      },
-      {
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "mint",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "value",
-        "type": "uint256"
-      }
-    ],
-    "name": "burn",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "balanceOf",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "symbol",
-    "outputs": [
-      {
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "addMinter",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [],
-    "name": "renounceMinter",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "spender",
-        "type": "address"
-      },
-      {
-        "name": "subtractedValue",
-        "type": "uint256"
-      }
-    ],
-    "name": "decreaseAllowance",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "recipient",
-        "type": "address"
-      },
-      {
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "transfer",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "isMinter",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "newMinter",
-        "type": "address"
-      }
-    ],
-    "name": "transferMinterRole",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "owner",
-        "type": "address"
-      },
-      {
-        "name": "spender",
-        "type": "address"
-      }
-    ],
-    "name": "allowance",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "name": "name",
-        "type": "string"
-      },
-      {
-        "name": "symbol",
-        "type": "string"
-      },
-      {
-        "name": "decimals",
-        "type": "uint8"
-      },
-      {
-        "name": "initialSupply",
-        "type": "uint256"
-      },
-      {
-        "name": "feeReceiver",
-        "type": "address"
-      },
-      {
-        "name": "tokenOwnerAddress",
-        "type": "address"
-      }
-    ],
-    "payable": true,
-    "stateMutability": "payable",
-    "type": "constructor"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "MinterAdded",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "MinterRemoved",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "name": "to",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "name": "value",
-        "type": "uint256"
-      }
-    ],
-    "name": "Transfer",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "name": "owner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "name": "spender",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "name": "value",
-        "type": "uint256"
-      }
-    ],
-    "name": "Approval",
-    "type": "event"
-  }
-];
- const address = document.getElementById("address");
- const balance = document.getElementById("balance");
- const balanceUsd = document.getElementById("usd_balance");
-
- let provider, signer, token, decimals, symbol;
-
-      async function switchToAvalanche() {
-      try {
-        await window.ethereum.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: AVALANCHE_CHAIN_ID }]
-        });
-      } catch (switchError) {
-        // If chain not added to MetaMask
-        if (switchError.code === 4902) {
-          try {
-            await window.ethereum.request({
-              method: "wallet_addEthereumChain",
-              params: [
-                {
-                  chainId: AVALANCHE_CHAIN_ID,
-                  chainName: "Avalanche C-Chain",
-                  nativeCurrency: {
-                    name: "Avalanche",
-                    symbol: "AVAX",
-                    decimals: 18
-                  },
-                  rpcUrls: ["https://api.avax.network/ext/bc/C/rpc"],
-                  blockExplorerUrls: ["https://snowtrace.io/"]
+    if (role && id) {
+        $.ajax({
+            url: `${AUTH_BACKEND_URL}/api/${role}/profile/${id}`,
+            method: "GET",
+            error: (err) => {
+                if (err.status === 401) {
+                    alert("Session Expired! Kindly login again");
+                    localStorage.clear(); // Clear all for safety
+                    window.location.href = "/index.html";
                 }
-              ]
-            });
-          } catch (addError) {
-            console.error("Add chain error:", addError);
-          }
-        } else {
-          console.error("Switch error:", switchError);
-        }
-      }
+            }
+        });
     }
+}, 1800000);
 
-    async function checkNetwork() {
-      const { chainId } = await provider.getNetwork();
-      const hexId = "0x" + chainId.toString(16);
-      if (hexId !== AVALANCHE_CHAIN_ID) {
-        alert(`Wrong network! Please switch MetaMask to Avalanche C-Chain (chainId: 43114).`);
-        await switchToAvalanche();
-        //return false;
-        return false;
-      }
-      network.innerText = `Avalanche (chainId ${chainId})`;
-      return true;
+// --- Role-Based UI Cleanup ---
+document.addEventListener('DOMContentLoaded', function() {
+    const role = localStorage.getItem('role');
+    if (role === 'customer') {
+        const icoMenu = document.getElementById('icoMenu');
+        const paymentMenu = document.getElementById('paymentMenu');
+        if (icoMenu) icoMenu.remove();
+        if (paymentMenu) paymentMenu.remove();
     }
-
-    async function loadBalance() {
-      try {
-        const account = signer.address;
-        address.innerText =  account;
-        //wallet.innerText = account;
-
-        const rawBalance = await token.balanceOf(account);
-        const formatted = ethers.formatUnits(rawBalance, decimals);
-        const usd_balance = parseFloat(formatted * 0.005);
-
-        balance.innerText = `${formatted} TMXGT`;
-        //balanceWei.innerText = `${formatted} TMXGT`;
-        balanceUsd.innerText = `${usd_balance} USD`;
-      } catch (err) {
-        console.error("Error loading balance:", err);
-        output.innerText = "Balance: error";
-      }
-    }
-
-  document.addEventListener("DOMContentLoaded", function () {
+    // Auto-connect wallet on load
     connect();
-  })
+});
 
-    async function connect() {
-      if (!window.ethereum) return alert("Install MetaMask!");
-       
-      //provider = new ethers.providers.Web3Provider(window.ethereum);
-      provider = new ethers.BrowserProvider(window.ethereum)
-      await provider.send("eth_requestAccounts", []);
-      signer = await provider.getSigner();
-      console.log("Signer address:", signer.address);
-      if (!(await checkNetwork())) return;
-      token = new ethers.Contract(TOKEN_ADDRESS, ERC20_ABI_TMXGT, provider);
-      decimals = await token.decimals();
-      symbol = await token.symbol();
+// --- BASE MAINNET CONFIGURATION ---
+const BASE_RPC = "https://mainnet.base.org";
+const BASE_CHAIN_ID = "0x2105"; // 8453 Decimal
+const TOKEN_ADDRESS = "0xE88a92EcbAeeC20241D43A3e2512A4E705A847b8"; // Ensure this is the BASE address
 
-      await loadBalance();
+const ERC20_ABI_TMXGT = [
+    "function name() view returns (string)",
+    "function symbol() view returns (string)",
+    "function decimals() view returns (uint8)",
+    "function balanceOf(address account) view returns (uint256)",
+    "function transfer(address recipient, uint256 amount) returns (bool)",
+    "function approve(address spender, uint256 value) returns (bool)",
+    "function allowance(address owner, address spender) view returns (uint256)"
+];
 
-      // Refresh when account changes
-      window.ethereum.on("accountsChanged", async () => {
-        signer = await provider.getSigner();
-        await loadBalance();
-      });
+const addressDisplay = document.getElementById("address");
+const balanceDisplay = document.getElementById("balance");
+const usdDisplay = document.getElementById("usd_balance");
+const networkDisplay = document.getElementById("network");
 
-      // Refresh when network changes
-      window.ethereum.on("chainChanged", async () => {
-        provider = new ethers.providers.Web3Provider(window.ethereum);
-        signer = await provider.getSigner();
-        token = new ethers.Contract(TOKEN_ADDRESS, ERC20_ABI_TMXGT, provider);
-        await loadBalance();
-      });
+let provider, signer, token, decimals;
+
+// --- Web3 Functions ---
+
+async function switchToBase() {
+    try {
+        await window.ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: BASE_CHAIN_ID }]
+        });
+    } catch (switchError) {
+        if (switchError.code === 4902) {
+            try {
+                await window.ethereum.request({
+                    method: "wallet_addEthereumChain",
+                    params: [{
+                        chainId: BASE_CHAIN_ID,
+                        chainName: "Base Mainnet",
+                        nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+                        rpcUrls: [BASE_RPC],
+                        blockExplorerUrls: ["https://basescan.org/"]
+                    }]
+                });
+            } catch (addError) {
+                console.error("User rejected adding the network.");
+            }
+        }
     }
+}
 
-     //connectBtn.onclick = connect;
+async function checkNetwork() {
+    const network = await provider.getNetwork();
+    const hexId = "0x" + network.chainId.toString(16);
+    
+    if (hexId !== BASE_CHAIN_ID) {
+        alert("Wrong network! Switching to Base Mainnet.");
+        await switchToBase();
+        return false;
+    }
+    if (networkDisplay) networkDisplay.innerText = `Base Mainnet (8453)`;
+    return true;
+}
 
-  //const fullAddress = "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"; // example
-  const addressEl = document.getElementById("address");
-  //const addressCp = document.getElementById("copy_address");
+async function loadBalance() {
+    try {
+        const userAddress = await signer.getAddress();
+        if (addressDisplay) addressDisplay.innerText = userAddress;
 
-  // Display shortened address
-  function shortenAddress(addressEl) {
-    return addressEl.slice(0, 6) + "…" + addr.slice(-4);
-  }
+        const rawBalance = await token.balanceOf(userAddress);
+        const formatted = ethers.formatUnits(rawBalance, decimals);
+        
+        // Assuming price per token is 0.005 USD
+        const usdValue = (parseFloat(formatted) * 0.005).toFixed(2);
+
+        if (balanceDisplay) balanceDisplay.innerText = `${formatted} TMXGT`;
+        if (usdDisplay) usdDisplay.innerText = `${usdValue} USD`;
+    } catch (err) {
+        console.error("Error loading blockchain data:", err);
+    }
+}
+
+async function connect() {
+    if (!window.ethereum) return console.log("MetaMask not found");
+
+    provider = new ethers.BrowserProvider(window.ethereum);
+    
+    try {
+        await provider.send("eth_requestAccounts", []);
+        signer = await provider.getSigner();
+
+        if (!(await checkNetwork())) return;
+
+        token = new ethers.Contract(TOKEN_ADDRESS, ERC20_ABI_TMXGT, signer);
+        decimals = await token.decimals();
+
+        await loadBalance();
+
+        // Listeners
+        window.ethereum.on("accountsChanged", () => location.reload());
+        window.ethereum.on("chainChanged", () => location.reload());
+
+    } catch (err) {
+        console.error("Connection failed", err);
+    }
+}
+
+// Helper: Shorten Address
+function getShortAddress(addr) {
+    if (!addr) return "";
+    return addr.slice(0, 6) + "..." + addr.slice(-4);
+}

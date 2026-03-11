@@ -20,7 +20,7 @@ if(!DEBUG){
 
 const app = express();
 
-app.use(cors({
+/** app.use(cors({
   origin: 'https://tmxgoldcoin.co',
   methods: ['GET','POST','PUT','DELETE','OPTIONS'],
   credentials: true    // if you send cookies or auth headers
@@ -31,7 +31,31 @@ app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     res.header('Access-Control-Allow-Credentials', 'true');
     next();
-});
+}); **/
+
+// --- FIXED CORS CONFIGURATION ---
+// This allows both the bare domain and the www subdomain
+const allowedOrigins = [
+  'https://tmxgoldcoin.co',
+  'https://www.tmxgoldcoin.co'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true,
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
+}));
+// --- END CORS CONFIGURATION ---
 
 app.use(cookieParser());  
 //const __dirname = path.resolve();

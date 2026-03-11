@@ -32,7 +32,7 @@ const trackAffiliate = async (req, res) => {
 
     // record click (async best-effort)
     const clickData = {
-      ip: req.ip,
+      ip: req.ip, 
       userAgent: req.get('User-Agent'),
       referrer: req.get('Referrer') || req.get('Referer'),
       // optional geo: use middleware to fill req.geo
