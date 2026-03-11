@@ -136,6 +136,14 @@ app.use('/tmxGold/v1/upload', uploadRoute); **/
 const paymentRoutes = require('./routes/payments');
 app.use('/tmxGold/v1/payments', paymentRoutes);
 
+app.use('/api/index', indexRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/customer', customerRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/tx', txRoutes);
+app.use('/api/affiliate', require('./routes/affiliate'));
+app.use('/api/payments', paymentRoutes);
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
