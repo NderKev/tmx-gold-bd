@@ -31,7 +31,42 @@ app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     res.header('Access-Control-Allow-Credentials', 'true');
     next();
-});
+}); 
+
+// --- FIXED CORS CONFIGURATION ---
+// This allows both the bare domain and the www subdomain
+const allowedOrigins = [
+  'https://tmxgoldcoin.co',
+  'https://www.tmxgoldcoin.co',
+  /^http:\/\/localhost:\d+$/,
+  /^http:\/\/127\.0\.0\.1:\d+$/
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+
+    if (DEBUG) console.log('CORS check for origin:', origin);
+
+    const isAllowed =
+      origin === 'https://tmxgoldcoin.co' ||
+      origin === 'https://www.tmxgoldcoin.co' ||
+      /^http:\/\/localhost:\d+$/.test(origin) ||
+      /^http:\/\/127\.0\.0\.1:\d+$/.test(origin);
+    
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      if (DEBUG) console.log('CORS rejected. Allowed origins:', allowedOrigins);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true,
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
+}));
+// --- END CORS CONFIGURATION ---
 
 app.use(cookieParser());  
 //const __dirname = path.resolve();
