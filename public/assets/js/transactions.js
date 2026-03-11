@@ -164,7 +164,7 @@ setInterval(function(){
 
       }
     });
-  }, 1800000);
+  }, 30000);
 
 
 document.addEventListener('DOMContentLoaded', async () => {
