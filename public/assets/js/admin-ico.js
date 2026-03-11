@@ -72,4 +72,4 @@ setInterval(function(){
 
       }
     });
-  }, 180000);
+  }, 30000);

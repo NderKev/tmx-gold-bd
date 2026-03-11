@@ -149,7 +149,7 @@ $(document).ready(function () {
         }
       },
     });
-  }, 180000); // 30 minutes
+  }, 30000); // 30 minutes
 
   // =============================
   // 🔧 Role-based Menu Visibility
