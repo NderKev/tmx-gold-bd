@@ -493,7 +493,11 @@ $("#transferButton").click(async (e)  => {
     const sender = signer.address;
 
     // Check if sender has sufficient balance
-    const balance = await provider.getBalance(sender);
+    let balance = await provider.getBalance(sender);
+    balance = ethers.formatUnits(balance, 18);
+    console.log(`Sender balance: ${balance} ETH`);
+
+
     if (balance < amountWei) {
       alert("Insufficient balance for this transfer");
       return;
@@ -517,7 +521,28 @@ $("#transferButton").click(async (e)  => {
     const receipt = await tx.wait();
     console.log("Transaction confirmed:", receipt);
     alert("Transfer completed successfully!");
+    //'email', 'address', 'tx_hash', 'mode', 'type', 'to', 'status', 'value', 'usd'
+    const email = localStorage.getItem("tmx_gold_name");
+    const address = $("#wallet_address").val().trim();
+    const value = amountWei.toString();
+    const usd = parseFloat(amount) * 0.005; // Assuming 1 TMXGT = 0.005 USD
+    const tx_hash = tx.hash;
+    const AUTH_BACKEND_URL = window.location.hostname === 'localhost'
+    ? "http://localhost:7000"
+    : "https://tmxgoldcoin.co";
+    const res = await fetch(`${AUTH_BACKEND_URL}/api/tx/transaction`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email, address, tx_hash, mode: "eth", type: "transfer", to: recipient, status: "complete", value, usd   })
+    });
 
+    const text = await res.text();
+
+    if (!res.ok) {
+      console.error("API error:", res.status, text);
+      return;
+    }
     // Reload balance after transfer
     await loadBalance();
 
