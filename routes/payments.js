@@ -10,6 +10,7 @@ const {authenticator} = require('../lib/common');
 const { FiatTransactionMail} = require('../mails');
 const sendEmail = require('../helpers/sendMail');
 const userModel = require("../models/users");
+const { buyTokensBackend, processPurchase } = require("../services/buyTokens");
 const router = express.Router();
 
 // you can create a .env file on the server for the public and private keys
@@ -246,8 +247,8 @@ router.post('/send-tokens',async (req, res) => {
 });
 
 router.post('/tx',async (req, res) => {
-  const response = await transactions.createTransaction(req.body);
-  return res.status(response.status).send(response);
+ const response = await transactions.createTransaction(req.body);
+ return res.status(response.status).send(response);
 });
 
 

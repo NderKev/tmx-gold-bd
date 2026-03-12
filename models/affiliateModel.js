@@ -71,19 +71,21 @@ const getAllConversions = async () => {
 };
 
 const getAffiliateStats = async (affiliateId) => {
-  const totalConversions = await db.read.select("*").from("affiliate_conversions")
+  const totalConversions = await db.read("affiliate_conversions")
     .where("affiliate_id", affiliateId)
-    .count("id as total");
+    .count({ total: "id" })
+    .first();
 
-  const signups = await db.read.select('*').from("affiliate_conversions")
+  const signups = await db.read("affiliate_conversions")
     .where("affiliate_id", affiliateId)
     .andWhere("type", "signup")
-    .count("id as total");
+    .count({ total: "id" })
+    .first();
 
   return {
     affiliate_id: affiliateId,
-    total_conversions: totalConversions[0].total || 0,
-    signups: signups[0].total || 0,
+    total_conversions: totalConversions?.total || 0,
+    signups: signups?.total || 0,
   };
 };
 

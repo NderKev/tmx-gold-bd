@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 dotenv.config({ path: '../.env'});
 const listen = require('./listen')
 const {successResponse, errorResponse} = require('../lib/response');
+const sendEmail = require('../helpers/sendMail');
 const RPC_URL = "https://api.avax.network/ext/bc/C/rpc"; // Avalanche mainnet
 const PRIVATE_KEY = process.env.PRIVATE_KEY;   // reserve wallet PK
 const TOKEN_ADDRESS = process.env.TMX_GOLD_ADDRESS; // ERC20 contract on Avalanche
@@ -21,6 +22,7 @@ const SendTokens = async (reqData) => {
   try {
         const TO_ADDRESS = reqData.to;    // recipient
         const AMOUNT = reqData.amount;           // number of tokens to send (human-readable)
+        const value = AMOUNT;
         // ------------------------
 
         const ERC20_ABI = [

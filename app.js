@@ -37,17 +37,28 @@ app.use(function(req, res, next) {
 // This allows both the bare domain and the www subdomain
 const allowedOrigins = [
   'https://tmxgoldcoin.co',
-  'https://www.tmxgoldcoin.co'
+  'https://www.tmxgoldcoin.co',
+  /^http:\/\/localhost:\d+$/,
+  /^http:\/\/127\.0\.0\.1:\d+$/
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps or curl)
     if (!origin) return callback(null, true);
+
+    if (DEBUG) console.log('CORS check for origin:', origin);
+
+    const isAllowed =
+      origin === 'https://tmxgoldcoin.co' ||
+      origin === 'https://www.tmxgoldcoin.co' ||
+      /^http:\/\/localhost:\d+$/.test(origin) ||
+      /^http:\/\/127\.0\.0\.1:\d+$/.test(origin);
     
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    if (isAllowed) {
       callback(null, true);
     } else {
+      if (DEBUG) console.log('CORS rejected. Allowed origins:', allowedOrigins);
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -124,6 +135,14 @@ app.use('/tmxGold/v1/upload', uploadRoute); **/
  -----------------------**/
 const paymentRoutes = require('./routes/payments');
 app.use('/tmxGold/v1/payments', paymentRoutes);
+
+app.use('/api/index', indexRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/customer', customerRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/tx', txRoutes);
+app.use('/api/affiliate', require('./routes/affiliate'));
+app.use('/api/payments', paymentRoutes);
 
 
 // catch 404 and forward to error handler
