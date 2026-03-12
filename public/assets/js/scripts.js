@@ -3310,7 +3310,7 @@ jQuery(function($) {
           connectButton.textContent = "Connected";
           connectButton.style.backgroundColor = "#4caf50"; // green for connected
           address.innerText = account;
-          loadBalance();
+          //loadBalance();
 
         } catch (error) {
           console.error("User rejected request:", error);
@@ -3334,20 +3334,7 @@ ethereum.on("accountsChanged", function (accounts) {
   }
 });
 
-async function loadBalance() {
-  const provider = new ethers.BrowserProvider(window.ethereum);
 
-  await provider.send("eth_requestAccounts", []);
-
-  const signer = await provider.getSigner();
-  const address = await signer.getAddress();
-
-  const balance = await provider.getBalance(address);
-
-  document.getElementById("eth_balance").innerText =
-    ethers.formatEther(balance) + " ETH";
-   document.getElementById("eth_balance_number").value = ethers.formatEther(balance);
-} 
 
 // Detect network change
 ethereum.on("chainChanged", (chainId) => {

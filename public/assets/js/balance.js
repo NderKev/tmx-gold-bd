@@ -287,6 +287,22 @@ async function switchToBase() {
   }
 }
 
+async function loadEthBalance() {
+  /** const provider = new ethers.BrowserProvider(window.ethereum);
+
+  await provider.send("eth_requestAccounts", []);
+
+  const signer = await provider.getSigner();
+  const address = await signer.getAddress(); **/
+  const account = signer.address;
+
+  const balance = await provider.getBalance(account);
+
+  document.getElementById("eth_balance").innerText =
+    ethers.formatEther(balance) + " ETH";
+   document.getElementById("eth_balance_number").value = ethers.formatEther(balance);
+} 
+
 // --------------------------- NETWORK CHECK ---------------------------
 async function checkNetwork() {
   const { chainId } = await provider.getNetwork();
@@ -339,10 +355,12 @@ async function connect() {
   symbol = await token.symbol();
 
   await loadBalance();
+  await loadEthBalance();
 
   window.ethereum.on("accountsChanged", async () => {
     signer = await provider.getSigner();
     await loadBalance();
+    await loadEthBalance();
   });
 
   window.ethereum.on("chainChanged", async () => {
@@ -350,6 +368,7 @@ async function connect() {
     signer = await provider.getSigner();
     token = new ethers.Contract(TOKEN_ADDRESS, ERC20_ABI_TMXGT, provider);
     await loadBalance();
+    await loadEthBalance();
   });
 }
 
