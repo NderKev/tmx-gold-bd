@@ -571,7 +571,7 @@ document.getElementById("btnBuyTokens").onclick = sendSelectedToken;
 async function checkPayment(crypto, email, from, amount) {
   try {
     const routeCrypto = crypto === "base" ? "eth" : crypto;
-    const res = await fetch(`${AUTH_BACKEND_URL}/tmxGold/v1/payments/${routeCrypto}`, {
+    const res = await fetch(`${AUTH_BACKEND_URL}/api/payments/${routeCrypto}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
