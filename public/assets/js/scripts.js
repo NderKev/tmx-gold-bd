@@ -3292,7 +3292,8 @@ jQuery(function($) {
   document.addEventListener("DOMContentLoaded", function () {
     const connectButton = document.getElementById("connectWalletMain");
     const walletAddress = document.getElementById("walletAddress");
-    const address = document.getElementById("address");
+    const address = document.getElementById("tmxgtAddress");
+    //const ethBalance = document.getElementById("eth_balance");
 
     async function connectWallet() {
       if (typeof window.ethereum !== "undefined") {
@@ -3309,6 +3310,7 @@ jQuery(function($) {
           connectButton.textContent = "Connected";
           connectButton.style.backgroundColor = "#4caf50"; // green for connected
           address.innerText = account;
+          loadBalance();
 
         } catch (error) {
           console.error("User rejected request:", error);
@@ -3331,6 +3333,21 @@ ethereum.on("accountsChanged", function (accounts) {
     document.getElementById("connectWalletMain").textContent = "Connect Wallet";
   }
 });
+
+async function loadBalance() {
+  const provider = new ethers.BrowserProvider(window.ethereum);
+
+  await provider.send("eth_requestAccounts", []);
+
+  const signer = await provider.getSigner();
+  const address = await signer.getAddress();
+
+  const balance = await provider.getBalance(address);
+
+  document.getElementById("eth_balance").innerText =
+    ethers.formatEther(balance) + " ETH";
+   document.getElementById("eth_balance_number").value = ethers.formatEther(balance);
+} 
 
 // Detect network change
 ethereum.on("chainChanged", (chainId) => {

@@ -93,11 +93,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
 $("#buyTokensButton").click(async (e)  => {
   e.preventDefault();
+  const ethBalanceElement = document.getElementById("eth_balance_number");  
+  const ethBalance = parseFloat(ethBalanceElement.value);
   let tokenAmount = document.getElementById("tmxgtAmount").value;
   const address = document.getElementById("address").value;
   tokenAmount = Math.pow(tokenAmount, 18);
   const expectedEthWei = tokenAmount * 2616150800000; // Assuming 1 TMXGT = 0.01 ETH
   const email = localStorage.getItem("tmx_gold_name");
+  if (!ethBalance || ethBalance <= 0) {
+    alert("Your ETH balance is too low to make a purchase. Please deposit more ETH and try again.");
+    return;
+  }
   if (!tokenAmount || tokenAmount <= 0) {
     alert("Please enter a valid token amount greater than 0");
     return;
