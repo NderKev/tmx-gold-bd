@@ -1045,13 +1045,38 @@
                                                         <div class="row">
                                                             <div class="col-xs-12">
                                                                 <div class="transfer-wraper">
+                                                                    <label class="form-label mt-10">wallet address</label>
+                                                                    <span class="desc"></span>
+
+                                                                    <div class="input-group mb-10">
+                                                                        <span
+                                                                        class="input-group-addon has-gradient-to-right-bottom2"
+                                                                        >
+                                                                        <i class="cc ETC icon-white"></i>
+                                                                        </span>
+                                                                        <p class="form-control-static with-border" id="wallet_address">  
+                                                                        </p>
                                                                     <div class="form-group no-mb">
+                                                                        <div class="mt-10 balance">
+                                                                        <strong class="form-label bold">Balance : </strong>
+                                                                        <span class="desc color-primary f-s-14" id="wallet_balance">
+                                                                        </span
+                                                                        >
+                                                                    </div>
+                                                                    <div class="balance bg-white">
+                                                                        <strong class="form-label bold"
+                                                                        >Balance in USD:
+                                                                        </strong>
+                                                                        <span class="desc color-primary f-s-14" id="wallet_usd">
+                                                                        </span
+                                                                        >
+                                                                    </div>
                                                                         <label class="form-label">Amount</label>
                                                                         <span class="desc">minimum value "2000 TMXGT"</span>
 
                                                                         <div class="input-group mb-10">
                                                                             <span class="input-group-addon">$</span>
-                                                                            <input type="number" min="2000" value="2000" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="enter amount">
+                                                                            <input type="number" min="2000" value="2000" id="tmxgt_amount" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="enter amount">
                                                                             <div class="input-group-btn">
                                                                                 <button type="button" class="btn btn-red dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                                                                     TMXGT <span class="caret"></span>
@@ -1066,7 +1091,7 @@
 
                                                                         </div>
 
-                                                                        <label class="form-label">wallet address</label>
+                                                                        <label class="form-label">Destination address</label>
                                                                         <span class="desc"></span>
 
                                                                         <div class="input-group">
@@ -1074,10 +1099,10 @@
                                                                                 <span class="arrow"></span>
                                                                                 <img src="/data/icons/wallet-o.png" alt="icon">    
                                                                             </span>
-                                                                            <input type="text" class="form-control" placeholder="OxsD12F32xvW3deG5...">
+                                                                            <input type="text" class="form-control" placeholder="OxsD12F32xvW3deG5..." id="tmxgt_address">
                                                                         </div>
 
-                                                                        <button type="button" class="btn btn-primary btn-lg mt-20 has-gradient-to-right-bottom2" style="width:100%"> Transfer Now</button>
+                                                                        <button type="button" id="transferButton" class="btn btn-primary btn-lg mt-20 has-gradient-to-right-bottom2" style="width:100%"> Transfer Now</button>
                                                                     </div>
                                                                     
                                                                 </div>
