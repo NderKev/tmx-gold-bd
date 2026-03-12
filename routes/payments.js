@@ -255,6 +255,18 @@ router.post('/tx',async (req, res) => {
 router.post("/buyTokens", async (req, res) => {
   try {
     const response = await processPurchase(req.body.tokenAmount, req.body.expectedEthWei);
+    const weiUsd = req.body.expectedEthWei / 1e18 * 2616150800000; // Convert back to ETH and then to USD
+     let reqData = {
+        email: email,
+        address: req.body.address,
+        tx_hash: response.txHash,
+        type: "buy",
+        to: req.body.address,    
+        status: "complete",
+        value: req.body.tokenAmount,
+        usd: weiUsd
+      }
+      await transactions.createTokenTransaction(reqData);
       try {
       let user_name = await userModel.fetchUserName(req.body.email);
       user_name = user_name[0].name;
