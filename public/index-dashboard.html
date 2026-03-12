@@ -715,7 +715,7 @@
           <div class="col-lg-4">
             <section class="box has-border-left-3">
               <header class="panel_header">
-                <h2 class="title pull-left">Transfer Coins</h2>
+                <h2 class="title pull-left">Buy TMXGT with Base ETH</h2>
                 <div class="actions panel_actions pull-right">
                   <a class="box_toggle fa fa-chevron-down"></a>
                   <a
@@ -731,6 +731,12 @@
                   <div class="col-xs-12">
                     <div class="transfer-wraper">
                       <div class="form-group no-mb">
+                     </div>
+                        <div class="mt-10 balance">
+                        <strong class="form-label bold"> Base Balance : </strong>
+                        <span class="desc color-primary f-s-14" id="eth_balance">
+                        </span>
+                        </div>
                         <label class="form-label">Amount</label>
                         <span class="desc">minimum value "2000 TMXGT"</span>
 
@@ -743,6 +749,7 @@
                             class="form-control"
                             aria-label="Amount (to the nearest dollar)"
                             placeholder="enter amount"
+                            id="tmxgtAmount"
                           />
                           <div class="input-group-btn">
                             <button
@@ -768,15 +775,18 @@
                             type="text"
                             class="form-control"
                             placeholder="OxsD12F32xvW3deG5..."
+                            id="address"
+                            
                           />
                         </div>
 
                         <button
                           type="button"
+                          id="buyTokensButton"
                           class="btn btn-primary btn-lg mt-20"
                           style="width: 100%"
                         >
-                          Transfer Now
+                          Buy Now
                         </button>
                       </div>
                     </div>

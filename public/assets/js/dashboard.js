@@ -88,3 +88,47 @@ document.addEventListener('DOMContentLoaded', function () {
     // document.getElementById('icoMenu').style.display = 'none';
   }
 });
+
+
+
+$("#buyTokensButton").click(async (e)  => {
+  e.preventDefault();
+  let tokenAmount = document.getElementById("tmxgtAmount").value;
+  const address = document.getElementById("address").value;
+  tokenAmount = Math.pow(tokenAmount, 18);
+  const expectedEthWei = tokenAmount * 2616150800000; // Assuming 1 TMXGT = 0.01 ETH
+  const email = localStorage.getItem("tmx_gold_name");
+  if (!tokenAmount || tokenAmount <= 0) {
+    alert("Please enter a valid token amount greater than 0");
+    return;
+  }
+
+  if (!address || !/^0x[a-fA-F0-9]{40}$/.test(address)) {
+    alert("Please enter a valid Ethereum address");
+    return;
+  }
+
+  try {
+    const AUTH_BACKEND_URL = window.location.hostname === 'localhost'
+      ? "http://localhost:7000"
+      : 'https://tmxgoldcoin.co';
+
+    const response = await fetch(`${AUTH_BACKEND_URL}/api/payments/buyTokens`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ tokenAmount, expectedEthWei, email, address}),
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      alert("Purchase successful! Transaction Hash: " + data.txHash);
+    } else {
+      alert("Purchase failed: " + (data.error || "Unknown error"));
+    }
+  } catch (error) {
+    alert("An error occurred: " + (error?.message || String(error)));
+  }
+});

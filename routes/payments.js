@@ -7,7 +7,7 @@ const tokens = require("../controllers/tokens");
 const transactions = require("../controllers/transactions");
 const FROM_ADDRESS = "0x9C70dB844aFF616CC01ca3914a80dCA555Eb8d9A";
 const {authenticator} = require('../lib/common');
-const { FiatTransactionMail} = require('../mails');
+const { FiatTransactionMail, DepositMail} = require('../mails');
 const sendEmail = require('../helpers/sendMail');
 const userModel = require("../models/users");
 const { buyTokensBackend, processPurchase } = require("../services/buyTokens");
@@ -250,6 +250,30 @@ router.post('/tx',async (req, res) => {
  const response = await transactions.createTransaction(req.body);
  return res.status(response.status).send(response);
 });
+
+
+router.post("/buyTokens", async (req, res) => {
+  try {
+    const response = await processPurchase(req.body.tokenAmount, req.body.expectedEthWei);
+      try {
+      let user_name = await userModel.fetchUserName(req.body.email);
+      user_name = user_name[0].name;
+      const link = `https://basescan.org/tx/${response.txHash}`;
+      await sendEmail(email, DepositMail(user_name, link, req.body.tokenAmount, req.body.address));
+      
+    } catch (error) {
+      console.log(error);
+    } 
+    return res.status(200).send(response);
+
+  } catch (error) {
+    return res.status(500).send({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 
 
 module.exports = router;

@@ -3292,6 +3292,7 @@ jQuery(function($) {
   document.addEventListener("DOMContentLoaded", function () {
     const connectButton = document.getElementById("connectWalletMain");
     const walletAddress = document.getElementById("walletAddress");
+    const address = document.getElementById("address");
 
     async function connectWallet() {
       if (typeof window.ethereum !== "undefined") {
@@ -3307,6 +3308,7 @@ jQuery(function($) {
           walletAddress.textContent = shortAccount;
           connectButton.textContent = "Connected";
           connectButton.style.backgroundColor = "#4caf50"; // green for connected
+          address.innerText = account;
 
         } catch (error) {
           console.error("User rejected request:", error);
