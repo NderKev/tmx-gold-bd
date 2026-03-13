@@ -21,8 +21,8 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Build Node.js App
-        run: npm run build
+      # - name: Build Node.js App
+      #   run: npm run build
 
       - name: Deploy to AWS EC2
         uses: appleboy/ssh-action@v1.0.3
