@@ -31,7 +31,7 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/tmx-gold
+            cd /var/www/tmx-gold-bd
             
       - name: Configure Environment Variables
         uses: appleboy/ssh-action@v1.0.3
