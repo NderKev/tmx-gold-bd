@@ -248,6 +248,7 @@ const network = document.getElementById("network");
 const balanceWei = document.getElementById("wallet_balance");
 const balanceUsd = document.getElementById("wallet_usd");
 const wallet  = document.getElementById("wallet_address");
+const tmxgtAddress  = document.getElementById("tmxgtAddress");
 const connectBtn = document.getElementById("connectWalletMain");
 
 let provider, signer, token, decimals, symbol;
@@ -325,6 +326,7 @@ async function loadBalance() {
 
     address.innerText = account;
     wallet.innerText = account;
+    tmxgtAddress.value = account;
     localStorage.setItem('address', account);
 
     const rawBalance = await token.balanceOf(account);
