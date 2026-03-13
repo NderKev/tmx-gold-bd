@@ -40,7 +40,7 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/tmx-gold
+            cd /var/www/tmx-gold-bd
             printf '%s\n' \
               'PORT=7000' \ 
             > .env
@@ -52,7 +52,7 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/tmx-gold
+            cd /var/www/tmx-gold-bd
             git pull origin main
             npm install
             pm2 restart tmx-gold || pm2 start npm --name "tmx-gold" -- run start
