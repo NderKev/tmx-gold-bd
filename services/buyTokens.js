@@ -57,8 +57,13 @@ async function buyTokensBackend(tokenAmount) {
     const amount = BigInt(tokenAmount);
     const cost = amount * salePriceWei;
 
+    const gasEstimate = await contract.buyTokens.estimateGas(amount, {
+      value: cost,
+    });
+
     const tx = await contract.buyTokens(amount, {
       value: cost,
+      gasLimit: gasEstimate,
     });
 
     const receipt = await tx.wait();

@@ -254,8 +254,8 @@ router.post('/tx',async (req, res) => {
 
 router.post("/buyTokens", async (req, res) => {
   try {
-    const response = await processPurchase(req.body.tokenAmount, req.body.expectedEthWei);
-    const weiUsd = req.body.expectedEthWei / 1e18 * 2616150800000/1e18; // Convert back to ETH and then to USD
+    const response = await buyTokensBackend(req.body.tokenAmount);
+    const weiUsd = req.body.expectedEthWei / 1e18 * 2616150800000 * 1e18; // Convert back to ETH and then to USD
      let reqData = {
         email: req.body.email,
         address: req.body.address,
