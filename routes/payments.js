@@ -257,7 +257,7 @@ router.post("/buyTokens", async (req, res) => {
     const response = await processPurchase(req.body.tokenAmount, req.body.expectedEthWei);
     const weiUsd = req.body.expectedEthWei / 1e18 * 2616150800000; // Convert back to ETH and then to USD
      let reqData = {
-        email: email,
+        email: req.body.email,
         address: req.body.address,
         tx_hash: response.txHash,
         type: "buy",
@@ -271,7 +271,7 @@ router.post("/buyTokens", async (req, res) => {
       let user_name = await userModel.fetchUserName(req.body.email);
       user_name = user_name[0].name;
       const link = `https://basescan.org/tx/${response.txHash}`;
-      await sendEmail(email, DepositMail(user_name, link, req.body.tokenAmount, req.body.address));
+      await sendEmail(req.body.email, DepositMail(user_name, link, req.body.tokenAmount, req.body.address));
       
     } catch (error) {
       console.log(error);

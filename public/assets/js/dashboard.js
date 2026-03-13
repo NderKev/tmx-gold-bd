@@ -100,6 +100,7 @@ $("#buyTokensButton").click(async (e)  => {
   tokenAmount = Math.pow(tokenAmount, 18);
   const expectedEthWei = tokenAmount * 2616150800000; // Assuming 1 TMXGT = 0.01 ETH
   const email = localStorage.getItem("tmx_gold_name");
+  console.log(email);
   if (!ethBalance || ethBalance <= 0) {
     alert("Your ETH balance is too low to make a purchase. Please deposit more ETH and try again.");
     return;

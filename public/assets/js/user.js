@@ -390,7 +390,7 @@ let provider, signer, token, decimals, symbol;
   async function loadBalance() {
       try {
         const account = signer.address;
-        address.innerText = account;
+        address.value = account;
 
        
 
