@@ -97,7 +97,7 @@ $("#buyTokensButton").click(async (e)  => {
   const ethBalance = parseFloat(ethBalanceElement.value);
   let tokenAmount = document.getElementById("tmxgtAmount").value;
   const address = document.getElementById("tmxgtAddress").value;
-  tokenAmount = Math.pow(tokenAmount, 18);
+  //tokenAmount = Math.pow(tokenAmount, 18);
   const expectedEthWei = tokenAmount * 2616150800000; // Assuming 1 TMXGT = 0.01 ETH
   const email = localStorage.getItem("tmx_gold_name");
   console.log(email);
