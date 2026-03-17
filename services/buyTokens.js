@@ -56,6 +56,9 @@ async function buyTokensBackend(tokenAmount) {
     const salePriceWei = await contract.salePriceWei();
     const amount = BigInt(tokenAmount);
     const cost = amount * salePriceWei;
+    console.log("Amount:", amount.toString());
+    console.log("Price:", salePriceWei.toString());
+    console.log("Cost:", cost.toString());
 
     const gasEstimate = await contract.buyTokens.estimateGas(amount, {
       value: cost,
