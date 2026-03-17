@@ -256,7 +256,7 @@ router.post("/buyTokens", async (req, res) => {
   try {
     const response = await buyTokensBackend(req.body.tokenAmount);
     if (response.txHash && response.success == true){
-    const weiUsd = req.body.expectedEthWei / 1e18 * 2616150800000 * 1e18; // Convert back to ETH and then to USD
+    const weiUsd = parseFloat(req.body.expectedEthWei / 1e18 * 2616150800000 * 1e18); // Convert back to ETH and then to USD
      let reqData = {
         email: req.body.email,
         address: req.body.address,
