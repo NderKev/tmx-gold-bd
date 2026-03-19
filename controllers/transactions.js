@@ -76,7 +76,7 @@ const getFiatTransactionByUserEmail = async (reqData) => {
 
 const getTokenTransactionByUserEmail = async (reqData) => {
   try {
-    const response = await transactionsModel.getFiatTransactionByUserEmail(reqData.email);
+    const response = await transactionsModel.getTokenTransactionByUserEmail(reqData.email);
     return successResponse(200, response)
   } catch (error) {
     console.error('error -> ', logStruct('getTokenTransactionByUserEmail', error))
