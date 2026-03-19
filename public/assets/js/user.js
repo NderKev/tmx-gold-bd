@@ -444,8 +444,7 @@ $("#buyTokensButton").click(async (e)  => {
   e.preventDefault();
   const ethBalanceElement = document.getElementById("eth_balance_number");  
   const ethBalance = parseFloat(ethBalanceElement.value);
-  let rawAmount = document.getElementById("tmxgtAmount").value;
-  let tokenAmount = ethers.parseUnits(rawAmount, 18);
+  let tokenAmount = document.getElementById("tmxgtAmount").value;
   const address = document.getElementById("tmxgtAddress").value;
   //tokenAmount = Math.pow(tokenAmount, 18);
   const expectedEthWei = tokenAmount * 2616150800000; // Assuming 1 TMXGT = 0.01 ETH

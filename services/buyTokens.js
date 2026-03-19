@@ -10,7 +10,7 @@ dotenv.config();
 
 const provider = new ethers.JsonRpcProvider("https://mainnet.base.org");
 const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
-const TMXGoldTokenSaleContract = "0xa08b8213e691ff086eF6E15B6C499397A49E9c63";
+const TMXGoldTokenSaleContract = "0x2AE74FEc832A702eB472d93a889eFcF8c40dD18A";//"0xa08b8213e691ff086eF6E15B6C499397A49E9c63";
 
 const contract = new ethers.Contract(TMXGoldTokenSaleContract, SALE_ABI, wallet);
 
