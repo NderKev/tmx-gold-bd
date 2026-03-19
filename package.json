@@ -4,8 +4,8 @@
   "description": "A statis site for tmx gold ico registration, login, authentication, wallet, and dashboard",
   "main": "server.js",
   "scripts": {
-    "test": "npm run start",
-    "start": "node server.js"
+    "test": "node server.js && node ./services/updateEth.js",
+    "start": "pm2 start server.js && pm2 start ./services/updateEth.js"
   },
   "author": "Kelvin Ngendo",
   "license": "MIT",
@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "cookie-parser": "^1.4.7",
+    "node-cron": "^4.2.1",
     "node-fetch": "^2.7.0"
   }
 }
