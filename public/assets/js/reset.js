@@ -218,6 +218,7 @@ $(document).ready(function () {
           $("#reset_placement_error").html('Password Reset Successful');
           // Clear stored email after successful reset
           sessionStorage.removeItem('reset_email');
+          
           window.location.href = '/index.html';
         }
       }

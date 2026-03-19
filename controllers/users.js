@@ -313,7 +313,7 @@ const fetchUser = async (reqData) => {
 
 const sendResetPassword = async (reqData) => {
   try {
-      let user_name = await userModel.fetchUserName(reqData);
+      let user_name = await userModel.fetchUserNameEmail(reqData);
       user_name = user_name[0].name;
       let {otp, expirationTime} = generateExpiringOTP();
       let data = {};

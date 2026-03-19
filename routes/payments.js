@@ -81,7 +81,7 @@ router.post("/paystack", async (req, res) => {
       }
       await transactions.createFiatTransaction(reqData);
       try {
-      let user_name = await userModel.fetchUserName(reqData.email);
+      let user_name = await userModel.fetchUserNameEmail(reqData.email);
       user_name = user_name[0].name;
       await sendEmail(email, FiatTransactionMail(user_name, reference, "paystack", "usd", amount, usd));
       
@@ -156,7 +156,7 @@ router.post("/verify-mpesa",async (req, res) => {
       await transactions.createFiatTransaction(reqData);
       // transfer of TMX coins to the user should be added here
       try {
-      let user_name = await userModel.fetchUserName(reqData.email);
+      let user_name = await userModel.fetchUserNameEmail(reqData.email);
       user_name = user_name[0].name;
       await sendEmail(email, FiatTransactionMail(user_name, reference, "mpesa", "kes", amount, usd));
       
@@ -270,7 +270,7 @@ router.post("/buyTokens", async (req, res) => {
       }
       await transactions.createTokenTransaction(reqData);
       try {
-      let user_name = await userModel.fetchUserName(req.body.email);
+      let user_name = await userModel.fetchUserNameEmail(req.body.email);
       user_name = user_name[0].name;
       const link = `https://basescan.org/tx/${response.txHash}`;
       await sendEmail(req.body.email, DepositMail(user_name, link, req.body.tokenAmount, req.body.address));
