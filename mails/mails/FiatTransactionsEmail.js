@@ -48,8 +48,6 @@ const FiatTransactionMailContent = (ref_no, mode , fiat, amount, amount_usd) => 
             You can verify its status on the blockchain using the link below.
           </p>`
         )}`
-      )}
-      ${ContentBlock(
         `${Text(
           '<p style="font-size:12px; color:#aaa; margin-top:30px;">For security, always double-check the payment details before making further transactions.</p>'
         )}`

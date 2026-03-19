@@ -46,16 +46,14 @@ const DepositMailContent = (link, amount, address) => `
             You can verify its status on the blockchain using the link below.
           </p>`
         )}`
-      )}
-      <div style="margin-top: 25px;">
+         `<div style="margin-top: 25px;">
         ${Link(
           'Verify Transaction Details',
           link,
           'background:#2196f3;color:#ffffff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block;'
         )}
-      </div>
-      ${ContentBlock(
-        `${Text(
+      </div>`
+      `${Text(
           '<p style="font-size:12px; color:#aaa; margin-top:30px;">For security, always double-check the address before making further transactions.</p>'
         )}`
       )}
