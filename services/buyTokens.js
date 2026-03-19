@@ -1,10 +1,16 @@
 const SALE_ABI = [
   "function buyTokens(uint256 tokenAmount) external payable",
   "function salePriceWei() view returns (uint256)",
+  "function updateSalePrice(uint256 newPriceWei) external",
+  "function tokensSold() view returns (uint256)",
 ];
 
 const ethers = require("ethers");
 const dotenv = require("dotenv");
+
+const axios = require("axios");
+const { parse } = require("path");
+
 
 dotenv.config();
 
@@ -52,7 +58,12 @@ async function buyTokensBackend(tokenAmount) {
     if (!tokenAmount || tokenAmount <= 0) {
       throw new Error("Token amount must be greater than 0");
     }
-
+    const ethPrice = await getEthPrice();
+    console.log("Current ETH price in USD:", ethPrice);
+    const tokenPriceUSD = 0.005; // Assuming 1 TMXGT = $0.005
+    const tokenPriceWei = BigInt(Math.floor((tokenPriceUSD / ethPrice) * 1e18)); // Convert token price to Wei
+    console.log("tokenPriceWei:", tokenPriceWei.toString());
+    await contract.updateSalePrice(tokenPriceWei);
     const salePriceWei = await contract.salePriceWei();
     const amount = BigInt(tokenAmount);
     const cost = amount * salePriceWei;
@@ -82,6 +93,21 @@ async function buyTokensBackend(tokenAmount) {
       error: error?.message || String(error),
     };
   }
+}
+
+
+async function getEthPrice() {
+  const res = await axios.get(
+    "https://api.coingecko.com/api/v3/simple/price",
+    {
+      params: {
+        ids: "ethereum",
+        vs_currencies: "usd",
+      },
+    }
+  );
+
+  return res.data.ethereum.usd;
 }
 
 function startEventListener() {
