@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   //const txs = await fetchTransactions(addr);
   //populateTable(txs);
 const provider   = new ethers.JsonRpcProvider(INFURA_URL);
-const startBlock = 56180690;   // 🔹 your custom starting block
+const startBlock = 38995272;   // 🔹 your custom starting block
 
 const tbody = document.querySelector("#table-contract-transactions tbody");
 tbody.innerHTML = "Scanning from block " + startBlock + "…";
@@ -227,12 +227,12 @@ try {
   tbody.innerHTML = `<tr><td colspan="5">Error: ${err.message}</td></tr>`;
 }
 });
-const INFURA_URL = "https://avalanche-mainnet.infura.io/v3/4a66158c06d1425dab6ef27cd2a6d8aa";
+const INFURA_URL = "https://mainnet.base.org";//"https://avalanche-mainnet.infura.io/v3/4a66158c06d1425dab6ef27cd2a6d8aa";
 const API_KEY = 'tmxgold';  // replace with your Snowtrace / Routescan key
 
 async function fetchTransactions(address) {
   const network = 'mainnet';       // or testnet if you’re using test
-  const chainId = '43114';         // Avalanche C-Chain
+  const chainId = '8453';         // Avalanche C-Chain
   const url = `https://api.routescan.io/v2/network/${network}/evm/${chainId}/address/${address}/transactions?apikey=${API_KEY}`;
 
   try {

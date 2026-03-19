@@ -23,20 +23,20 @@ router.get('/fetchAll', authenticator, async (req, res) => {
 
 
 router.get('/fetch/:email', authenticator, async (req, res) => {
-  //req.body.user_id = req.params.email;
-  const response = await transactionsController.getTransactionByUserEmail(req.params.email)
+  req.body.email = req.params.email;
+  const response = await transactionsController.getTransactionByUserEmail(req.body.email)
   return res.status(response.status).send(response)
 })
 
 router.get('/fiat/:email', authenticator, async (req, res) => {
-  //req.body.user_id = req.params.email;
-  const response = await transactionsController.getFiatTransactionByUserEmail(req.params.email)
+  req.body.email = req.params.email;
+  const response = await transactionsController.getFiatTransactionByUserEmail(req.body.email)
   return res.status(response.status).send(response)
 })
 
 router.get('/token/:email', authenticator, async (req, res) => {
-  //req.body.user_id = req.params.email;
-  const response = await transactionsController.getTokenTransactionByUserEmail(req.params.email)
+  req.body.email = req.params.email;
+  const response = await transactionsController.getTokenTransactionByUserEmail(req.body.email)
   return res.status(response.status).send(response)
 })
 
