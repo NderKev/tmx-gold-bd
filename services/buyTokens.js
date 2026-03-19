@@ -21,7 +21,7 @@ const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 const CONTRACT_ADDRESS = "0x2AE74FEc832A702eB472d93a889eFcF8c40dD18A";//"0xa08b8213e691ff086eF6E15B6C499397A49E9c63";
 // Nonce-safe signer
 const managedSigner = new NonceManager(wallet);
-const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, provider);
+const contract = new ethers.Contract(CONTRACT_ADDRESS, SALE_ABI, provider);
 const managedContract = contract.connect(managedSigner);
 
 //const contract = new ethers.Contract(TMXGoldTokenSaleContract, SALE_ABI, wallet);
