@@ -9623,3 +9623,95 @@ body.login_page .loginpage form {
 .iti { width: 100%; }
 .iti input { width: 100% !important; padding-left: 48px !important; box-sizing: border-box; }
 
+
+
+/* ============================================================
+   TMX GOLD COIN — v2.1 Layout Fixes
+   ============================================================ */
+
+/* ── Fix 1: Bootstrap 3 grid row negative-margin clipping the form ── 
+   The .row pulls -15px on each side; compensate so labels aren't hidden */
+body.login_page .box.login .content-body .row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+body.login_page .box.login .content-body .row > [class*="col-"] {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+body.login_page .box.login .content-body .row > [class*="col-"]:first-child {
+  padding-left: 0 !important;
+}
+
+body.login_page .box.login .content-body .row > [class*="col-"]:last-child {
+  padding-right: 0 !important;
+}
+
+/* ── Fix 2: Left panel — ensure flex column fills full height
+   so the logo anchors top and brand copy sits at the bottom ── */
+.tmx-left-panel {
+  -webkit-flex-direction: column !important;
+  flex-direction: column !important;
+}
+
+.tmx-left-inner {
+  -webkit-flex: 1 !important;
+  flex: 1 !important;
+  min-height: 100vh;
+}
+
+/* ── Fix 3: Logo — keep it inside the left panel, not above it ──
+   Remove any block-level spacing that might push it outside */
+.tmx-logo-link {
+  display: block;
+  line-height: 0;
+}
+
+.tmx-logo {
+  display: block;
+  height: 40px;
+  width: auto;
+  max-width: 180px;
+  object-fit: contain;
+}
+
+/* ── Fix 4: Right panel vertical centering ── 
+   Push form to the visual center of the panel */
+.tmx-right-panel {
+  -webkit-justify-content: center !important;
+  justify-content: center !important;
+  padding-top: 80px !important;
+  padding-bottom: 60px !important;
+}
+
+/* ── Fix 5: Container fluid — kill default gutters that shift the layout ── */
+body.login_page .container-fluid.tmx-page-wrap {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+body.login_page .login-wrapper.row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* ── Fix 6: Right panel left-edge bleed — 
+   Bootstrap col adds 15px padding; neutralize it so form content
+   starts flush with the panel edge (we control padding via tmx-right-panel) ── */
+body.login_page .tmx-right-panel[class*="col-"] {
+  padding-left: 44px !important;
+  padding-right: 44px !important;
+}
+
+/* ── Fix 7: intl-tel-input flag icon alignment ── */
+body.login_page .iti--separate-dial-code .iti__selected-flag {
+  background-color: #1E1A0E !important;
+  border-right: 1px solid #2E2910;
+}
+
+body.login_page .iti__flag-container {
+  border-radius: 8px 0 0 8px;
+}
+
