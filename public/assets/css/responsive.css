@@ -1,0 +1,290 @@
+/* ============================================================
+   TMX GOLD COIN — v2.0 Responsive Stylesheet
+   Breakpoints mirror Bootstrap 3:
+     xs   < 768px
+     sm   768px – 991px
+     md   992px – 1199px
+     lg   ≥ 1200px
+   ============================================================ */
+
+/* ──────────────────────────────────────
+   Large desktop (≥ 1200px)
+   ────────────────────────────────────── */
+@media (min-width: 1200px) {
+  .tmx-right-panel {
+    padding: 64px 80px 56px !important;
+  }
+
+  .tmx-left-inner {
+    padding: 56px 52px;
+  }
+
+  .tmx-brand-heading {
+    font-size: 34px;
+  }
+}
+
+/* ──────────────────────────────────────
+   Desktop (992px – 1199px)
+   ────────────────────────────────────── */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .tmx-right-panel {
+    padding: 48px 44px 40px !important;
+  }
+
+  .tmx-brand-heading {
+    font-size: 26px;
+  }
+
+  .tmx-left-inner {
+    padding: 40px 32px;
+  }
+}
+
+/* ──────────────────────────────────────
+   All desktop widths (≥ 992px): flexbox
+   row layout for the two panels
+   ────────────────────────────────────── */
+@media (min-width: 992px) {
+  .login-wrapper {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    min-height: 100vh;
+  }
+
+  .tmx-left-panel {
+    min-height: 100vh;
+  }
+
+  .tmx-right-panel {
+    min-height: 100vh;
+  }
+
+  /* Two-column form grid: side-by-side pairs */
+  .col-lg-6 {
+    float: left;
+    width: 50%;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .col-lg-6:nth-child(odd) {
+    padding-left: 0;
+  }
+
+  .col-lg-6:nth-child(even) {
+    padding-right: 0;
+  }
+}
+
+/* ──────────────────────────────────────
+   Tablet (768px – 991px)
+   Left panel hidden; form full-width
+   ────────────────────────────────────── */
+@media (min-width: 768px) and (max-width: 991px) {
+  .tmx-left-panel {
+    display: none !important;
+  }
+
+  .tmx-right-panel {
+    width: 100% !important;
+    padding: 56px 48px 40px !important;
+    min-height: 100vh;
+  }
+
+  /* Show mobile logo */
+  .tmx-mobile-logo {
+    display: block !important;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .tmx-form-title {
+    font-size: 26px;
+    text-align: center;
+  }
+
+  .tmx-form-subtitle {
+    text-align: center;
+  }
+
+  .tmx-form-header {
+    text-align: center;
+  }
+
+  /* Side-by-side fields still work at tablet width */
+  .col-sm-6 {
+    float: left;
+    width: 50%;
+  }
+
+  .col-xs-12.col-sm-6:nth-child(odd) {
+    padding-right: 8px;
+  }
+
+  .col-xs-12.col-sm-6:nth-child(even) {
+    padding-left: 8px;
+  }
+
+  .form-buttons {
+    gap: 12px !important;
+  }
+}
+
+/* ──────────────────────────────────────
+   Mobile (< 768px) — single column
+   ────────────────────────────────────── */
+@media (max-width: 767px) {
+  .tmx-left-panel {
+    display: none !important;
+  }
+
+  .tmx-right-panel {
+    width: 100% !important;
+    padding: 40px 20px 32px !important;
+    min-height: 100vh;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+    padding-top: 60px !important;
+  }
+
+  /* Show mobile logo */
+  .tmx-mobile-logo {
+    display: block !important;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .tmx-logo {
+    height: 34px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  /* Back link: smaller on mobile */
+  .tmx-back-link {
+    top: 16px;
+    right: 16px;
+    font-size: 12px;
+  }
+
+  /* Center form header */
+  .tmx-form-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .tmx-form-title {
+    font-size: 22px;
+  }
+
+  .tmx-form-subtitle {
+    font-size: 13px;
+  }
+
+  /* All columns: full width, no float */
+  .col-xs-12,
+  .col-xs-12.col-sm-6,
+  .col-xs-12.col-lg-6 {
+    width: 100% !important;
+    float: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* Inputs: taller for touch + 16px prevents iOS zoom */
+  body.login_page .form-control,
+  body.login_page input[type=email],
+  body.login_page input[type=text],
+  body.login_page input[type=password],
+  body.login_page input[type=tel] {
+    height: 48px !important;
+    font-size: 16px !important;
+    padding: 12px 14px !important;
+  }
+
+  /* Eye icon: larger hit target */
+  .tmx-eye-icon {
+    right: 12px !important;
+    font-size: 16px !important;
+  }
+
+  /* Buttons: stack vertically, full width */
+  .form-buttons {
+    -webkit-flex-direction: column !important;
+    flex-direction: column !important;
+    -webkit-align-items: stretch !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  body.login_page .btn.btn-primary.tmx-btn-gold,
+  body.login_page #btnRegister,
+  .btn-tmx-outline {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 13px 20px !important;
+    font-size: 15px !important;
+  }
+
+  /* Bottom nav: space-between */
+  body.login_page #nav {
+    margin-top: 16px !important;
+  }
+
+  body.login_page #nav a {
+    font-size: 12px !important;
+  }
+
+  /* Strength bar */
+  .tmx-strength-bar {
+    margin-top: 6px;
+  }
+}
+
+/* ──────────────────────────────────────
+   Small mobile (< 375px)
+   ────────────────────────────────────── */
+@media (max-width: 374px) {
+  .tmx-right-panel {
+    padding: 36px 14px 24px !important;
+    padding-top: 56px !important;
+  }
+
+  .tmx-form-title {
+    font-size: 20px;
+  }
+
+  .tmx-benefit-list li {
+    font-size: 13px;
+  }
+}
+
+/* ──────────────────────────────────────
+   Landscape mobile: allow scrolling
+   ────────────────────────────────────── */
+@media (max-width: 767px) and (orientation: landscape) {
+  .tmx-right-panel {
+    min-height: auto;
+    padding-top: 32px !important;
+    padding-bottom: 32px !important;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+  }
+
+  .login-wrapper {
+    min-height: auto;
+  }
+}
+
+/* ──────────────────────────────────────
+   Retina / high-DPI logo sharpness
+   ────────────────────────────────────── */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .tmx-logo {
+    -webkit-filter: drop-shadow(0 0 10px rgba(241,194,65,0.3));
+    filter: drop-shadow(0 0 10px rgba(241,194,65,0.3));
+  }
+}

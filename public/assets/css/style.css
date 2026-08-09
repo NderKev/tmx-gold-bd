@@ -9199,3 +9199,427 @@ p {
   transform: translateY(-2px);
   color: #fff;
 }
+
+/* ============================================================
+   TMX GOLD COIN — v2.0 Design Override
+   Brand palette:
+     Background  : #08080C
+     Surface     : #18160C
+     Card        : #1E1A0E
+     Border      : #2E2910
+     Gold accent : #F1C241
+     Gold dark   : #C99A28
+     Muted text  : #8A8070
+   Fonts: Syne (headings), Plus Jakarta Sans (body)
+   ============================================================ */
+
+/* ── Global: login page dark base ── */
+body.login_page {
+  background-color: #08080C !important;
+  background-image: none !important;
+  font-family: 'Plus Jakarta Sans', Arial, sans-serif !important;
+  color: #C8B99A !important;
+}
+
+/* ── Page wrapper ── */
+.tmx-page-wrap {
+  min-height: 100vh;
+  padding: 0;
+}
+
+.login-wrapper {
+  min-height: 100vh;
+  margin: 0 !important;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: stretch;
+  align-items: stretch;
+}
+
+/* ──────────────────────────────────────
+   LEFT PANEL — brand copy
+   ────────────────────────────────────── */
+.tmx-left-panel {
+  background-color: #18160C;
+  position: relative;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: stretch;
+  align-items: stretch;
+  border-right: 1px solid #2E2910;
+  padding: 0 !important;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Gradient overlay over any vault background image */
+.tmx-left-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(8,8,12,0.88) 0%,
+    rgba(24,22,12,0.72) 60%,
+    rgba(241,194,65,0.07) 100%
+  );
+  pointer-events: none;
+}
+
+.tmx-left-inner {
+  position: relative;
+  z-index: 2;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  padding: 48px 40px;
+  width: 100%;
+}
+
+.tmx-logo-link {
+  display: inline-block;
+  text-decoration: none !important;
+}
+
+.tmx-logo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  -webkit-filter: drop-shadow(0 0 12px rgba(241,194,65,0.35));
+  filter: drop-shadow(0 0 12px rgba(241,194,65,0.35));
+}
+
+.tmx-brand-copy {
+  margin-top: auto;
+  padding-top: 48px;
+}
+
+.tmx-brand-heading {
+  font-family: 'Syne', sans-serif !important;
+  font-size: 30px;
+  font-weight: 700;
+  color: #FFFFFF !important;
+  line-height: 1.25;
+  margin: 0 0 24px;
+}
+
+.tmx-benefit-list {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.tmx-benefit-list li {
+  color: #C8B99A;
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 8px 0;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(46,41,16,0.5);
+}
+
+.tmx-benefit-list li:last-child {
+  border-bottom: none;
+}
+
+.tmx-check-icon {
+  color: #F1C241 !important;
+  font-size: 15px;
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+}
+
+/* ──────────────────────────────────────
+   RIGHT PANEL — signup form
+   ────────────────────────────────────── */
+.tmx-right-panel {
+  background-color: #08080C !important;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-justify-content: center;
+  justify-content: center;
+  padding: 48px 44px 40px !important;
+  position: relative;
+}
+
+/* Back link (top-right corner) */
+.tmx-back-link {
+  position: absolute !important;
+  top: 24px;
+  right: 32px;
+  color: #8A8070 !important;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none !important;
+  -webkit-transition: color 0.2s;
+  transition: color 0.2s;
+  display: -webkit-inline-flex;
+  display: inline-flex;
+  -webkit-align-items: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.tmx-back-link:hover,
+.tmx-back-link:focus {
+  color: #F1C241 !important;
+  text-decoration: none !important;
+}
+
+/* Mobile logo */
+.tmx-mobile-logo {
+  margin-bottom: 24px;
+}
+
+/* ── Form header ── */
+.tmx-form-header {
+  margin-bottom: 28px;
+}
+
+.tmx-form-title {
+  font-family: 'Syne', sans-serif !important;
+  font-size: 28px;
+  font-weight: 700;
+  color: #FFFFFF !important;
+  margin: 0 0 6px;
+  line-height: 1.2;
+}
+
+.tmx-form-subtitle {
+  color: #8A8070;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Hide the original login-form-header on login_page */
+body.login_page .login-form-header {
+  display: none !important;
+}
+
+/* ── Remove card chrome — transparent on dark bg ── */
+.box.login {
+  background-color: transparent !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  border: none !important;
+}
+
+.box.login .content-body {
+  background-color: transparent !important;
+  border: none !important;
+  -webkit-transition: none !important;
+  transition: none !important;
+}
+
+/* ── Form labels ── */
+body.login_page .form-label,
+body.login_page .loginpage label,
+body.login_page label {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: #8A8070 !important;
+  margin-bottom: 6px !important;
+}
+
+/* ── Form inputs ── */
+body.login_page .form-control,
+body.login_page input[type=email],
+body.login_page input[type=text],
+body.login_page input[type=password],
+body.login_page input[type=tel] {
+  background-color: #1E1A0E !important;
+  border: 1px solid #2E2910 !important;
+  border-radius: 8px !important;
+  -o-border-radius: 8px !important;
+  -moz-border-radius: 8px !important;
+  -webkit-border-radius: 8px !important;
+  color: #FFFFFF !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 14px !important;
+  height: 44px !important;
+  padding: 10px 14px !important;
+  -webkit-transition: border-color 0.2s, background-color 0.2s !important;
+  transition: border-color 0.2s, background-color 0.2s !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+body.login_page .form-control::-webkit-input-placeholder { color: #4A4030 !important; }
+body.login_page .form-control::-moz-placeholder          { color: #4A4030 !important; }
+body.login_page .form-control:-ms-input-placeholder      { color: #4A4030 !important; }
+body.login_page .form-control::placeholder               { color: #4A4030 !important; }
+
+body.login_page .form-control:focus,
+body.login_page .has-focus .form-control {
+  background-color: #221E0A !important;
+  border-color: #F1C241 !important;
+  outline: 0 !important;
+  -webkit-box-shadow: 0 0 0 3px rgba(241,194,65,0.12) !important;
+  box-shadow: 0 0 0 3px rgba(241,194,65,0.12) !important;
+  color: #FFFFFF !important;
+}
+
+/* ── Password eye icon ── */
+.tmx-eye-icon {
+  position: absolute !important;
+  top: 50% !important;
+  right: 14px !important;
+  -webkit-transform: translateY(-50%) !important;
+  transform: translateY(-50%) !important;
+  cursor: pointer !important;
+  color: #4A4030 !important;
+  font-size: 14px !important;
+  -webkit-transition: color 0.2s !important;
+  transition: color 0.2s !important;
+  z-index: 5;
+}
+
+.tmx-eye-icon:hover {
+  color: #F1C241 !important;
+}
+
+/* ── Password strength bar ── */
+.tmx-strength-bar {
+  margin-top: 8px;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.tmx-strength-track {
+  -webkit-flex: 1;
+  flex: 1;
+  height: 4px;
+  background-color: #2E2910;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.tmx-strength-fill {
+  height: 100%;
+  border-radius: 2px;
+  -webkit-transition: width 0.3s ease, background 0.3s ease;
+  transition: width 0.3s ease, background 0.3s ease;
+  width: 0%;
+}
+
+.tmx-strength-label {
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 38px;
+  text-align: right;
+}
+
+/* ── Buttons ── */
+
+/* Gold "Sign up" — overrides btn-primary on login page */
+body.login_page .btn.btn-primary.tmx-btn-gold,
+body.login_page #btnRegister {
+  background: #F1C241 !important;
+  color: #0A0800 !important;
+  border: none !important;
+  border-radius: 22px !important;
+  padding: 10px 32px !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  -webkit-box-shadow: 0 0 20px rgba(241,194,65,0.2) !important;
+  box-shadow: 0 0 20px rgba(241,194,65,0.2) !important;
+  -webkit-transition: background 0.2s, box-shadow 0.2s, -webkit-transform 0.15s !important;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s !important;
+  text-decoration: none !important;
+}
+
+body.login_page .btn.btn-primary.tmx-btn-gold:hover,
+body.login_page .btn.btn-primary.tmx-btn-gold:focus,
+body.login_page #btnRegister:hover {
+  background: #d4a820 !important;
+  color: #0A0800 !important;
+  -webkit-box-shadow: 0 0 28px rgba(241,194,65,0.38) !important;
+  box-shadow: 0 0 28px rgba(241,194,65,0.38) !important;
+  -webkit-transform: translateY(-1px) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Outline "Login" button */
+.btn-tmx-outline {
+  background: transparent !important;
+  color: #C8B99A !important;
+  border: 1px solid #2E2910 !important;
+  border-radius: 22px !important;
+  padding: 10px 32px !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  -webkit-transition: border-color 0.2s, color 0.2s !important;
+  transition: border-color 0.2s, color 0.2s !important;
+  text-decoration: none !important;
+}
+
+.btn-tmx-outline:hover,
+.btn-tmx-outline:focus {
+  border-color: #F1C241 !important;
+  color: #F1C241 !important;
+  background: transparent !important;
+}
+
+/* ── Bottom nav (#nav) ── */
+body.login_page #nav {
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-justify-content: space-between !important;
+  justify-content: space-between !important;
+  -webkit-align-items: center !important;
+  align-items: center !important;
+  margin-top: 20px !important;
+  padding: 0 !important;
+}
+
+body.login_page #nav a,
+body.login_page #nav a.pull-left,
+body.login_page #nav a.pull-right {
+  color: #8A8070 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  -webkit-transition: color 0.2s !important;
+  transition: color 0.2s !important;
+  float: none !important;
+}
+
+body.login_page #nav a:hover,
+body.login_page #nav a:focus {
+  color: #F1C241 !important;
+}
+
+/* ── Loginpage text colors ── */
+body.login_page .loginpage,
+body.login_page .loginpage form label,
+body.login_page .loginpage form {
+  color: #C8B99A !important;
+}
+
+body.login_page .loginpage form {
+  background-color: transparent !important;
+}
+
+/* ── iti phone override ── */
+.iti { width: 100%; }
+.iti input { width: 100% !important; padding-left: 48px !important; box-sizing: border-box; }
+
