@@ -9715,3 +9715,29 @@ body.login_page .iti__flag-container {
   border-radius: 8px 0 0 8px;
 }
 
+
+
+/* ============================================================
+   TMX GOLD COIN — v2.2 Left Panel Vertical Centering
+   Groups logo + brand copy together in the middle of the panel
+   instead of spacing them top / bottom
+   ============================================================ */
+
+.tmx-left-inner {
+  -webkit-justify-content: center !important;
+  justify-content: center !important;
+  gap: 56px;
+}
+
+/* Remove the auto top-margin that was pushing copy to the bottom */
+.tmx-brand-copy {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Subtle gold top-border accent on the brand heading */
+.tmx-brand-heading {
+  padding-top: 20px;
+  border-top: 1px solid rgba(241,194,65,0.2);
+}
+
