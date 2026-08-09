@@ -9741,3 +9741,58 @@ body.login_page .iti__flag-container {
   border-top: 1px solid rgba(241,194,65,0.2);
 }
 
+
+
+/* ============================================================
+   TMX GOLD COIN — v2.3 Label visibility + form centering fix
+   ============================================================ */
+
+/* ── Fix 1: Make labels legible — lift from #8A8070 to #B8A882 ── */
+body.login_page .form-label,
+body.login_page .loginpage label,
+body.login_page label.form-label,
+body.login_page .content-body label {
+  color: #B8A882 !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  display: block !important;
+  margin-bottom: 6px !important;
+}
+
+/* ── Fix 2: Right panel must fill full viewport height
+   so flexbox centering actually works ── */
+body.login_page,
+body.login_page .container-fluid.tmx-page-wrap,
+body.login_page .login-wrapper.row {
+  min-height: 100vh !important;
+  height: 100% !important;
+}
+
+body.login_page html,
+html {
+  height: 100%;
+}
+
+.tmx-right-panel {
+  min-height: 100vh !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-flex-direction: column !important;
+  flex-direction: column !important;
+  -webkit-justify-content: center !important;
+  justify-content: center !important;
+}
+
+/* Constrain the form width so it doesn't stretch edge-to-edge */
+.tmx-right-panel .box.login {
+  max-width: 760px;
+  width: 100%;
+}
+
+/* ── Fix 3: Bump form-group bottom spacing so label→input pairs breathe ── */
+body.login_page .form-group {
+  margin-bottom: 18px !important;
+}
+
